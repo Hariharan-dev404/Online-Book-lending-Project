@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Google Pay - Mock Payment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff8f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      background-color: lightcoral;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+    }
+
+    .pageloft-title {
+      flex: 1;
+      text-align: center;
+      font-size: 50px;
+      font-weight: bold;
+      color: white;
+      position: relative;
+      right: 530px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .gpay-logo {
+      height: 60px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #555;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      margin-top: 20px;
+    }
+
+    .pay-button {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px;
+      background-color: #1a73e8;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .pay-button:hover {
+      background-color: #1558c2;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: lightcoral;
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="obl.jpg" alt="Logo" class="logo">
+    <div class="pageloft-title">PageLoft</div>
+  </div>
+  <form action="loader.html" method="get">
+  <div class="container">
+    <img src="https://www.liblogo.com/img-logo/go8825f71a-google-pay-logo-file-google-pay-gpay-logo-2018-2020-svg-liblogo.png" alt="Google Pay" class="gpay-logo">
+    <h2>Pay with Google Pay</h2>
+    <input type="hidden" name="type" value="gpay" required>
+    <input type="text" placeholder="Enter the amount" required>
+    
+    <input type="text" placeholder="Enter your UPI ID (e.g., yourname@okhdfcbank)" required>
+   <button class="pay-button">Pay Now</button>
+  </div>
+  <div class="footer">
+    © 2025 All rights reserved.
+  </div>
+
+</body>
+</html>

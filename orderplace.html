@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Orders</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #fff8f5; }
+    h1 { color: lightcoral; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background-color: lightcoral; color: white; }
+    img { width: 60px; }
+  </style>
+</head>
+<body>
+  <h1>All Orders</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Book</th>
+        <th>User</th>
+        <th>Address</th>
+        <th>UPI ID / Mobile</th> <!-- ✅ unified column -->
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody id="orders-table"></tbody>
+  </table>
+
+  <script>
+    const orders = JSON.parse(localStorage.getItem("orders")) || [];
+    const tbody = document.getElementById("orders-table");
+
+    orders.forEach(order => {
+      const tr = document.createElement("tr");
+
+      if (order.type === "lend") {
+  tr.innerHTML = `
+    <td>
+      <img src="${order.book.image}" alt="Book">
+      <br>${order.book.title} by ${order.book.author}
+      <br><strong style="color:blue;">[LEND - ${order.weeks} Weeks]</strong>
+    </td>
+    <td>${order.username}</td>
+    <td>${order.address}</td>
+    <td>${order.mobileno}</td> <!-- instead of UPI -->
+    <td>${order.date}</td>
+  `;
+} else {
+  tr.innerHTML = `
+    <td>
+      <img src="${order.book.image}" alt="Book">
+      <br>${order.book.title} by ${order.book.author}
+      <br><strong style="color:green;">[BUY]</strong>
+    </td>
+    <td>${order.fullname}</td>
+    <td>${order.address}, ${order.city}, ${order.state} - ${order.zip}</td>
+    <td>${order.upi}</td>
+    <td>${order.date}</td>
+  `;
+}
+
+
+      tbody.appendChild(tr);
+    });
+  </script>
+</body>
+</html>

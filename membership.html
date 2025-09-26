@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pageloft Membership Plans</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff8f5;
+      color: #333;
+    }
+
+    .header {
+      background-color: lightcoral;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    .header h1 {
+      margin: 0;
+      color: white;
+      font-size: 36px;
+    }
+
+    .plans-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 50px 20px;
+      flex-wrap: wrap;
+    }
+
+    .plan {
+      background-color: rgba(255, 255, 255, 0);
+      padding: 30px;
+      width: 280px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .plan:hover {
+      transform: scale(1.10);
+    }
+
+    .plan h2 {
+      margin-top: 0;
+      color: lightcoral;
+    }
+
+    .price {
+      font-size: 28px;
+      font-weight: bold;
+      color: #222;
+      margin: 15px 0;
+    }
+
+    .benefits {
+      text-align: left;
+      margin-top: 15px;
+      line-height: 1.6;
+    }
+
+    .benefits li {
+      margin-bottom: 8px;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 25px;
+      background-color: lightcoral;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .bak {
+      background-image: url("footim.jpg");
+      background-size: cover;
+    }
+
+    /* 📱 Responsive Styles */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 28px;
+      }
+      h1 {
+        font-size: 24px;
+        padding: 0 10px;
+      }
+      .plans-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 20px 10px;
+      }
+      .plan {
+        width: 90%;
+        max-width: 350px;
+        padding: 20px;
+      }
+      .price {
+        font-size: 24px;
+      }
+      .button {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 24px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+      .plan {
+        padding: 15px;
+      }
+      .price {
+        font-size: 20px;
+      }
+      .button {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="bak">
+  <div class="header">
+    <h1>Pageloft</h1>
+  </div>
+  <h1 style="text-align:center;">Membership Plans</h1>
+  <div class="plans-container">
+
+    <!-- Basic Plan -->
+    <div class="plan">
+      <h2>Basic Plan</h2>
+      <p class="price">₹199 / month</p>
+      <ul class="benefits">
+        <li>Access to 1000+ eBooks</li>
+        <li>Borrow up to 2 books/month</li>
+        <li>Email support</li>
+      </ul>
+      <a class="button" href="gpay.html">Choose Plan</a>
+    </div>
+
+    <!-- Standard Plan -->
+    <div class="plan">
+      <h2>Standard Plan</h2>
+      <p class="price">₹399 / month</p>
+      <ul class="benefits">
+        <li>Access to 5000+ eBooks & audiobooks</li>
+        <li>Borrow up to 5 books/month</li>
+        <li>Priority email support</li>
+        <li>1 free home delivery</li>
+      </ul>
+      <a class="button" href="gpay.html">Choose Plan</a>
+    </div>
+
+    <!-- Premium Plan -->
+    <div class="plan">
+      <h2>Premium Plan</h2>
+      <p class="price">₹699 / month</p>
+      <ul class="benefits">
+        <li>Unlimited eBooks & audiobooks</li>
+        <li>Unlimited book borrowing</li>
+        <li>Free home delivery</li>
+        <li>Early access to new arrivals</li>
+        <li>24/7 customer support</li>
+      </ul>
+      <a class="button" href="gpay.html">Choose Plan</a>
+    </div>
+
+  </div>
+</div>
+</body>
+</html>

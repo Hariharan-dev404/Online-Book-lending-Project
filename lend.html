@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lend Book</title>
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #fff8f5; margin: 0; padding: 0; }
+    .header { position: relative; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; background-color: lightcoral; }
+    .logo { width: 80px; height: 80px; border-radius: 50%; }
+    .pageloft-title { flex: 1; text-align: center; font-size: 50px; font-weight: bold; color: white; position: relative; right: 522px; }
+    .lend-container { max-width: 500px; margin: 80px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+    .lend-container h2 { color: lightcoral; text-align: center; }
+    .lend-container label { font-size: 18px; color: #444; display: block; margin-bottom: 10px; }
+    .lend-container input, .lend-container select, textarea { width: 100%; padding: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 20px; }
+    textarea { resize: vertical; }
+    .lend-container button { width: 100%; padding: 12px; font-size: 16px; background-color: lightcoral; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    .lend-container button:hover { background-color: #e6645c; }
+    .footer { position: fixed; bottom: 0; left: 0; width: 100%; background-color: lightcoral; text-align: center; padding: 10px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <img src="obl.jpg" alt="Logo" class="logo">
+    <div class="pageloft-title">PageLoft</div>
+  </div>
+
+  <div class="lend-container">
+    <h2>Lend This Book</h2>
+    <form>
+      <h2 id="book-title"></h2>
+      <p id="book-author"></p>
+      <p id="book-price"></p>
+      <img id="book-image" width="200" /><br><br>
+
+      <label for="weeks">Lend Duration (in weeks)</label>
+      <select id="weeks" required>
+        <option value="">Select weeks</option>
+        <option value="1">1 Week</option>
+        <option value="2">2 Weeks</option>
+        <option value="3">3 Weeks</option>
+        <option value="4">4 Weeks</option>
+      </select>
+
+      <label for="username">Your Name</label>
+      <input type="text" id="username" placeholder="Enter your name" required />
+
+      <label for="mobileno">Mobile No</label>
+      <input type="tel" id="mobileno" placeholder="Enter your number" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your Email" required />
+
+      <label for="address">Address</label>
+      <textarea id="address" placeholder="Enter your address for dispatch" rows="4"></textarea>
+
+      <button type="submit">Confirm Lend</button>
+    </form>
+  </div>
+
+  <div class="footer">
+    © 2025 All rights reserved.
+  </div>
+  <script>
+    // Helper: get query parameters
+    function getQueryParam(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
+  
+    // Load book from sessionStorage or fallback to query param
+    let book = null;
+    try {
+      book = JSON.parse(sessionStorage.getItem("selectedBook"));
+    } catch (e) {
+      console.warn("Invalid book in sessionStorage", e);
+    }
+  
+    if (!book) {
+      // Fallback: from URL ?title=xxx&author=yyy&price=zzz
+      const title = getQueryParam("title");
+      const author = getQueryParam("author");
+      const price = getQueryParam("price");
+      const image = getQueryParam("image");
+      if (title) {
+        book = { title, author: author || "Unknown", price: price || "", image: image || "" };
+      }
+    }
+  
+    // If still no book, stop
+    if (book) {
+      document.title = `Lend - ${book.title}`;
+      document.getElementById("book-image").src = book.image || "default.jpg";
+      document.getElementById("book-title").textContent = book.title;
+      document.getElementById("book-author").textContent = "by " + (book.author || "Unknown");
+      document.getElementById("book-price").textContent = book.price ? `Price: ₹${book.price}` : "";
+    } else {
+      alert("No book selected! Please go back and choose a book.");
+    }
+  
+    // Handle form submit
+    const form = document.querySelector("form");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+  
+      const order = {
+        type: "lend",
+        book: book ? {
+          title: book.title,
+          author: book.author,
+          price: book.price
+        } : null,
+        username: document.getElementById("username").value,
+        mobileno: document.getElementById("mobileno").value,
+        email: document.getElementById("email").value,
+        address: document.getElementById("address").value,
+        weeks: document.getElementById("weeks").value,
+        date: new Date().toLocaleString()
+      };
+  
+      try {
+        const orders = JSON.parse(localStorage.getItem("orders")) || [];
+        orders.push(order);
+        localStorage.setItem("orders", JSON.stringify(orders));
+      } catch (err) {
+        console.error("Storage error:", err);
+        alert("Could not save order: " + err.message);
+        return;
+      }
+  
+      // Redirect to confirmation page
+      window.location.href = "loader.html?type=lend";
+    });
+  </script>
+  
+</body>
+</html>

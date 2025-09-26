@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiction Books</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff8f5;
+      margin: 0;
+      padding: 20px;
+    }
+    .book {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .book img {
+      width: 150px;
+      height: auto;
+      margin-right: 20px;
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+    }
+    .book-info {
+      flex: 1;
+    }
+    .book-title {
+      font-size: 24px;
+      color: #333;
+      margin: 0 0 10px;
+    }
+    .book-author {
+      font-size: 18px;
+      color: #777;
+    }
+    .book-desc {
+      margin-top: 10px;
+      color: #444;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .view-button {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 8px 16px;
+      background-color: lightcoral;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      text-decoration: none;
+    }
+    .view-button:hover {
+      background-color: #e6645c;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="color: lightcoral">Fantasy Books</h1>
+
+  <div id="fictionList"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      let books = JSON.parse(localStorage.getItem("books")) || [];
+      let fictionBooks = books.filter(book => book.genre.toLowerCase() === "fantasy");
+      
+      let fictionList = document.getElementById("fictionList");
+      fictionList.innerHTML = fictionBooks.map((book, index) => `
+        <div class="book">
+          <img src="${book.image}" alt="${book.title}">
+          <div class="book-info">
+            <h2 class="book-title">${book.title}</h2>
+            <p class="book-author">by ${book.author}</p>
+            <p class="book-desc">${book.description || ""}</p>
+            <button class="view-button" onclick="viewBook(${index})">View</button>
+          </div>
+        </div>
+      `).join("");
+
+      window.viewBook = function(index) {
+        const book = fictionBooks[index];
+        sessionStorage.setItem("selectedBook", JSON.stringify(book));
+        window.location.href = "page.html";
+      };
+    });
+  </script>
+</body>
+</html>

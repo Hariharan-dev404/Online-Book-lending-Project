@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+
+    .image-side {
+      width: 42%;
+      background-image: url("signupim.jpg");
+      background-size: cover;
+      background-position: center;
+      
+    }
+
+    .form-side {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px;
+      background-color: #ffffff;
+    }
+
+    .form-side h1 {
+      color: lightcoral;
+      margin-bottom: 40px;
+      text-align: center;
+      font-size: 36px;
+    }
+
+    form {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: lightcoral;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e07070;
+    }
+
+    @media screen and (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .image-side {
+        height: 200px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="image-side"></div>
+
+  <div class="form-side">
+    <h1 style="font-size: 70px;">Welcome to Pageloft</h1>
+    <form action="index.html" method="get">
+      <input type="text" placeholder="First Name" required />
+      <input type="text" placeholder="Last Name" required />
+      <input type="email" placeholder="Email" required />
+      <input type="password" placeholder="Password" required />
+      <input type="password" placeholder="Confirm Password" required />
+      <button type="submit">Sign Up</button>
+      <p>if you already have an account <a href="index.html" style="color:rgb(5, 121, 253)">Login</a></p>
+    </form>
+  </div>
+
+</body>
+</html>

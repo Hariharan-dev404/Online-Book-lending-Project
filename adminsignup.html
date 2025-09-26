@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Signup - Pageloft</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+
+    .image-side {
+      width:42%;
+      background-image: url('signupim.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+
+    .form-side {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      background-color: #fff8f5;
+    }
+
+    .signup-form {
+      width: 100%;
+      max-width: 400px;
+      background-color: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .signup-form h1 {  
+      color: lightcoral;
+      margin-bottom: 40px;
+      text-align: center;
+      font-size: 36px;
+    }
+
+    .signup-form label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .signup-form input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .signup-form button {
+      width: 100%;
+      padding: 12px;
+      background-color: lightcoral;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .signup-form button:hover {
+      background-color: #e57373;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .image-side {
+        height: 200px;
+        
+      }
+
+     
+    }
+  </style>
+</head>
+<body>
+
+  <div class="image-side"></div>
+
+  <div class="form-side">
+    <form action="index.html" class="signup-form">
+    <h1 style="font-size: 70px; color: lightcoral;">Welcome to Pageloft</h1>
+      <label for="adminName">Name</label>
+      <input type="text" id="adminName" name="adminName" required>
+
+      <label for="adminEmail">Email</label>
+      <input type="email" id="adminEmail" name="adminEmail" required>
+
+      <label for="adminPassword">Password</label>
+      <input type="password" id="adminPassword" name="adminPassword" required>
+
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" id="confirmPassword" name="confirmPassword" required>
+      <p>if you already have an account <a href="index.html" style="color:rgb(5, 121, 253)">Admin</a></p>
+      <button type="submit">Create account</button>
+    </form>
+  </div>
+
+</body>
+</html>

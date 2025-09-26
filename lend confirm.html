@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lending Confirmation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff8f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header {
+      position: relative;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 30px;
+      background-color: lightcoral;
+    }
+
+    .logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+    }
+
+    .pageloft-title {
+      flex: 1;
+      text-align: center;
+      font-size: 50px;
+      font-weight: bold;
+      color: white;
+      position: relative;
+      right: 522px;
+    }
+
+    .confirmation-container {
+      max-width: 600px;
+      margin: 60px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .confirmation-container h2 {
+      text-align: center;
+      color: lightcoral;
+      margin-bottom: 20px;
+    }
+
+    .confirmation-container p {
+      font-size: 16px;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .rules {
+      margin-top: 30px;
+    }
+
+    .rules h3 {
+      color: lightcoral;
+      margin-bottom: 10px;
+    }
+
+    .rules ol {
+      padding-left: 20px;
+    }
+
+    .rules li {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 8px;
+    }
+
+    .footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: lightcoral;
+      text-align: center;
+      padding: 10px;
+      font-size: 14px;
+    }
+    .home-button {
+      padding: 12px 25px;
+      background-color: lightcoral;
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      margin-left: 200px;;
+    }
+
+    .home-button:hover {
+      background-color: #e6645c;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <img src="obl.jpg" alt="Logo" class="logo">
+    <div class="pageloft-title">PageLoft</div>
+  </div>
+
+  <div class="confirmation-container">
+    <h2>Thank You for Lending!</h2>
+    <p>Your lending request for <strong id="book-title"></strong> has been successfully received. The book will be dispatched to your provided address soon. Please review the following rules for borrowing:</p>
+
+    <div class="rules">
+      <h3>Rules & Regulations</h3>
+      <ol>
+        <li>Books must be returned by the end of the lending period.</li>
+        <li>Any physical damage or missing pages will be charged accordingly.</li>
+        <li>Borrowed books must not be written in, folded, or highlighted.</li>
+        <li>In case of loss, you are required to replace the book or pay the full price.</li>
+        <li>Lending duration is strictly limited to the selected weeks.</li>
+        <li>Extensions may be requested but are not guaranteed.</li>
+      </ol>
+    </div><br><br>
+    <a href="user.html" class="home-button">Back to Home</a>
+  </div>
+
+  <div class="footer">
+    © 2025 All rights reserved.
+  </div>
+</body>
+<script>
+  window.onload = function () {
+    const params = new URLSearchParams(window.location.search);
+    const title = params.get("title");
+
+    console.log("Fetched title:", title);  // ← move this after 'title' is defined
+
+    document.getElementById("book-title").textContent = title || "your selected book";
+  };
+</script>
+
+</html>
