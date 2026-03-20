@@ -68,28 +68,31 @@
   <div id="fictionList"></div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      let books = JSON.parse(localStorage.getItem("books")) || [];
-      let fictionBooks = books.filter(book => book.genre.toLowerCase() === "fantasy");
-      
-      let fictionList = document.getElementById("fictionList");
-      fictionList.innerHTML = fictionBooks.map((book, index) => `
-        <div class="book">
-          <img src="${book.image}" alt="${book.title}">
-          <div class="book-info">
-            <h2 class="book-title">${book.title}</h2>
-            <p class="book-author">by ${book.author}</p>
-            <p class="book-desc">${book.description || ""}</p>
-            <button class="view-button" onclick="viewBook(${index})">View</button>
+    document.addEventListener("DOMContentLoaded", async function () {
+      try {
+        const response = await fetch('http://localhost:8000/api/books/');
+        const books = await response.json();
+        const fictionBooks = books.filter(book => book.genre.toLowerCase() === "fantasy" && book.status !== "sold");
+        
+        const fictionList = document.getElementById("fictionList");
+        fictionList.innerHTML = fictionBooks.map(book => `
+          <div class="book">
+            <img src="${book.image}" alt="${book.title}">
+            <div class="book-info">
+              <h2 class="book-title">${book.title}</h2>
+              <p class="book-author">by ${book.author}</p>
+              <p class="book-desc">${book.description || ""}</p>
+              <button class="view-button" onclick="viewBook(${book.id})">View</button>
+            </div>
           </div>
-        </div>
-      `).join("");
+        `).join("");
 
-      window.viewBook = function(index) {
-        const book = fictionBooks[index];
-        sessionStorage.setItem("selectedBook", JSON.stringify(book));
-        window.location.href = "page.html";
-      };
+        window.viewBook = function(id) {
+          window.location.href = "page.html?id=" + id;
+        };
+      } catch (error) {
+        console.error("Error loading books:", error);
+      }
     });
   </script>
 </body>

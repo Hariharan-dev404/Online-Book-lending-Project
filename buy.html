@@ -154,26 +154,12 @@
       <input type="text" id="state" name="state" required>
 
       <h3 style="color: lightcoral;">Payment Details</h3>
-      <h3 style="color: lightcoral;">Online Payment </h3>
-<div style="margin-top: 10px; color: #777; font-size: 15px;">
-  Enter your UPI ID (e.g., yourname@bank) to complete the payment.
-</div>
-
-<div style="margin-top: 20px;">
-  <label for="upi" style="font-weight: bold;">UPI ID</label><br>
-  <input type="text" id="upi" name="upi" placeholder="example@upi" style="width: 100%; padding: 12px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc;" required>
-</div>
-
-<div style="margin-top: 20px;">
-    <button type="submit" class="submit-button">Pay Now</button>
-
-</div>
-
-<h3 style="color: lightcoral;">Other ways </h3>
-<div style="margin-top: 15px;">
-  
-  <a href="gpay.html" ><img src="https://www.liblogo.com/img-logo/go8825f71a-google-pay-logo-file-google-pay-gpay-logo-2018-2020-svg-liblogo.png" style="height: 40px; margin-right: 10px;"></a><br><br>
-  <a href="phonepe.html" ><img src="https://i1.wp.com/logos-download.com/wp-content/uploads/2021/01/PhonePe_Logo_full.png" alt="PhonePe" style="height: 40px; margin-right: 10px;"></a>
+      <div style="margin-top: 10px; color: #777; font-size: 15px;">
+        Payment will be processed securely via Razorpay.
+      </div>
+      <div style="margin-top: 20px;">
+          <button type="submit" class="submit-button" id="pay-btn">Proceed to Pay</button>
+      </div>
     </form>
   </div>
 
@@ -182,59 +168,138 @@
   </div>
 
 </body>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
-  const book = JSON.parse(sessionStorage.getItem("selectedBook"));
-  if (book) {
-    document.title = `${book.title} - ${book.author}`;
-    document.getElementById("book-image").src = book.image || "";
-    document.getElementById("book-title").textContent = book.title;
-    document.getElementById("book-author").textContent = "by " + book.author;
-    document.getElementById("book-price").textContent = book.price ? `Price: ₹${book.price}` : "";
-    document.getElementById("book-description").innerHTML = book.description ? `<p>${book.description}</p>` : "";
-  }
+  let currentBookId = null;
+
+  document.addEventListener("DOMContentLoaded", async function() {
+    try {
+      const authRes = await fetch("http://localhost:8000/api/user/", { credentials: "include" });
+      if (!authRes.ok) throw new Error("Not logged in");
+    } catch(err) {
+      alert("You must be logged in to purchase books.");
+      window.location.href = "index.html";
+      return;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    currentBookId = urlParams.get('id');
+
+    if (currentBookId) {
+      try {
+        const response = await fetch(`http://localhost:8000/api/books/${currentBookId}/`);
+        if (response.ok) {
+          const book = await response.json();
+          document.title = `Buy - ${book.title}`;
+          document.getElementById("book-image").src = book.image;
+          document.getElementById("book-title").textContent = book.title;
+          document.getElementById("book-author").textContent = "by " + book.author;
+          document.getElementById("book-price").textContent = `Price: ₹${book.price}`;
+          document.getElementById("book-description").innerHTML = `<p>${book.description}</p>`;
+        } else {
+          alert("Book not found");
+          window.location.href = "index.html";
+        }
+      } catch (error) {
+        console.error("Error fetching book:", error);
+      }
+    } else {
+      window.location.href = "index.html";
+    }
+  });
 
   const form = document.querySelector("form");
 
-  form.addEventListener("submit", function(e) {
+  form.addEventListener("submit", async function(e) {
     e.preventDefault(); 
+    
+    if (!currentBookId) return;
 
     try {
-      const order = {
-        book: {
-          title: book?.title || "",
-          author: book?.author || "",
-          price: book?.price || "",
-          image: book?.image?.startsWith("data:") ? "" : book?.image || ""
-
-        },
-        fullname: document.getElementById("fullname").value,
+      const orderData = {
+        book: currentBookId,
+        user_name: document.getElementById("fullname").value,
         address: document.getElementById("address").value,
-        zip: document.getElementById("zip").value,
+        pincode: document.getElementById("zip").value,
         city: document.getElementById("city").value,
         state: document.getElementById("state").value,
-        upi: document.getElementById("upi").value,
-        date: new Date().toLocaleString()
+        order_type: "buy"
       };
 
-      // Get existing orders safely
-      let orders = [];
-      try {
-        orders = JSON.parse(localStorage.getItem("orders")) || [];
-      } catch (err) {
-        console.warn("Orders corrupted, resetting storage");
-        orders = [];
+      // 1. Create order in backend
+      const orderRes = await fetch('http://localhost:8000/api/orders/', {
+        method: 'POST',
+        credentials: "include",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+      });
+      
+      if (!orderRes.ok) throw new Error("Failed to create order");
+      const order = await orderRes.json();
+
+      // 2. Create Razorpay order
+      const rzpRes = await fetch('http://localhost:8000/api/create-razorpay-order/', {
+        method: 'POST',
+        credentials: "include",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ order_id: order.id })
+      });
+
+      if (!rzpRes.ok) {
+        const errorData = await rzpRes.json();
+        throw new Error(errorData.error || "Failed to initialize payment");
       }
+      const rzpOrder = await rzpRes.json();
 
-      orders.push(order);
+      // 3. Open Razorpay Checkout
+      const options = {
+        key: 'rzp_test_YourTestKeyIdHere', // Replace with real test key
+        amount: rzpOrder.amount,
+        currency: rzpOrder.currency,
+        name: "PageLoft",
+        description: "Book Purchase",
+        order_id: rzpOrder.id,
+        handler: async function (response) {
+          // 4. Verify Payment success
+          try {
+            const verifyRes = await fetch('http://localhost:8000/api/verify-payment/', {
+              method: 'POST',
+              credentials: "include",
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            });
 
-      localStorage.setItem("orders", JSON.stringify(orders));
+            if (verifyRes.ok) {
+              window.location.href = `success.html?order_id=${order.id}`;
+            } else {
+              alert("Payment verification failed.");
+            }
+          } catch(err) {
+            console.error("Verification error:", err);
+            alert("Error verifying payment.");
+          }
+        },
+        prefill: {
+          name: orderData.user_name
+        },
+        theme: {
+          color: "#f08080"
+        }
+      };
 
-      // Redirect after saving
-      window.location.href = "loader.html?type=buy";
+      const rzp = new Razorpay(options);
+      rzp.on('payment.failed', function (response){
+        alert("Payment failed: " + response.error.description);
+      });
+      rzp.open();
 
     } catch (error) {
-      console.error("Failed to save order:", error);
-      alert("Something went wrong saving order. Please try again.");
+      console.error("Checkout flow failed:", error);
+      alert(error.message || "Something went wrong processing your order. Please try again.");
     }
   });
 </script>

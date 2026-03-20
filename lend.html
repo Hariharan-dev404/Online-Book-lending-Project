@@ -62,74 +62,76 @@
     © 2025 All rights reserved.
   </div>
   <script>
-    // Helper: get query parameters
-    function getQueryParam(name) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(name);
-    }
-  
-    // Load book from sessionStorage or fallback to query param
-    let book = null;
-    try {
-      book = JSON.parse(sessionStorage.getItem("selectedBook"));
-    } catch (e) {
-      console.warn("Invalid book in sessionStorage", e);
-    }
-  
-    if (!book) {
-      // Fallback: from URL ?title=xxx&author=yyy&price=zzz
-      const title = getQueryParam("title");
-      const author = getQueryParam("author");
-      const price = getQueryParam("price");
-      const image = getQueryParam("image");
-      if (title) {
-        book = { title, author: author || "Unknown", price: price || "", image: image || "" };
+    let currentBookId = null;
+
+    document.addEventListener("DOMContentLoaded", async function() {
+      try {
+        const authRes = await fetch("http://localhost:8000/api/user/", { credentials: "include" });
+        if (!authRes.ok) throw new Error("Not logged in");
+      } catch(err) {
+        alert("You must be logged in to lend books.");
+        window.location.href = "index.html";
+        return;
       }
-    }
-  
-    // If still no book, stop
-    if (book) {
-      document.title = `Lend - ${book.title}`;
-      document.getElementById("book-image").src = book.image || "default.jpg";
-      document.getElementById("book-title").textContent = book.title;
-      document.getElementById("book-author").textContent = "by " + (book.author || "Unknown");
-      document.getElementById("book-price").textContent = book.price ? `Price: ₹${book.price}` : "";
-    } else {
-      alert("No book selected! Please go back and choose a book.");
-    }
+
+      const urlParams = new URLSearchParams(window.location.search);
+      currentBookId = urlParams.get('id');
+
+      if (currentBookId) {
+        try {
+          const response = await fetch(`http://localhost:8000/api/books/${currentBookId}/`);
+          if (response.ok) {
+            const book = await response.json();
+            document.title = `Lend - ${book.title}`;
+            document.getElementById("book-image").src = book.image || "default.jpg";
+            document.getElementById("book-title").textContent = book.title;
+            document.getElementById("book-author").textContent = "by " + (book.author || "Unknown");
+            document.getElementById("book-price").textContent = book.price ? `Price: ₹${book.price}` : "";
+          } else {
+            alert("Book not found");
+            window.location.href = "index.html";
+          }
+        } catch (error) {
+          console.error("Error fetching book:", error);
+        }
+      } else {
+        alert("No book selected! Please go back and choose a book.");
+        window.location.href = "index.html";
+      }
+    });
   
     // Handle form submit
     const form = document.querySelector("form");
-    form.addEventListener("submit", function (e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
+      if (!currentBookId) return;
   
-      const order = {
-        type: "lend",
-        book: book ? {
-          title: book.title,
-          author: book.author,
-          price: book.price
-        } : null,
-        username: document.getElementById("username").value,
-        mobileno: document.getElementById("mobileno").value,
-        email: document.getElementById("email").value,
+      const orderData = {
+        book: currentBookId,
+        user_name: document.getElementById("username").value,
         address: document.getElementById("address").value,
-        weeks: document.getElementById("weeks").value,
-        date: new Date().toLocaleString()
+        pincode: "N/A",  // Since the original UI for lend didn't capture zip
+        city: "N/A",
+        state: "N/A",
+        order_type: "lend",
+        duration: document.getElementById("weeks").value
       };
-  
+      
       try {
-        const orders = JSON.parse(localStorage.getItem("orders")) || [];
-        orders.push(order);
-        localStorage.setItem("orders", JSON.stringify(orders));
+        const orderRes = await fetch('http://localhost:8000/api/orders/', {
+          method: 'POST',
+          credentials: "include",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderData)
+        });
+        
+        if (!orderRes.ok) throw new Error("Failed to create order");
+        // Redirect to confirmation page
+        window.location.href = "loader.html?type=lend";
       } catch (err) {
         console.error("Storage error:", err);
         alert("Could not save order: " + err.message);
-        return;
       }
-  
-      // Redirect to confirmation page
-      window.location.href = "loader.html?type=lend";
     });
   </script>
   

@@ -454,20 +454,36 @@
     document.getElementById('loginModal').style.display = 'none';
   }
 
-  function handleLogin(event) {
-  event.preventDefault();
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
+  async function handleLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
 
-  if (username === "admin" && password === "admin123") {
-    alert("Login successful!");
-    closeModal();
-    window.location.href="user.html";
-    
-  } else {
-    alert("Invalid username or password.");
-  }
-} 
+    try {
+      const response = await fetch("http://localhost:8000/api/login/", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        alert("Login successful!");
+        closeModal();
+        if (data.role === 'admin') {
+           window.location.href = "adminuser.html";
+        } else {
+           window.location.href = "user.html";
+        }
+      } else {
+        const data = await response.json();
+        alert(data.error || "Invalid username or password.");
+      }
+    } catch(err) {
+      alert("Error logging in.");
+    }
+  } 
+
 function openGenresModal() {
   document.getElementById('genresDropdown').style.display = 'block';
 }
@@ -483,16 +499,33 @@ function closeAdminModal() {
   document.getElementById('adminModal').style.display = 'none';
 }
 
-function handleAdminLogin(event) {
+async function handleAdminLogin(event) {
   event.preventDefault();
-  const adminUsername = document.getElementById('adminUsername').value.trim();
-  const adminPassword = document.getElementById('adminPassword').value.trim();
+  const email = document.getElementById('adminUsername').value.trim();
+  const password = document.getElementById('adminPassword').value.trim();
 
-  if (adminUsername === "admin" && adminPassword === "admin123") {
-    alert("Admin login successful!");
-    window.location.href="adminuser.html";
-  } else {
-    alert("Invalid admin credentials.");
+  try {
+    const response = await fetch("http://localhost:8000/api/login/", {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+    if (response.ok) {
+      const data = await response.json();
+      if (data.role === 'admin') {
+        alert("Admin login successful!");
+        closeAdminModal();
+        window.location.href="adminuser.html";
+      } else {
+        alert("Access denied. Admin role required.");
+      }
+    } else {
+      const data = await response.json();
+      alert(data.error || "Invalid admin credentials.");
+    }
+  } catch(err) {
+    alert("Error logging in.");
   }
 }
 

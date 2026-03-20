@@ -441,6 +441,30 @@
 </body>
 
 <script>
+  document.addEventListener("DOMContentLoaded", async function() {
+    try {
+      const response = await fetch("http://localhost:8000/api/user/", {
+        credentials: "include"
+      });
+      if (!response.ok) {
+        window.location.href = "index.html";
+        return;
+      }
+      const userData = await response.json();
+      if (userData.role !== 'admin') {
+        alert("Access denied. Admin role required.");
+        window.location.href = "user.html";
+        return;
+      }
+      const userNameDisplay = document.getElementById("userNameDisplay");
+      if (userNameDisplay) {
+        userNameDisplay.textContent = userData.name;
+      }
+    } catch(e) {
+      window.location.href = "index.html";
+    }
+  });
+
   function openModal() {
     document.getElementById('loginModal').style.display = 'block';
   }
@@ -481,7 +505,15 @@ function toggleProfilePopup() {
   popup.style.display = popup.style.display === "block" ? "none" : "block";
 }
 
-function signOut() {
+async function signOut() {
+  try {
+    await fetch("http://localhost:8000/api/logout/", {
+      method: "POST",
+      credentials: "include"
+    });
+  } catch(e) {
+    console.error("Error logging out", e);
+  }
   alert("Signed out successfully.");
   window.location.href="index.html";
 }

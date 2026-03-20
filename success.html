@@ -102,13 +102,51 @@
   <div class="container">
     <div class="success-icon">✅</div>
     <h2>Payment Successful!</h2>
-    <p>Thank you for your purchase. Your payment has been received successfully.</p>
-    <a href="user.html" class="home-button">Back to Home</a>
+    <div id="orderDetails" style="display:none; text-align: left; margin: 20px auto; max-width: 400px; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+      <p><strong>Order ID:</strong> <span id="display-order-id"></span></p>
+      <p><strong>Name:</strong> <span id="display-name"></span></p>
+      <p><strong>Book:</strong> <span id="display-book"></span></p>
+      <p><strong>Type:</strong> <span id="display-type"></span></p>
+      <p><strong>Status:</strong> <span id="display-status"></span></p>
+    </div>
+    <p id="loadingMessage">Fetching order details...</p>
+    <a href="user.html" class="home-button" style="display:none;" id="homeBtn">Back to Home</a>
   </div>
 
   <div class="footer">
     © 2025 All rights reserved.
   </div>
 
+<script>
+  document.addEventListener("DOMContentLoaded", async function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const order_id = urlParams.get('order_id');
+
+    if (order_id) {
+      try {
+        const response = await fetch(`http://localhost:8000/api/orders/${order_id}/`);
+        if (response.ok) {
+          const order = await response.json();
+          document.getElementById("loadingMessage").style.display = 'none';
+          document.getElementById("orderDetails").style.display = 'block';
+          document.getElementById("homeBtn").style.display = 'inline-block';
+          
+          document.getElementById("display-order-id").textContent = order.id;
+          document.getElementById("display-name").textContent = order.user_name;
+          document.getElementById("display-book").textContent = order.book_details ? order.book_details.title : 'N/A';
+          document.getElementById("display-type").textContent = order.order_type.toUpperCase();
+          document.getElementById("display-status").textContent = order.payment_status.toUpperCase();
+        } else {
+          document.getElementById("loadingMessage").textContent = "Order not found or invalid.";
+        }
+      } catch (error) {
+        console.error("Error fetching order:", error);
+        document.getElementById("loadingMessage").textContent = "Error fetching order verification.";
+      }
+    } else {
+      document.getElementById("loadingMessage").textContent = "No order ID specified.";
+    }
+  });
+</script>
 </body>
 </html>
