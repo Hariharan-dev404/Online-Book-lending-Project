@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Buy - To Kill a Mockingbird</title>
+  <link rel="icon" type="image/jpeg" href="obl.jpg?v=2">
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -44,7 +46,7 @@
       background: white;
       padding: 20px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .book-section {
@@ -53,11 +55,47 @@
       margin-bottom: 30px;
     }
 
-    .book-section img {
+    .book-section .carousel-container {
+      position: relative;
       width: 250px;
-      height: auto;
+      height: 380px;
+      overflow: hidden;
       border-radius: 8px;
+      background: white;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.4s ease-in-out;
+      height: 100%;
+    }
+    .carousel-track img {
+      width: 250px;
+      height: 100%;
+      object-fit: contain;
+      flex-shrink: 0;
+      background-color: #f9f9f9;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(240,128,128,0.8);
+      color: white;
+      border: none;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      font-size: 16px;
+      border-radius: 50%;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .carousel-btn:hover { background-color: rgba(220,100,100,1); }
+    .prev-btn { left: 8px; }
+    .next-btn { right: 8px; }
 
     .book-details h2 {
       font-size: 28px;
@@ -81,7 +119,8 @@
       color: #444;
     }
 
-    input, select {
+    input,
+    select {
       padding: 10px;
       margin-top: 5px;
       font-size: 15px;
@@ -115,7 +154,12 @@
       font-size: 14px;
     }
   </style>
+
+  <!-- Custom Alerts & Responsive CSS -->
+  <link rel="stylesheet" href="assets/custom_alert.css">
+  <link rel="stylesheet" href="assets/responsive.css">
 </head>
+
 <body>
 
   <div class="header">
@@ -125,40 +169,80 @@
 
   <div class="container">
     <div class="book-section">
-      <img id="book-image"  alt="book cover">
+      <div class="carousel-container">
+        <div class="carousel-track" id="carousel-track">
+          <!-- Dynamically populated -->
+        </div>
+        <button class="carousel-btn prev-btn" onclick="moveCarousel(-1)">&#10094;</button>
+        <button class="carousel-btn next-btn" onclick="moveCarousel(1)">&#10095;</button>
+      </div>
       <div class="book-details">
         <h2 id="book-title"></h2>
         <p id="book-author"></p>
         <p id="book-price"></p>
         <div class="book-description" id="book-description"></div>
-        
+
       </div>
     </div>
 
-    <form >
-      <h3 style="color: lightcoral;">Shipping Address</h3>
-      <label for="fullname">Full Name</label>
-      <input type="text" id="fullname"  name="fullname"  required>
+    <form id="checkout-form">
+      <div id="address-section">
+        <h3 style="color: lightcoral;">Shipping Address</h3>
+        <label for="fullname">Full Name</label>
+        <input type="text" id="fullname" name="fullname" required>
 
-      <label for="address">Address</label>
-      <input type="text" id="address" name="address" required>
-       
-      <label for="zip">Pincode</label>
-      <input type="text" id="zip" name="zip" required>
+        <label for="address">Address</label>
+        <input type="text" id="address" name="address" required>
 
-      <label for="city">City</label>
-      <input type="text" id="city" name="city" required>
+        <label for="zip">Pincode</label>
+        <input type="text" id="zip" name="zip" required>
 
+        <label for="city">City</label>
+        <input type="text" id="city" name="city" required>
 
-      <label for="state">State</label>
-      <input type="text" id="state" name="state" required>
+        <label for="state">State</label>
+        <input type="text" id="state" name="state" required>
 
-      <h3 style="color: lightcoral;">Payment Details</h3>
-      <div style="margin-top: 10px; color: #777; font-size: 15px;">
-        Payment will be processed securely via Razorpay.
-      </div>
-      <div style="margin-top: 20px;">
+        <h3 style="color: lightcoral;">Order Details</h3>
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" name="quantity" min="1" value="1" oninput="updateCheckoutPrice()">
+        
+        <div id="price-breakdown" style="background-color: #ffe6e6; padding: 15px; border-radius: 8px; margin: 15px 0;">
+          <p id="book-unit-price" style="margin: 5px 0; color: #555;">Unit Price: </p>
+          <p id="book-quantity-display" style="margin: 5px 0; color: #555;">Quantity: 1</p>
+          <hr style="border: 0; border-top: 1px solid lightcoral;">
+          <h3 id="book-total-price" style="margin: 5px 0; color: #d9534f;">Total Payable: </h3>
+        </div>
+
+        <h3 style="color: lightcoral;">Payment Details</h3>
+        <div style="margin-top: 10px; color: #777; font-size: 15px;">
+          Payment will be processed securely via UPI Deep Link.
+        </div>
+        <div style="margin-top: 20px;">
           <button type="submit" class="submit-button" id="pay-btn">Proceed to Pay</button>
+        </div>
+      </div>
+
+      <div id="upi-section" style="display: none;">
+        <h3 style="color: lightcoral;">Verify UPI Payment</h3>
+        <div style="margin-top: 10px; color: #777; font-size: 15px; margin-bottom: 20px;">
+          If the UPI app didn't open automatically, please scan the QR Code below to pay securely to 
+          <b>hariharangpay00@okaxis</b>. After completing the payment, enter the generated 12-digit UPI Transaction ID below.
+        </div>
+
+        <div style="text-align: center;">
+          <img id="dynamic-qr" src="" alt="Scan this QR to Pay" style="width: 220px; height: 220px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-bottom: 15px;">
+        </div>
+
+        <label for="transaction_id" style="font-weight: bold; margin-top: 10px; display: block;">UPI Transaction ID</label>
+        <input type="text" id="transaction_id" name="transaction_id" placeholder="e.g. 301234567890" style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc;">
+
+        <label for="payment_screenshot" style="font-weight: bold; margin-top: 15px; display: block;">Upload Payment Screenshot</label>
+        <input type="file" id="payment_screenshot" name="payment_screenshot" accept="image/*" style="width: 100%; margin-top: 5px; margin-bottom: 20px;">
+
+        <div style="margin-top: 20px;">
+          <button type="button" class="submit-button" id="verify-btn" style="width: 100%;">I have completed payment</button>
+        </div>
       </div>
     </form>
   </div>
@@ -167,17 +251,20 @@
     © 2025 All rights reserved.
   </div>
 
+
+  <!-- Custom Alerts JS -->
+  <script src="assets/custom_alert.js"></script>
 </body>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <script>
   let currentBookId = null;
 
-  document.addEventListener("DOMContentLoaded", async function() {
+  document.addEventListener("DOMContentLoaded", async function () {
     try {
       const authRes = await fetch("http://localhost:8000/api/user/", { credentials: "include" });
       if (!authRes.ok) throw new Error("Not logged in");
-    } catch(err) {
-      alert("You must be logged in to purchase books.");
+    } catch (err) {
+      await showCustomAlert("You must be logged in to purchase books.");
       window.location.href = "index.html";
       return;
     }
@@ -191,7 +278,16 @@
         if (response.ok) {
           const book = await response.json();
           document.title = `Buy - ${book.title}`;
-          document.getElementById("book-image").src = book.image;
+          
+          const track = document.getElementById("carousel-track");
+          const images = [book.image, book.image1, book.image2, book.image3, book.image4, book.image5].filter(img => img);
+          totalSlides = images.length;
+          if(totalSlides === 0) {
+              track.innerHTML = `<img src="default.jpg" alt="No Image">`;
+          } else {
+              track.innerHTML = images.map(img => `<img src="${img.startsWith('http') ? img : 'http://localhost:8000' + img}" alt="${book.title} View">`).join('');
+          }
+
           document.getElementById("book-title").textContent = book.title;
           document.getElementById("book-author").textContent = "by " + book.author;
           document.getElementById("book-price").textContent = `Price: ₹${book.price}`;
@@ -208,11 +304,56 @@
     }
   });
 
-  const form = document.querySelector("form");
+  let currentSlide = 0;
+  let totalSlides = 0;
 
-  form.addEventListener("submit", async function(e) {
-    e.preventDefault(); 
-    
+  function moveCarousel(direction) {
+    if (totalSlides <= 1) return;
+    currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+    const track = document.getElementById('carousel-track');
+    track.style.transform = `translateX(-${currentSlide * 250}px)`;
+  }
+
+  const form = document.getElementById("checkout-form");
+  let bookPriceMap = 0;
+  let unitPrice = 0;
+  let currentStock = 0;
+
+  // Extract the price for the UPI link dynamically
+  const originalFetchBook = window.fetch;
+  window.fetch = async function () {
+    const res = await originalFetchBook.apply(this, arguments);
+    if (arguments[0].includes("/api/books/") && res.ok) {
+      const clone = res.clone();
+      clone.json().then(data => {
+        unitPrice = parseFloat(data.price);
+        currentStock = data.stock;
+        bookPriceMap = unitPrice;
+        const ut = document.getElementById("book-unit-price");
+        if(ut) ut.textContent = `Unit Price: ₹${unitPrice.toFixed(2)}`;
+        updateCheckoutPrice();
+      });
+    }
+    return res;
+  };
+
+  function updateCheckoutPrice() {
+    let qtyInput = document.getElementById("quantity");
+    if(!qtyInput) return;
+    let qty = parseInt(qtyInput.value) || 1;
+    if (qty > currentStock) {
+        alert("Not enough stock. Available: " + currentStock);
+        qty = currentStock;
+        qtyInput.value = qty;
+    }
+    document.getElementById("book-quantity-display").textContent = `Quantity: ${qty}`;
+    bookPriceMap = unitPrice * qty;
+    document.getElementById("book-total-price").textContent = `Total Payable: ₹${bookPriceMap.toFixed(2)}`;
+  }
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault();
+
     if (!currentBookId) return;
 
     try {
@@ -223,7 +364,8 @@
         pincode: document.getElementById("zip").value,
         city: document.getElementById("city").value,
         state: document.getElementById("state").value,
-        order_type: "buy"
+        order_type: "buy",
+        quantity: parseInt(document.getElementById("quantity") ? document.getElementById("quantity").value : 1)
       };
 
       // 1. Create order in backend
@@ -233,73 +375,66 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderData)
       });
-      
-      if (!orderRes.ok) throw new Error("Failed to create order");
+
+      if (!orderRes.ok) throw new Error("Failed to create sequence order in the database.");
       const order = await orderRes.json();
+      createdOrderId = order.id;
 
-      // 2. Create Razorpay order
-      const rzpRes = await fetch('http://localhost:8000/api/create-razorpay-order/', {
-        method: 'POST',
-        credentials: "include",
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ order_id: order.id })
-      });
+      // 2. Dynamic UPI parameters mapped format
+      const upiId = "hariharangpay00@okaxis";
+      const upiUri = `upi://pay?pa=${upiId}&pn=PageLoft&am=${bookPriceMap}&cu=INR`;
+      console.log("Triggering UPI UI logic:", upiUri);
 
-      if (!rzpRes.ok) {
-        const errorData = await rzpRes.json();
-        throw new Error(errorData.error || "Failed to initialize payment");
-      }
-      const rzpOrder = await rzpRes.json();
+      // Render Dynamic Live QR Code explicitly for Desktop Users!
+      document.getElementById("dynamic-qr").src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiUri)}&margin=15`;
 
-      // 3. Open Razorpay Checkout
-      const options = {
-        key: 'rzp_test_YourTestKeyIdHere', // Replace with real test key
-        amount: rzpOrder.amount,
-        currency: rzpOrder.currency,
-        name: "PageLoft",
-        description: "Book Purchase",
-        order_id: rzpOrder.id,
-        handler: async function (response) {
-          // 4. Verify Payment success
-          try {
-            const verifyRes = await fetch('http://localhost:8000/api/verify-payment/', {
-              method: 'POST',
-              credentials: "include",
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature
-              })
-            });
+      // 3. Trigger deep link locally on machine
+      window.location.href = upiUri;
 
-            if (verifyRes.ok) {
-              window.location.href = `success.html?order_id=${order.id}`;
-            } else {
-              alert("Payment verification failed.");
-            }
-          } catch(err) {
-            console.error("Verification error:", err);
-            alert("Error verifying payment.");
-          }
-        },
-        prefill: {
-          name: orderData.user_name
-        },
-        theme: {
-          color: "#f08080"
-        }
-      };
-
-      const rzp = new Razorpay(options);
-      rzp.on('payment.failed', function (response){
-        alert("Payment failed: " + response.error.description);
-      });
-      rzp.open();
+      // 4. Update Frontend Sequence hiding the form
+      document.getElementById("address-section").style.display = "none";
+      document.getElementById("upi-section").style.display = "block";
 
     } catch (error) {
       console.error("Checkout flow failed:", error);
       alert(error.message || "Something went wrong processing your order. Please try again.");
+    }
+  });
+
+  document.getElementById("verify-btn").addEventListener("click", async function () {
+    const transactionId = document.getElementById("transaction_id").value.trim();
+    if (!transactionId) {
+      alert("Please enter your UPI transaction ID before proceeding!");
+      return;
+    }
+    if (!createdOrderId) return;
+
+    try {
+      const fd = new FormData();
+      fd.append("transaction_id", transactionId);
+      fd.append("payment_status", "pending");
+      
+      const screenshotFile = document.getElementById("payment_screenshot").files[0];
+      if(screenshotFile) {
+          fd.append("payment_screenshot", screenshotFile);
+      } else {
+          alert("Please upload your payment screenshot to verify the order.");
+          return;
+      }
+
+      const updateRes = await fetch(`http://localhost:8000/api/orders/${createdOrderId}/`, {
+        method: 'PATCH',
+        credentials: "include",
+        body: fd
+      });
+
+      if (updateRes.ok) {
+        window.location.href = `success.html?order_id=${createdOrderId}`;
+      } else {
+        alert("Server rejected the transaction ID payload verification block.");
+      }
+    } catch (err) {
+      alert("Failed to securely attach the transaction.");
     }
   });
 </script>

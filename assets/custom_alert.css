@@ -1,0 +1,77 @@
+/* Custom Alert Modal Styles */
+.custom-alert-overlay {
+  display: none;
+  position: fixed;
+  z-index: 99999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.custom-alert-box {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 30px;
+  border: none;
+  width: 90%;
+  max-width: 320px;
+  border-radius: 12px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transform: translateY(-20px);
+  animation: slideDown 0.3s ease-out forwards;
+}
+
+.custom-alert-icon {
+  font-size: 50px;
+  margin-bottom: 15px;
+}
+
+.custom-alert-icon.success {
+  color: #4CAF50;
+}
+
+.custom-alert-icon.error {
+  color: lightcoral;
+}
+
+.custom-alert-message {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 25px;
+  line-height: 1.5;
+  font-family: Arial, sans-serif;
+  word-wrap: break-word;
+}
+
+.custom-alert-btn {
+  padding: 12px 25px;
+  background-color: lightcoral;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.custom-alert-btn:hover {
+  background-color: #e6645c;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}

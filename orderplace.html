@@ -12,6 +12,10 @@
     th { background-color: lightcoral; color: white; }
     img { width: 60px; }
   </style>
+
+  <!-- Custom Alerts & Responsive CSS -->
+  <link rel="stylesheet" href="assets/custom_alert.css">
+  <link rel="stylesheet" href="assets/responsive.css">
 </head>
 <body>
   <h1>All Orders</h1>
@@ -19,51 +23,112 @@
     <thead>
       <tr>
         <th>Book</th>
-        <th>User</th>
-        <th>Address</th>
-        <th>UPI ID / Mobile</th> <!-- ✅ unified column -->
-        <th>Date</th>
+        <th>User Details</th>
+        <th>Delivery Address</th>
+        <th>Transaction ID</th>
+        <th>Verification Date</th>
       </tr>
     </thead>
     <tbody id="orders-table"></tbody>
   </table>
 
   <script>
-    const orders = JSON.parse(localStorage.getItem("orders")) || [];
-    const tbody = document.getElementById("orders-table");
+    document.addEventListener("DOMContentLoaded", async function() {
+      // 1. Verify Authentication
+      try {
+        const authResponse = await fetch("http://localhost:8000/api/user/", { credentials: "include" });
+        if (!authResponse.ok) {
+          window.location.href = "index.html";
+          return;
+        }
+        const userData = await authResponse.json();
+        if (userData.role !== 'admin') {
+          alert("Access denied. Admin role required.");
+          window.location.href = "user.html";
+          return;
+        }
+      } catch (err) {
+        window.location.href = "index.html";
+        return;
+      }
 
-    orders.forEach(order => {
-      const tr = document.createElement("tr");
-
-      if (order.type === "lend") {
-  tr.innerHTML = `
-    <td>
-      <img src="${order.book.image}" alt="Book">
-      <br>${order.book.title} by ${order.book.author}
-      <br><strong style="color:blue;">[LEND - ${order.weeks} Weeks]</strong>
-    </td>
-    <td>${order.username}</td>
-    <td>${order.address}</td>
-    <td>${order.mobileno}</td> <!-- instead of UPI -->
-    <td>${order.date}</td>
-  `;
-} else {
-  tr.innerHTML = `
-    <td>
-      <img src="${order.book.image}" alt="Book">
-      <br>${order.book.title} by ${order.book.author}
-      <br><strong style="color:green;">[BUY]</strong>
-    </td>
-    <td>${order.fullname}</td>
-    <td>${order.address}, ${order.city}, ${order.state} - ${order.zip}</td>
-    <td>${order.upi}</td>
-    <td>${order.date}</td>
-  `;
-}
-
-
-      tbody.appendChild(tr);
+      // 2. Fetch Orders
+      loadAllSuccessOrders();
     });
+
+    async function loadAllSuccessOrders() {
+      try {
+        const response = await fetch("http://localhost:8000/api/orders/", { credentials: "include" });
+        if (!response.ok) throw new Error("Failed to fetch orders from API.");
+        
+        const allOrders = await response.json();
+        
+        // Ensure ONLY verified (payment_status === 'success') orders render
+        const successOrders = allOrders.filter(o => o.payment_status === 'success');
+        
+        const tbody = document.getElementById("orders-table");
+        tbody.innerHTML = "";
+
+        successOrders.forEach(order => {
+          const tr = document.createElement("tr");
+
+          // Resolve Image safely
+          let imgPath = "default.jpg";
+          let bookTitle = "Unknown Book";
+          let bookAuthor = "Unknown";
+          
+          if (order.book_details) {
+            bookTitle = order.book_details.title;
+            bookAuthor = order.book_details.author;
+            if (order.book_details.image) {
+              imgPath = order.book_details.image.startsWith('http') 
+                        ? order.book_details.image 
+                        : 'http://localhost:8000' + order.book_details.image;
+            }
+          }
+
+          const createdDate = new Date(order.created_at).toLocaleString();
+          const txnID = order.transaction_id || "N/A";
+
+          if (order.order_type === "lend") {
+            tr.innerHTML = `
+              <td>
+                <img src="${imgPath}" alt="Book">
+                <br>${bookTitle} by ${bookAuthor}
+                <br><strong style="color:blue;">[LEND - ${order.duration || '?'} Weeks]</strong>
+              </td>
+              <td>${order.user_name}</td>
+              <td>${order.address}</td>
+              <td>${txnID}</td>
+              <td>${createdDate}</td>
+            `;
+          } else {
+            tr.innerHTML = `
+              <td>
+                <img src="${imgPath}" alt="Book">
+                <br>${bookTitle} by ${bookAuthor}
+                <br><strong style="color:green;">[BUY]</strong>
+              </td>
+              <td>${order.user_name}</td>
+              <td>${order.address}, ${order.city}, ${order.state} - ${order.pincode}</td>
+              <td>${txnID}</td>
+              <td>${createdDate}</td>
+            `;
+          }
+
+          tbody.appendChild(tr);
+        });
+        
+        if (successOrders.length === 0) {
+           tbody.innerHTML = "<tr><td colspan='5' style='text-align:center;'>No verified orders found in the database.</td></tr>";
+        }
+      } catch (err) {
+        console.error("Error generating success orders:", err);
+      }
+    }
   </script>
+
+  <!-- Custom Alerts JS -->
+  <script src="assets/custom_alert.js"></script>
 </body>
 </html>

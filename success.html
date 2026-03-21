@@ -91,6 +91,10 @@
       background-color: #e6645c;
     }
   </style>
+
+  <!-- Custom Alerts & Responsive CSS -->
+  <link rel="stylesheet" href="assets/custom_alert.css">
+  <link rel="stylesheet" href="assets/responsive.css">
 </head>
 <body>
 
@@ -101,12 +105,14 @@
 
   <div class="container">
     <div class="success-icon">✅</div>
-    <h2>Payment Successful!</h2>
+    <h2>Payment Under Verification</h2>
+    <p style="font-size: 16px; color: #555; text-align: center;">Your payment is under verification. You will receive confirmation via email shortly.</p>
     <div id="orderDetails" style="display:none; text-align: left; margin: 20px auto; max-width: 400px; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
       <p><strong>Order ID:</strong> <span id="display-order-id"></span></p>
       <p><strong>Name:</strong> <span id="display-name"></span></p>
       <p><strong>Book:</strong> <span id="display-book"></span></p>
       <p><strong>Type:</strong> <span id="display-type"></span></p>
+      <p><strong>Transaction ID:</strong> <span id="display-trx"></span></p>
       <p><strong>Status:</strong> <span id="display-status"></span></p>
     </div>
     <p id="loadingMessage">Fetching order details...</p>
@@ -135,6 +141,7 @@
           document.getElementById("display-name").textContent = order.user_name;
           document.getElementById("display-book").textContent = order.book_details ? order.book_details.title : 'N/A';
           document.getElementById("display-type").textContent = order.order_type.toUpperCase();
+          document.getElementById("display-trx").textContent = order.transaction_id || 'N/A';
           document.getElementById("display-status").textContent = order.payment_status.toUpperCase();
         } else {
           document.getElementById("loadingMessage").textContent = "Order not found or invalid.";
@@ -148,5 +155,8 @@
     }
   });
 </script>
+
+  <!-- Custom Alerts JS -->
+  <script src="assets/custom_alert.js"></script>
 </body>
 </html>

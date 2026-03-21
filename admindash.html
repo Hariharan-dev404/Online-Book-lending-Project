@@ -1,179 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard - Book Management</title>
+  <link rel="icon" type="image/jpeg" href="obl.jpg?v=2">
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; }
-    .header { background-color: lightcoral; color: white; padding: 20px; text-align: center; font-size: 28px; font-weight: bold; }
-    .container { padding: 30px; }
-    table { width: 100%; border-collapse: collapse; background-color: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    th, td { padding: 12px 20px; border: 1px solid #ddd; text-align: left; }
-    th { background-color: lightcoral; color: white; }
-    .edit-btn { background-color: orange; padding: 10px; border-radius: 10px; color: white; border: none; cursor: pointer; }
-    .delete-btn { background-color: crimson; padding: 10px; border-radius: 10px; color: white; border: none; cursor: pointer; }
-    .inputs { margin-bottom: 20px; display: flex; gap: 25px; flex-wrap: wrap; }
-    .inputs input[type=text], .inputs input[type=number], .inputs input[type=file], .inputs select, .inputs textarea {
-      padding: 8px; flex: 1; min-width: 150px;
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
     }
-    textarea { max-height: 50px; max-width: 1000px; }
-    button { padding: 10px; background-color: lightcoral; border: none; border-radius: 10px; color: white; cursor: pointer; margin-bottom: 20px;}
-    .inputs button:hover { background-color: #e6645c; }
-    .footer { margin-top: 40px; text-align: center; padding: 15px; background-color: lightcoral; color: white; }
+
+    .header {
+      background-color: lightcoral;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th,
+    td {
+      padding: 12px 20px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: lightcoral;
+      color: white;
+    }
+
+    .edit-btn {
+      background-color: orange;
+      padding: 10px;
+      border-radius: 10px;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .delete-btn {
+      background-color: crimson;
+      padding: 10px;
+      border-radius: 10px;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .inputs {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+    }
+
+    .inputs input[type=text],
+    .inputs input[type=number],
+    .inputs input[type=file],
+    .inputs select,
+    .inputs textarea {
+      padding: 8px;
+      flex: 1;
+      min-width: 150px;
+    }
+
+    textarea {
+      max-height: 50px;
+      max-width: 1000px;
+    }
+
+    button {
+      padding: 10px;
+      background-color: lightcoral;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .inputs button:hover {
+      background-color: #e6645c;
+    }
+
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      padding: 15px;
+      background-color: lightcoral;
+      color: white;
+    }
+
     @media (max-width: 768px) {
-      .inputs { flex-direction: column; }
-      .inputs input, .inputs button, .inputs select, .inputs textarea { width: 100%; }
+      .inputs {
+        flex-direction: column;
+      }
+
+      .inputs input,
+      .inputs button,
+      .inputs select,
+      .inputs textarea {
+        width: 100%;
+      }
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 25px;
+      border: 1px solid #888;
+      width: 350px;
+      border-radius: 10px;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-content h2 {
+      text-align: center;
+      color: lightcoral;
+      margin-top: 0;
+    }
+
+    .modal-content input,
+    .modal-content select,
+    .modal-content textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .modal-content button {
+      width: 100%;
+      padding: 10px 20px;
+      background-color: lightcoral;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: black;
     }
   </style>
+
+  <!-- Custom Alerts & Responsive CSS -->
+  <link rel="stylesheet" href="assets/custom_alert.css">
+  <link rel="stylesheet" href="assets/responsive.css">
 </head>
+
 <body>
 
-<div class="header">Admin Dashboard - Book Management</div>
+  <div class="header">Admin Dashboard - Book Management</div>
 
-<div class="container">
-  <!-- Input Form -->
-  <div class="inputs">
-    <input type="text" id="title" placeholder="Book Title">
-    <input type="text" id="author" placeholder="Author">
-    <select id="genre">
-      <option value="">Select Genre</option>
-      <option value="Fiction">Fiction</option>
-      <option value="Romance">Romance</option>
-      <option value="Fantasy">Fantasy</option>
-    </select>
-    <input type="number" id="price" placeholder="Price (₹)">
-    <input type="number" id="stock" placeholder="Stock">
-    <input type="file" id="image" accept="image/*">
-    <textarea id="description" placeholder="Book Description"></textarea>
+  <div class="tabs" style="display: flex; gap: 10px; margin-bottom: 20px;">
+    <button id="tab-books"
+      style="background-color: #e6645c; flex: 1; padding: 15px; font-size: 18px; color: white; border: none; border-radius: 8px; cursor: pointer;"
+      onclick="switchTab('books')">📚 Books</button>
+    <button id="tab-payments"
+      style="background-color: lightcoral; flex: 1; padding: 15px; font-size: 18px; color: white; border: none; border-radius: 8px; cursor: pointer;"
+      onclick="switchTab('payments')">💳 Payments</button>
   </div>
-  <button onclick="addBook()">Add Book</button>
-  
-  <!-- Book Table -->
-  <table id="bookTable">
-    <thead>
-      <tr>
-        <th>Image</th>
-        <th>Title</th>
-        <th>Author</th>
-        <th>Genre</th>
-        <th>Price</th>
-        <th>Stock</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-</div>
 
-<div class="footer">© 2025 Book Management</div>
+  <div id="books-tab">
+    <!-- Input Form -->
+    <div class="inputs">
+      <input type="text" id="title" placeholder="Book Title">
+      <input type="text" id="author" placeholder="Author">
+      <select id="genre">
+        <option value="">Select Genre</option>
+        <option value="Fiction">Fiction</option>
+        <option value="Romance">Romance</option>
+        <option value="Fantasy">Fantasy</option>
+        <option value="Education">Education</option>
+        <option value="Others">Others</option>
+      </select>
+      <input type="number" id="price" placeholder="Buy Price (₹)">
+      <input type="number" id="lending_price" placeholder="Lending Price (₹)">
+      <input type="number" id="stock" placeholder="Stock">
+      <input type="file" id="image" accept="image/*">
+      <div style="width: 100%;"><strong style="color:lightcoral;">Optional Secondary Images:</strong></div>
+      <input type="file" id="image1" accept="image/*" title="Optional Carousel Image 1">
+      <input type="file" id="image2" accept="image/*" title="Optional Carousel Image 2">
+      <input type="file" id="image3" accept="image/*" title="Optional Carousel Image 3">
+      <input type="file" id="image4" accept="image/*" title="Optional Carousel Image 4">
+      <input type="file" id="image5" accept="image/*" title="Optional Carousel Image 5">
+      <textarea id="description" placeholder="Book Description"></textarea>
+    </div>
+    <button onclick="addBook()">Add Book</button>
 
-<script>
-  const API_URL = 'http://localhost:8000/api/books/';
+    <div style="margin-bottom: 15px; display: flex; gap: 10px;">
+      <input type="text" id="adminSearchBook" onkeyup="filterAdminBooks()" placeholder="Search Books by Title, Author, Genre..." style="width: 100%; padding: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc;">
+    </div>
+    
+    <!-- Book Table -->
+    <table id="bookTable">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>Genre</th>
+          <th>Price</th>
+          <th>Lending Price</th>
+          <th>Stock</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-  document.addEventListener("DOMContentLoaded", async function() {
-    try {
-      const response = await fetch("http://localhost:8000/api/user/", {
-        credentials: "include"
-      });
-      if (!response.ok) {
+  <div id="payments-tab" style="display: none;">
+    <!-- Order Table -->
+    <h2 style="color: lightcoral;">Manage Orders</h2>
+    <div style="margin-bottom: 15px; display: flex; gap: 10px;">
+      <input type="text" id="adminSearchOrder" onkeyup="filterAdminOrders()" placeholder="Search Orders by User Name, Book Title, or Order ID..." style="width: 100%; padding: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc;">
+    </div>
+    <table id="orderTable">
+      <thead>
+        <tr>
+          <th>User Details</th>
+          <th>Book Title</th>
+          <th>Type / Period</th>
+          <th>Amount Breakdown</th>
+          <th>Status</th>
+          <th>Transaction ID</th>
+          <th>Tracking</th>
+          <th>Screenshot</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  </div>
+
+  <!-- Custom Edit Modal Overlay -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeEditModal()">&times;</span>
+      <h2>Edit Book</h2>
+      <form id="editForm" onsubmit="saveEditBook(event)">
+        <label style="font-size:14px; font-weight:bold;">Title:</label>
+        <input type="text" id="edit-title" required>
+
+        <label style="font-size:14px; font-weight:bold;">Author:</label>
+        <input type="text" id="edit-author" required>
+
+        <label style="font-size:14px; font-weight:bold;">Genre:</label>
+        <select id="edit-genre" required>
+          <option value="Fiction">Fiction</option>
+          <option value="Romance">Romance</option>
+          <option value="Fantasy">Fantasy</option>
+          <option value="Education">Education</option>
+          <option value="Others">Others</option>
+        </select>
+
+        <label style="font-size:14px; font-weight:bold;">Buy Price (₹):</label>
+        <input type="number" step="0.01" id="edit-price" required>
+
+        <label style="font-size:14px; font-weight:bold;">Lending Price (₹):</label>
+        <input type="number" step="0.01" id="edit-lending_price" required>
+
+        <label style="font-size:14px; font-weight:bold;">Stock:</label>
+        <input type="number" id="edit-stock" required>
+
+        <label style="font-size:14px; font-weight:bold;">Description:</label>
+        <textarea id="edit-description" required style="resize:vertical; max-height:100px;"></textarea>
+
+        <label style="font-size:14px; font-weight:bold;">Update Main Image (Optional):</label>
+        <input type="file" id="edit-image" accept="image/*">
+
+        <button type="submit" style="margin-top: 15px;">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="footer">© 2025 Book Management</div>
+
+  <script>
+    const API_URL = 'http://localhost:8000/api/books/';
+
+    document.addEventListener("DOMContentLoaded", async function () {
+      try {
+        const response = await fetch("http://localhost:8000/api/user/", {
+          credentials: "include"
+        });
+        if (!response.ok) {
+          window.location.href = "index.html";
+          return;
+        }
+        const userData = await response.json();
+        if (userData.role !== 'admin') {
+          alert("Access denied. Admin role required.");
+          window.location.href = "user.html";
+          return;
+        }
+        // Initial load
+        loadBooks();
+        loadOrders();
+      } catch (e) {
         window.location.href = "index.html";
-        return;
       }
-      const userData = await response.json();
-      if (userData.role !== 'admin') {
-        alert("Access denied. Admin role required.");
-        window.location.href = "user.html";
-        return;
-      }
-      // Initial load
-      loadBooks();
-    } catch(e) {
-      window.location.href = "index.html";
-    }
-  });
+    });
 
-  async function loadBooks() {
-    try {
-      const response = await fetch(API_URL);
-      const books = await response.json();
-      const tbody = document.querySelector("#bookTable tbody");
-      tbody.innerHTML = "";
+    async function loadBooks() {
+      try {
+        const response = await fetch(API_URL);
+        const books = await response.json();
+        const tbody = document.querySelector("#bookTable tbody");
+        tbody.innerHTML = "";
 
-      books.forEach((book) => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
+        books.forEach((book) => {
+          const lendingPriceFormat = book.lending_price ? '₹' + book.lending_price : 'N/A';
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
           <td data-label="Image"><img src="${book.image}" alt="${book.title}" style="width:60px; height:80px; object-fit:cover;"></td>
           <td data-label="Title">${book.title}</td>
           <td data-label="Author">${book.author}</td>
           <td data-label="Genre">${book.genre}</td>
           <td data-label="Price">₹${book.price}</td>
+          <td data-label="Lending Price">${lendingPriceFormat}</td>
           <td data-label="Stock">${book.stock}</td>
           <td data-label="Actions">
-            <button class="edit-btn" onclick="editBook(${book.id}, '${book.title}', '${book.author}', '${book.genre}', ${book.price}, ${book.stock}, '${book.description.replace(/'/g, "\\'")}')">Edit</button>
+            <button class="edit-btn" onclick="openEditModal(${book.id}, '${book.title.replace(/'/g, "\\'")}', '${book.author.replace(/'/g, "\\'")}', '${book.genre}', ${book.price}, ${book.lending_price || 0}, ${book.stock}, '${book.description.replace(/'/g, "\\'")}')">Edit</button>
             <button class="delete-btn" onclick="deleteBook(${book.id})">Delete</button>
           </td>
         `;
-        tbody.appendChild(tr);
-      });
-    } catch (error) {
-      console.error("Error loading books:", error);
-    }
-  }
-
-  async function addBook() {
-    const title = document.getElementById("title").value.trim();
-    const author = document.getElementById("author").value.trim();
-    const genre = document.getElementById("genre").value;
-    const price = document.getElementById("price").value.trim();
-    const stock = document.getElementById("stock").value.trim();
-    const description = document.getElementById("description").value.trim();
-    const imageFile = document.getElementById("image").files[0];
-
-    if (!title || !author || !genre || !["Fiction","Romance","Fantasy"].includes(genre) || !price || !stock || !description || !imageFile) {
-      alert("Please fill all fields and select a valid genre!");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('author', author);
-    formData.append('genre', genre);
-    formData.append('price', price);
-    formData.append('stock', stock);
-    formData.append('description', description);
-    formData.append('image', imageFile);
-    formData.append('status', 'available');
-
-    try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        credentials: "include",
-        body: formData
-      });
-      if (response.ok) {
-        loadBooks();
-        clearInputs();
-      } else {
-        alert("Failed to add book.");
+          tbody.appendChild(tr);
+        });
+      } catch (error) {
+        console.error("Error loading books:", error);
       }
-    } catch (error) {
-      console.error("Error adding book:", error);
     }
-  }
 
-  function clearInputs() {
-    document.getElementById("title").value = "";
-    document.getElementById("author").value = "";
-    document.getElementById("genre").value = "";
-    document.getElementById("price").value = "";
-    document.getElementById("stock").value = "";
-    document.getElementById("description").value = "";
-    document.getElementById("image").value = "";
-  }
+    async function addBook() {
+      const title = document.getElementById("title").value.trim();
+      const author = document.getElementById("author").value.trim();
+      const genre = document.getElementById("genre").value;
+      const price = document.getElementById("price").value.trim();
+      const lending_price = document.getElementById("lending_price").value.trim();
+      const stock = document.getElementById("stock").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const imageFile = document.getElementById("image").files[0];
+      const image1 = document.getElementById("image1").files[0];
+      const image2 = document.getElementById("image2").files[0];
+      const image3 = document.getElementById("image3").files[0];
+      const image4 = document.getElementById("image4").files[0];
+      const image5 = document.getElementById("image5").files[0];
 
-  async function deleteBook(id) {
-    if (confirm("Are you sure you want to delete this book?")) {
+      if (!title || !author || !genre || !["Fiction", "Romance", "Fantasy", "Education", "Others"].includes(genre) || !price || !lending_price || !stock || !description || !imageFile) {
+        alert("Please fill all fields and select a valid genre!");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('author', author);
+      formData.append('genre', genre);
+      formData.append('price', price);
+      formData.append('lending_price', lending_price);
+      formData.append('stock', stock);
+      formData.append('description', description);
+      formData.append('image', imageFile);
+      if (image1) formData.append('image1', image1);
+      if (image2) formData.append('image2', image2);
+      if (image3) formData.append('image3', image3);
+      if (image4) formData.append('image4', image4);
+      if (image5) formData.append('image5', image5);
+      formData.append('status', 'available');
+
+      try {
+        const response = await fetch(API_URL, {
+          method: 'POST',
+          credentials: "include",
+          body: formData
+        });
+        if (response.ok) {
+          loadBooks();
+          clearInputs();
+        } else {
+          alert("Failed to add book.");
+        }
+      } catch (error) {
+        console.error("Error adding book:", error);
+      }
+    }
+
+    function clearInputs() {
+      document.getElementById("title").value = "";
+      document.getElementById("author").value = "";
+      document.getElementById("genre").value = "";
+      document.getElementById("price").value = "";
+      document.getElementById("lending_price").value = "";
+      document.getElementById("stock").value = "";
+      document.getElementById("description").value = "";
+      document.getElementById("image").value = "";
+      document.getElementById("image1").value = "";
+      document.getElementById("image2").value = "";
+      document.getElementById("image3").value = "";
+      document.getElementById("image4").value = "";
+      document.getElementById("image5").value = "";
+    }
+
+    async function deleteBook(id) {
       try {
         const response = await fetch(`${API_URL}${id}/`, {
           method: 'DELETE',
@@ -182,39 +456,59 @@
         if (response.ok) {
           loadBooks();
         } else {
-          alert("Failed to delete book.");
+          alert("Failed to delete book natively.");
         }
       } catch (error) {
         console.error("Error deleting book:", error);
       }
     }
-  }
 
-  async function editBook(id, oldTitle, oldAuthor, oldGenre, oldPrice, oldStock, oldDesc) {
-    const newTitle = prompt("Edit Title:", oldTitle);
-    const newAuthor = prompt("Edit Author:", oldAuthor);
-    const newGenre = prompt("Edit Genre (Fiction, Romance, Fantasy):", oldGenre);
-    const newPrice = parseFloat(prompt("Edit Price:", oldPrice));
-    const newStock = parseInt(prompt("Edit Stock:", oldStock));
-    const newDescription = prompt("Edit Description:", oldDesc);
+    let editingBookId = null;
 
-    if (newTitle && newAuthor && ["Fiction","Romance","Fantasy"].includes(newGenre) && !isNaN(newPrice) && !isNaN(newStock) && newDescription) {
-      
+    function openEditModal(id, title, author, genre, price, lendingPrice, stock, desc) {
+      editingBookId = id;
+      document.getElementById('edit-title').value = title;
+      document.getElementById('edit-author').value = author;
+      document.getElementById('edit-genre').value = genre;
+      document.getElementById('edit-price').value = price;
+      document.getElementById('edit-lending_price').value = lendingPrice;
+      document.getElementById('edit-stock').value = stock;
+      document.getElementById('edit-description').value = desc;
+      document.getElementById('edit-image').value = "";
+      document.getElementById('editModal').style.display = 'block';
+    }
+
+    function closeEditModal() {
+      document.getElementById('editModal').style.display = 'none';
+      editingBookId = null;
+    }
+
+    async function saveEditBook(event) {
+      event.preventDefault();
+      if (!editingBookId) return;
+
       const formData = new FormData();
-      formData.append('title', newTitle);
-      formData.append('author', newAuthor);
-      formData.append('genre', newGenre);
-      formData.append('price', newPrice);
-      formData.append('stock', newStock);
-      formData.append('description', newDescription);
+      formData.append('title', document.getElementById('edit-title').value);
+      formData.append('author', document.getElementById('edit-author').value);
+      formData.append('genre', document.getElementById('edit-genre').value);
+      formData.append('price', document.getElementById('edit-price').value);
+      formData.append('lending_price', document.getElementById('edit-lending_price').value);
+      formData.append('stock', document.getElementById('edit-stock').value);
+      formData.append('description', document.getElementById('edit-description').value);
+
+      const imageFile = document.getElementById('edit-image').files[0];
+      if (imageFile) {
+        formData.append('image', imageFile);
+      }
 
       try {
-        const response = await fetch(`${API_URL}${id}/`, {
+        const response = await fetch(`${API_URL}${editingBookId}/`, {
           method: 'PATCH',
           credentials: "include",
           body: formData
         });
         if (response.ok) {
+          closeEditModal();
           loadBooks();
         } else {
           alert("Failed to update book.");
@@ -223,11 +517,190 @@
         console.error("Error updating book:", error);
       }
     }
-  }
 
-  // Initial load handled by DOMContentLoaded
+    window.addEventListener('click', function (event) {
+      const modal = document.getElementById('editModal');
+      if (event.target === modal) {
+        closeEditModal();
+      }
+    });
 
-</script>
+    // Initial load handled by DOMContentLoaded
 
+    const API_URL_ORDERS = 'http://localhost:8000/api/orders/';
+
+    function switchTab(tabName) {
+      document.getElementById("books-tab").style.display = tabName === "books" ? "block" : "none";
+      document.getElementById("payments-tab").style.display = tabName === "payments" ? "block" : "none";
+      document.getElementById("tab-books").style.backgroundColor = tabName === "books" ? "#e6645c" : "lightcoral";
+      document.getElementById("tab-payments").style.backgroundColor = tabName === "payments" ? "#e6645c" : "lightcoral";
+    }
+
+    async function loadOrders() {
+      try {
+        const response = await fetch(API_URL_ORDERS, { credentials: "include" });
+        const orders = await response.json();
+        const tbody = document.querySelector("#orderTable tbody");
+        tbody.innerHTML = "";
+
+        orders.forEach((order) => {
+          const bookTitle = order.book_details ? order.book_details.title : 'Book ID ' + order.book;
+
+          let screenshotHTML = "N/A";
+          if (order.payment_screenshot) {
+            const imgUrl = order.payment_screenshot.startsWith('http') ? order.payment_screenshot : 'http://localhost:8000' + order.payment_screenshot;
+            screenshotHTML = `<a href="${imgUrl}" target="_blank" style="color: blue; text-decoration: underline;">View Image</a>`;
+          }
+
+          let actionHTML = "Verified";
+          if (order.payment_status === 'pending') {
+            actionHTML = `<button class="edit-btn" onclick="processOrder(${order.id}, 'verify')" style="background-color: green; margin-right: 5px;">Verify</button>
+                          <button class="delete-btn" onclick="processOrder(${order.id}, 'reject')">Reject</button>`;
+          } else if (order.payment_status === 'rejected') {
+            actionHTML = "Rejected";
+          }
+
+          let typeDisplay = order.order_type.toUpperCase();
+          if (order.order_type === 'lend' && order.duration) {
+            typeDisplay += ` (${order.duration} Weeks)`;
+          }
+
+          let amountBreakdown = order.order_type === 'lend' 
+            ? `Fee: ₹${order.lending_fee || 0}<br>Dep: ₹${order.deposit_amount || 0}<br>Total: ₹${order.total_amount || 0}`
+            : `Price: ₹${(order.total_amount / (order.quantity || 1)).toFixed(2)}<br>Qty: ${order.quantity || 1}<br>Total: ₹${order.total_amount || 0}`;
+
+          let trackingHTML = `
+            <input type="text" id="track-${order.id}" value="${order.tracking_id || ''}" placeholder="ID" style="width: 80px; padding: 4px; font-size: 12px; margin-bottom: 2px;"><br>
+            <select id="status-${order.id}" style="width: 80px; padding: 4px; font-size: 12px; margin-bottom: 2px;">
+              <option value="pending" ${order.delivery_status === 'pending' ? 'selected' : ''}>Pending</option>
+              <option value="shipped" ${order.delivery_status === 'shipped' ? 'selected' : ''}>Shipped</option>
+            </select><br>
+            <button onclick="updateTracking(${order.id})" style="background-color: #5bc0de; color: white; padding: 4px; font-size:12px; border:none; border-radius:4px; cursor:pointer;">Update Tracking</button>
+          `;
+
+          if (order.order_type === 'lend' && order.refund_status === 'pending') {
+            actionHTML += `<br><button class="edit-btn" onclick="refundDeposit(${order.id})" style="background-color: #f0ad4e; margin-top: 5px; font-size: 12px; padding: 5px;">Refund Deposit</button>`;
+          } else if (order.order_type === 'lend' && order.refund_status === 'completed') {
+            actionHTML += `<br><span style="color: green; font-size: 12px; display: inline-block; margin-top: 5px; font-weight: bold;">Refunded</span>`;
+          }
+
+          const tr = document.createElement("tr");
+          tr.setAttribute("data-order-id", order.id);
+          tr.innerHTML = `
+          <td data-label="User Details">${order.user_name} (ID: ${order.id})</td>
+          <td data-label="Book Title">${bookTitle}</td>
+          <td data-label="Type / Period">${typeDisplay}</td>
+          <td data-label="Amount Breakdown">${amountBreakdown}</td>
+          <td data-label="Status">${order.payment_status.toUpperCase()}</td>
+          <td data-label="Transaction ID">${order.transaction_id || 'N/A'}</td>
+          <td data-label="Tracking">${trackingHTML}</td>
+          <td data-label="Screenshot">${screenshotHTML}</td>
+          <td data-label="Actions">${actionHTML}</td>
+        `;
+          tbody.appendChild(tr);
+        });
+      } catch (error) {
+        console.error("Error loading orders:", error);
+      }
+    }
+
+    async function processOrder(orderId, actionType) {
+      try {
+        const response = await fetch(`http://localhost:8000/api/verify-payment/${orderId}/`, {
+          method: 'POST',
+          credentials: "include",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: actionType })
+        });
+        if (response.ok) {
+          alert(`Order successfully processed as: ${actionType}`);
+          loadOrders();
+          if (actionType === 'verify') loadBooks();
+        } else {
+          const err = await response.json();
+          alert("Failed to verify payment natively: " + (err.error || "Unknown logic block error"));
+        }
+      } catch (error) {
+        console.error("Error triggering payload verification:", error);
+      }
+    }
+
+    function filterAdminBooks() {
+      const input = document.getElementById("adminSearchBook").value.toLowerCase();
+      const rows = document.querySelectorAll("#bookTable tbody tr");
+      rows.forEach(row => {
+        const title = row.cells[1]?.textContent.toLowerCase() || "";
+        const author = row.cells[2]?.textContent.toLowerCase() || "";
+        const genre = row.cells[3]?.textContent.toLowerCase() || "";
+        
+        if (title.includes(input) || author.includes(input) || genre.includes(input)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
+
+    function filterAdminOrders() {
+      const input = document.getElementById("adminSearchOrder").value.toLowerCase();
+      const rows = document.querySelectorAll("#orderTable tbody tr");
+      rows.forEach(row => {
+        const user = row.cells[0]?.textContent.toLowerCase() || "";
+        const title = row.cells[1]?.textContent.toLowerCase() || "";
+        const orderIdData = row.getAttribute("data-order-id") || "";
+        
+        if (user.includes(input) || title.includes(input) || orderIdData.includes(input)) {
+          row.style.display = "";
+        } else {
+          row.style.display = "none";
+        }
+      });
+    }
+
+    async function updateTracking(orderId) {
+      const trackId = document.getElementById(`track-${orderId}`).value;
+      const dStatus = document.getElementById(`status-${orderId}`).value;
+      
+      try {
+        const res = await fetch(`http://localhost:8000/api/admin/orders/${orderId}/tracking/`, {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ tracking_id: trackId, delivery_status: dStatus })
+        });
+        if (res.ok) {
+          alert('Tracking updated successfully!');
+        } else {
+          alert('Failed to update tracking.');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function refundDeposit(orderId) {
+      if (!confirm('Are you sure you want to refund the deposit?')) return;
+      try {
+        const res = await fetch(`http://localhost:8000/api/admin/orders/${orderId}/refund/`, {
+          method: 'POST',
+          credentials: 'include'
+        });
+        if (res.ok) {
+          alert('Deposit refunded successfully!');
+          loadOrders();
+        } else {
+          alert('Failed to refund deposit. Check console.');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+  </script>
+
+
+  <!-- Custom Alerts JS -->
+  <script src="assets/custom_alert.js"></script>
 </body>
+
 </html>

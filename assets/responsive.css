@@ -1,0 +1,134 @@
+/* Global Responsive Tweaks */
+
+@media (max-width: 768px) {
+  /* Header and Navigation adjustments */
+  .header {
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 15px !important;
+  }
+  
+  .logo {
+    width: 60px !important;
+    height: 60px !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .pageloft-title {
+    font-size: 32px !important;
+    right: 0 !important;
+    position: relative !important;
+    text-align: center !important;
+    margin-bottom: 10px !important;
+  }
+  
+  .search-login {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 10px !important;
+  }
+  
+  .search-bar input[type="search"] {
+    width: 90% !important;
+    max-width: 300px !important;
+    font-size: 14px !important;
+  }
+  
+  .navbar {
+    flex-wrap: wrap !important;
+    gap: 10px !important;
+    padding: 10px !important;
+  }
+  
+  .navbar a {
+    font-size: 14px !important;
+    margin: 5px 10px !important;
+  }
+
+  /* Modals */
+  .modal-content {
+    width: 90% !important;
+    padding: 20px !important;
+    margin: 20% auto !important;
+  }
+
+  /* Inputs generic */
+  .inputs {
+    flex-direction: column !important;
+    padding: 10px;
+  }
+
+  .inputs input,
+  .inputs button,
+  .inputs select,
+  .inputs textarea {
+    width: 100% !important;
+    min-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  /* Dropdowns */
+  .genres-dropdown {
+    top: auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 90% !important;
+    padding: 10px !important;
+  }
+  
+  .genres-dropdown a {
+    padding: 8px 10px !important;
+    font-size: 14px !important;
+  }
+
+  /* Buttons */
+  .buttons {
+    flex-direction: column !important;
+    gap: 20px !important;
+    padding: 20px !important;
+    margin-top: 0 !important;
+  }
+  
+  .buttons button {
+    width: 100% !important;
+    font-size: 14px !important;
+    padding: 15px !important;
+  }
+  
+  .about {
+    padding: 15px !important;
+    font-size: 14px !important;
+    text-align: justify !important;
+  }
+  
+  .marquee-track img {
+    height: 100px !important;
+  }
+
+  /* Tables to be scrollable */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .footer {
+    font-size: 12px !important;
+    padding: 8px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .pageloft-title {
+    font-size: 26px !important;
+  }
+  .navbar a {
+    font-size: 12px !important;
+  }
+  .buttons button {
+    font-size: 12px !important;
+  }
+  .header {
+    font-size: 22px !important;
+  }
+}

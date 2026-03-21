@@ -79,6 +79,10 @@
       }
     }
   </style>
+
+  <!-- Custom Alerts & Responsive CSS -->
+  <link rel="stylesheet" href="assets/custom_alert.css">
+  <link rel="stylesheet" href="assets/responsive.css">
 </head>
 <body>
 
@@ -124,7 +128,7 @@
         });
 
         if (response.ok) {
-          alert("Registration successful! Please login.");
+          await showCustomAlert("Registration successful! Please login.");
           window.location.href = "index.html";
         } else {
           const data = await response.json();
@@ -137,5 +141,8 @@
     });
   </script>
 
+
+  <!-- Custom Alerts JS -->
+  <script src="assets/custom_alert.js"></script>
 </body>
 </html>

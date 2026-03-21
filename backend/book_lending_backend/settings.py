@@ -111,3 +111,12 @@ AUTH_USER_MODEL = 'api.User'
 
 RAZORPAY_KEY_ID = 'rzp_test_YourTestKeyIdHere'
 RAZORPAY_KEY_SECRET = 'REDACTED_RAZORPAY_SECRET'
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'hariharan.moct@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'REDACTED_EMAIL_APP_PWD')
+DEFAULT_FROM_EMAIL = 'PageLoft Support <hariharan.moct@gmail.com>'
