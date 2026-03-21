@@ -8,11 +8,14 @@ This file was manually restored.
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'REDACTED_SECRET_KEY'
-DEBUG = True
+load_dotenv(os.path.join(BASE_DIR, '.env'))
+
+SECRET_KEY = os.environ.get('SECRET_KEY', 'default-insecure-key-if-not-set')
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -73,7 +76,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'booklending',
         'USER': 'root',
-        'PASSWORD': 'REDACTED_DB_PWD',
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', ''),
         'HOST': 'localhost',
         'PORT': '3306',
     }
@@ -109,8 +112,8 @@ CORS_ALLOW_CREDENTIALS = True
 
 AUTH_USER_MODEL = 'api.User'
 
-RAZORPAY_KEY_ID = 'rzp_test_YourTestKeyIdHere'
-RAZORPAY_KEY_SECRET = 'REDACTED_RAZORPAY_SECRET'
+RAZORPAY_KEY_ID = os.environ.get('RAZORPAY_KEY_ID', 'rzp_test_YourTestKeyIdHere')
+RAZORPAY_KEY_SECRET = os.environ.get('RAZORPAY_KEY_SECRET', 'REDACTED_RAZORPAY_SECRET')
 
 # Email Configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -118,5 +121,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'hariharan.moct@gmail.com')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'REDACTED_EMAIL_APP_PWD')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = 'PageLoft Support <hariharan.moct@gmail.com>'
