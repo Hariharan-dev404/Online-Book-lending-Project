@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment – PageLoft Membership</title>
+  <link rel="icon" type="image/jpeg" href="obl.jpg?v=2">
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/custom_alert.css">
+  <style>
+    body { background: var(--bg-base); min-height: 100vh; display: flex; flex-direction: column; }
+    
+    .header { padding: 20px 0; background: white; border-bottom: 1px solid var(--border-color); }
+    .header-inner { display: flex; justify-content: center; align-items: center; }
+    .header-brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .header-logo { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .header-name { font-size: 20px; font-weight: 800; color: var(--text-dark); letter-spacing: -0.02em; }
+
+    .main-wrapper { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 20px; }
+    .payment-card { background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: 24px; box-shadow: var(--shadow-lg); padding: 48px; max-width: 480px; width: 100%; text-align: center; }
+    
+    .qr-wrap { display: inline-block; background: white; border: 2px solid var(--border-color); border-radius: 16px; padding: 16px; margin: 20px 0; }
+    .qr-wrap img { width: 220px; height: 220px; display: block; border-radius: 8px; }
+
+    .form-group { text-align: left; margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-dark); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .form-group input { width: 100%; padding: 12px 14px; border: 1.5px solid var(--border-color); border-radius: 10px; font-size: 14px; font-family: var(--font-family); box-sizing: border-box; background: var(--bg-base); }
+    .form-group input:focus { outline: none; border-color: var(--color-primary); background: white; box-shadow: 0 0 0 3px rgba(109,76,65,0.1); }
+
+    .footer { padding: 24px; text-align: center; font-size: 13px; color: var(--text-muted); border-top: 1px solid var(--border-color); background: white; }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="header-brand">
+        <img src="obl.jpg" alt="Logo" class="header-logo">
+        <span class="header-name">PageLoft</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="main-wrapper">
+    <div class="payment-card">
+      <div style="font-size:48px; margin-bottom:12px;">💎</div>
+      <h1 style="font-size:24px; font-weight:800; color:var(--text-dark); margin-bottom:8px;">Activate Membership</h1>
+      <p style="font-size:14px; color:var(--text-muted); line-height:1.5;">Scan the QR code below or use UPI ID <strong>hariharangpay00@okaxis</strong> to complete your membership payment.</p>
+      
+      <div class="qr-wrap">
+        <!-- Static QR code representation for the demo -->
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=hariharangpay00@okaxis&pn=PageLoft&cu=INR&margin=15" alt="UPI QR Code">
+      </div>
+
+      <form id="membershipPaymentForm">
+        <div class="form-group">
+          <label>UPI Transaction ID *</label>
+          <input type="text" id="transaction_id" placeholder="e.g. 301234567890" required>
+        </div>
+        <div class="form-group">
+          <label>Payment Screenshot *</label>
+          <input type="file" id="payment_screenshot" accept="image/*" required style="padding:9px;">
+        </div>
+        <button type="button" class="btn btn-primary btn-lg" style="width:100%; margin-top:16px;" onclick="submitPayment()">Submit Verification</button>
+      </form>
+    </div>
+  </main>
+
+  <footer class="footer">
+    © 2025 PageLoft. All rights reserved.
+  </footer>
+
+  <script src="assets/custom_alert.js"></script>
+  <script>
+    async function submitPayment() {
+      const transactionId = document.getElementById("transaction_id").value.trim();
+      const screenshot = document.getElementById("payment_screenshot").files[0];
+
+      if (!transactionId || !screenshot) {
+        showCustomAlert("Please enter the transaction ID and upload a screenshot.");
+        return;
+      }
+
+      // In a real app, this would send to an API endpoint for membership verification.
+      // We will mock the success redirect for this static view since the API endpoint is for order verification.
+      showCustomAlert("Membership payment submitted! Redirecting...");
+      setTimeout(() => {
+        window.location.href = "user.html";
+      }, 1500);
+    }
+  </script>
+</body>
+</html>

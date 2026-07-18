@@ -3,104 +3,250 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Other Books</title>
+  <title>Fiction Books – PageLoft</title>
+  <meta name="description" content="Browse our collection of fiction books. Buy or lend from PageLoft.">
+  <link rel="icon" type="image/jpeg" href="obl.jpg?v=2">
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/custom_alert.css">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #fff8f5;
-      margin: 0;
-      padding: 20px;
+    /* Genre Page Header */
+    .genre-header {
+      background: linear-gradient(135deg, #3D1F15 0%, #6D4C41 60%, #8D6E63 100%);
+      padding: 56px 0 48px;
+      position: relative;
+      overflow: hidden;
     }
-    .book {
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 30px;
-      padding: 20px;
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    .genre-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
-    .book img {
-      width: 150px;
-      height: auto;
-      margin-right: 20px;
-      border-top-left-radius: 8px;
-      border-bottom-left-radius: 8px;
+    .genre-header-content {
+      position: relative;
+      z-index: 1;
     }
-    .book-info {
-      flex: 1;
+    .genre-header-emoji {
+      font-size: 56px;
+      margin-bottom: 12px;
+      display: block;
     }
-    .book-title {
-      font-size: 24px;
-      color: #333;
-      margin: 0 0 10px;
-    }
-    .book-author {
-      font-size: 18px;
-      color: #777;
-    }
-    .book-desc {
-      margin-top: 10px;
-      color: #444;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-    .view-button {
-      display: inline-block;
-      margin-top: 12px;
-      padding: 8px 16px;
-      background-color: lightcoral;
+    .genre-header-title {
+      font-size: 40px;
+      font-weight: 800;
       color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-      text-decoration: none;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
     }
-    .view-button:hover {
-      background-color: #e6645c;
+    .genre-header-sub {
+      font-size: 15px;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* Sticky sub-nav */
+    .genre-subnav {
+      background: white;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow-sm);
+    }
+    .genre-subnav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .genre-subnav-links {
+      display: flex;
+      gap: 4px;
+    }
+    .genre-subnav-links a {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .genre-subnav-links a:hover,
+    .genre-subnav-links a.active {
+      background: rgba(109,76,65,0.08);
+      color: var(--color-primary);
+    }
+    .genre-back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-primary);
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border-color);
+      transition: all 0.15s;
+    }
+    .genre-back-btn:hover {
+      background: rgba(109,76,65,0.05);
+    }
+
+    /* Book Grid */
+    .books-listing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      padding: 48px 0;
+    }
+
+    /* Spinner */
+    .loading-wrap {
+      text-align: center;
+      padding: 80px 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .books-listing-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .books-listing-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; padding: 32px 0; }
+      .genre-subnav-links { display: none; }
+      .genre-header-title { font-size: 28px; }
+    }
+    @media (max-width: 480px) {
+      .books-listing-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
     }
   </style>
-
-  <!-- Custom Alerts & Responsive CSS -->
-  <link rel="stylesheet" href="assets/custom_alert.css">
-  <link rel="stylesheet" href="assets/responsive.css">
 </head>
 <body>
-  <h1 style="color: lightcoral">Other Books</h1>
 
-  <div id="othersList"></div>
+  <!-- Genre Header -->
+  <div class="genre-header">
+    <div class="container">
+      <div class="genre-header-content">
+        <span class="genre-header-emoji" id="genreEmoji">📖</span>
+        <h1 class="genre-header-title" id="genreTitle">Fiction Books</h1>
+        <p class="genre-header-sub" id="genreSubtitle">Explore captivating stories and literary worlds.</p>
+      </div>
+    </div>
+  </div>
 
+  <!-- Sub-nav -->
+  <div class="genre-subnav">
+    <div class="genre-subnav-inner">
+      <div class="genre-subnav-links">
+        <a href="fiction.html" class="active">Fiction</a>
+        <a href="fantasy.html">Fantasy</a>
+        <a href="romance.html">Romance</a>
+        <a href="education.html">Education</a>
+        <a href="others.html">Others</a>
+      </div>
+      <a href="index.html" class="genre-back-btn">← Home</a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main>
+    <div class="container">
+      <div id="loadingWrap" class="loading-wrap">
+        <div class="pgl-spinner"></div>
+        <p style="color:var(--text-muted); font-size:14px; margin-top:16px;">Loading books…</p>
+      </div>
+
+      <div id="fictionList" class="books-listing-grid" style="display:none;"></div>
+
+      <div id="emptyState" class="empty-state" style="display:none;">
+        <div class="empty-state-icon">📭</div>
+        <h3>No books found</h3>
+        <p>No fiction books are currently available. Check back soon!</p>
+        <a href="index.html" class="btn btn-primary" style="margin-top:24px;">Back to Home</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="pgl-footer" style="margin-top:64px;">
+    <div class="container">
+      <div class="pgl-footer-bottom">
+        <p>© 2025 PageLoft. All rights reserved.</p>
+        <p><a href="index.html" style="color:rgba(255,255,255,0.6);">← Back to Home</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/custom_alert.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", async function () {
+    const GENRE_CONFIG = {
+      fiction:   { emoji: '📖', title: 'Fiction Books',    subtitle: 'Explore captivating stories and literary worlds.' },
+      fantasy:   { emoji: '🧙', title: 'Fantasy Books',    subtitle: 'Dive into magical realms and epic adventures.' },
+      romance:   { emoji: '💕', title: 'Romance Books',    subtitle: 'Heartwarming stories of love and connection.' },
+      education: { emoji: '🎓', title: 'Education Books',  subtitle: 'Expand your knowledge and sharpen your skills.' },
+      others:    { emoji: '📦', title: 'Other Books',      subtitle: 'A curated collection of diverse genres.' },
+    };
+
+    // Determine genre from filename
+    const page = window.location.pathname.split('/').pop().replace('.html','');
+    const cfg  = GENRE_CONFIG[page] || GENRE_CONFIG['fiction'];
+    document.getElementById('genreEmoji').textContent   = cfg.emoji;
+    document.getElementById('genreTitle').textContent   = cfg.title;
+    document.getElementById('genreSubtitle').textContent= cfg.subtitle;
+    document.title = cfg.title + ' – PageLoft';
+
+    // Mark active subnav link
+    document.querySelectorAll('.genre-subnav-links a').forEach(a => {
+      a.classList.toggle('active', a.href.includes(page));
+    });
+
+    document.addEventListener("DOMContentLoaded", async function() {
       try {
         const response = await fetch('http://localhost:8000/api/books/');
-        const books = await response.json();
-        const otherBooks = books.filter(book => book.genre.toLowerCase() === "others" && book.status !== "sold");
-        
-        const container = document.getElementById("othersList");
-        container.innerHTML = otherBooks.map(book => `
-          <div class="book">
-            <img src="${book.image}" alt="${book.title}">
-            <div class="book-info">
-              <h2 class="book-title">${book.title}</h2>
-              <p class="book-author">by ${book.author}</p>
-              <p class="book-desc">${book.description || ""}</p>
-              <button class="view-button" onclick="viewBook(${book.id})">View</button>
+        const books    = await response.json();
+        const filtered = books.filter(b => b.genre && b.genre.toLowerCase() === page && b.status !== 'sold');
+
+        document.getElementById('loadingWrap').style.display = 'none';
+
+        if (!filtered.length) {
+          document.getElementById('emptyState').style.display = 'block';
+          return;
+        }
+
+        const grid = document.getElementById('fictionList');
+        grid.style.display = 'grid';
+        grid.innerHTML = filtered.map(book => `
+          <div class="book-card" onclick="viewBook(${book.id})" style="cursor:pointer;" aria-label="View ${book.title}">
+            <div class="book-card-image-wrap">
+              <img src="${book.image || 'https://via.placeholder.com/200x300?text=Book'}" alt="${book.title}" loading="lazy">
+              <div class="book-card-overlay">
+                <button class="btn btn-white btn-sm" onclick="event.stopPropagation(); viewBook(${book.id})">View Details</button>
+              </div>
+            </div>
+            <div class="book-card-body">
+              <div class="book-card-genre">${book.genre}</div>
+              <h3 class="book-card-title">${book.title}</h3>
+              <p class="book-card-author">by ${book.author}</p>
+              <div class="book-card-pricing">
+                <span class="book-price-buy">₹${book.price}</span>
+                ${book.lending_price ? `<span class="book-price-lend">Lend ₹${book.lending_price}</span>` : ''}
+              </div>
             </div>
           </div>
-        `).join("");
+        `).join('');
 
         window.viewBook = function(id) {
-          window.location.href = "page.html?id=" + id;
+          window.location.href = 'page.html?id=' + id;
         };
-      } catch (error) {
+      } catch(error) {
+        document.getElementById('loadingWrap').style.display = 'none';
+        document.getElementById('emptyState').style.display = 'block';
         console.error("Error loading books:", error);
       }
     });
   </script>
-
-  <!-- Custom Alerts JS -->
-  <script src="assets/custom_alert.js"></script>
 </body>
 </html>

@@ -1,729 +1,445 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Book Lending</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: white;
-      position: relative;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 30px;
-      background-color: lightcoral;
-    }
-
-    .logo {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-    }
-
-    .pageloft-title {
-      flex: 1;
-      position: fixed;
-      text-align: center;
-      font-size: 50px;
-      font-weight: bold;
-      color: white;
-      position: relative;
-      right: 290px;
-    }
-
-    .search-login {
-      display: flex;
-      align-items: center;
-    }
-
-    .search-bar input[type="search"] {
-      padding: 12px 20px;
-      width: 250px;
-      border-radius: 30px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-
-    .login a {
-      margin-left: 15px;
-      text-decoration: none;
-      color: white;
-      font-weight: bold;
-    }
-
-    .login i {
-      margin-right: 5px;
-    }
-
-    .navbar {
-      display: flex;
-      justify-content: center;
-      background: transparent;
-      padding: 10px 0;
-    }
-
-    .navbar a {
-      margin: 0 20px;
-      text-decoration: none;
-      color: black;
-      font-weight: bold;
-      position: relative;
-    }
-
-    .buttons-container {
-      display: flex;
-      justify-content: center;
-      position: relative;
-    }
-
-    .buttons {
-      display: flex;
-      margin-top: -50px;
-      gap: 50px;
-      padding: 80px;
-      border-radius: 20px;
-    }
-
-    .buttons button {
-      padding: 20px 40px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: lightcoral;
-      border-radius: 10px;
-      color: white;
-      border: none;
-      outline: 2px solid white;
-      outline-offset: -8px;
-    }
-
-    .about {
-      font-size: 16px;
-      padding: 20px;
-      line-height: 1.6;
-      font-family: Arial, sans-serif;
-      max-width: 100%;
-      margin-left: 0;
-      margin-right: 0;
-      color: rgb(0, 0, 0);
-      position: relative;
-      z-index: 1;
-    }
-
-    .footer {
-      background-color: lightcoral;
-      text-align: center;
-      padding: 10px;
-      font-size: 14px;
-      margin-top: 150px;
-    }
-
-    .marquee-container {
-      overflow: hidden;
-      white-space: nowrap;
-      width: 100%;
-      margin-top: 30px;
-    }
-
-    .marquee-track {
-      display: inline-flex;
-      animation: scrollTrain 30s linear infinite;
-    }
-
-    .marquee-track img {
-      height: 150px;
-      flex-shrink: 0;
-    }
-
-    @keyframes scrollTrain {
-      0% {
-        transform: translateX(0);
-      }
-
-      100% {
-        transform: translateX(-50%);
-      }
-    }
-
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 10;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.6);
-    }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 40px;
-      border: 1px solid #888;
-      width: 300px;
-      border-radius: 10px;
-      text-align: center;
-      position: relative;
-    }
-
-    .modal-content input {
-      width: 90%;
-      padding: 10px;
-      margin-top: 5px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .modal-content button {
-      padding: 10px 20px;
-      background-color: lightcoral;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 24px;
-      font-weight: bold;
-      color: #aaa;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: black;
-    }
-
-    .genres-dropdown {
-      display: none;
-      position: absolute;
-      top: 140px;
-      left: 40%;
-      transform: translateX(-50%);
-      background-color: white;
-      border: 1px solid lightcoral;
-      border-radius: 5px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      z-index: 100;
-    }
-
-    .genres-dropdown a {
-      display: block;
-      padding: 8px 25px;
-      color: grey;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .genres-dropdown a:hover {
-      background-color: lightcoral;
-      color: white;
-      border-radius: 5px;
-    }
-
-
-    @media (max-width: 768px) {
-      .header {
-        flex-direction: column;
-        align-items: center;
-        padding: 15px;
-      }
-
-      .logo {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 10px;
-      }
-
-      .pageloft-title {
-        font-size: 32px;
-        right: 0;
-        position: relative;
-        text-align: center;
-        margin-bottom: 10px;
-      }
-
-      .search-login {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .search-bar input[type="search"] {
-        width: 90%;
-        max-width: 300px;
-        font-size: 14px;
-      }
-
-      .navbar {
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 10px;
-      }
-
-      .navbar a {
-        font-size: 14px;
-        margin: 5px 10px;
-      }
-
-      .genres-dropdown {
-        top: auto;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        padding: 10px;
-      }
-
-      .genres-dropdown a {
-        padding: 8px 10px;
-        font-size: 14px;
-      }
-
-      .buttons {
-        flex-direction: column;
-        gap: 20px;
-        padding: 20px;
-        margin-top: 0;
-      }
-
-      .buttons button {
-        width: 100%;
-        font-size: 14px;
-        padding: 15px;
-      }
-
-      .about {
-        padding: 15px;
-        font-size: 14px;
-        text-align: justify;
-      }
-
-      .marquee-track img {
-        height: 100px;
-      }
-
-      .modal-content {
-        width: 90%;
-        padding: 20px;
-      }
-
-      .footer {
-        font-size: 12px;
-        padding: 8px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .pageloft-title {
-        font-size: 26px;
-      }
-
-      .navbar a {
-        font-size: 12px;
-      }
-
-      .buttons button {
-        font-size: 12px;
-      }
-    }
-  </style>
-
-
-  <!-- Custom Alerts & Responsive CSS -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PageLoft – Welcome</title>
+  <link rel="icon" type="image/jpeg" href="obl.jpg?v=2">
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/components.css">
   <link rel="stylesheet" href="assets/custom_alert.css">
-  <link rel="stylesheet" href="assets/responsive.css">
-</head>
+  <style>
+    /* Keep hero & section styles same as index.html */
+    .hero { min-height: 92vh; background: linear-gradient(150deg, #3D1F15 0%, #6D4C41 50%, #8D6E63 100%); position: relative; display: flex; align-items: center; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 80% 40%, rgba(212,163,115,0.18) 0%, transparent 70%), radial-gradient(ellipse 40% 50% at 10% 80%, rgba(0,0,0,0.3) 0%, transparent 60%); }
+    .hero-pattern { position: absolute; inset: 0; background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+    .hero-content { position: relative; z-index: 2; max-width: 620px; }
+    .hero-tag { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2); border-radius: 999px; padding: 6px 16px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.9); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 24px; }
+    .hero-title { font-size: clamp(40px, 6vw, 68px); font-weight: 800; color: white; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 24px; }
+    .hero-title span { background: linear-gradient(135deg, #F0CFA5, #D4A373); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-sub { font-size: 18px; color: rgba(255,255,255,0.72); line-height: 1.6; margin-bottom: 40px; max-width: 480px; }
+    .hero-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .hero-trust { display: flex; align-items: center; gap: 24px; margin-top: 48px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.12); flex-wrap: wrap; }
+    .hero-trust-item { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 500; }
+    .hero-trust-item span:first-child { font-size: 20px; }
+    .hero-visual { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 45%; display: flex; align-items: center; justify-content: center; z-index: 2; }
+    .hero-books-stack { position: relative; width: 340px; height: 420px; }
+    .hero-book-card { position: absolute; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.25); border-radius: 16px; padding: 20px; box-shadow: 0 16px 48px rgba(0,0,0,0.25); }
+    .hero-book-card.c1 { bottom: 0; left: 0; width: 200px; transform: rotate(-6deg); animation: float1 5s ease-in-out infinite; }
+    .hero-book-card.c2 { top: 20px; right: 0; width: 210px; transform: rotate(4deg); animation: float2 4s ease-in-out infinite 0.5s; }
+    .hero-book-card.c3 { top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(0deg); width: 190px; animation: float3 6s ease-in-out infinite 1s; }
+    @keyframes float1 { 0%, 100% { transform: rotate(-6deg) translateY(0); } 50% { transform: rotate(-6deg) translateY(-10px); } }
+    @keyframes float2 { 0%, 100% { transform: rotate(4deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-8px); } }
+    @keyframes float3 { 0%, 100% { transform: translate(-50%, -50%) rotate(-1deg) translateY(0); } 50% { transform: translate(-50%, -50%) rotate(-1deg) translateY(-12px); } }
+    .mini-book-cover { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+    .mini-book-title { font-size: 12px; font-weight: 700; color: white; margin-bottom: 2px; }
+    .mini-book-author { font-size: 10px; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
+    .mini-book-price { font-size: 12px; font-weight: 700; color: var(--color-accent); }
+    .stats-section { background: var(--bg-card-solid); padding: 64px 0; border-bottom: 1px solid var(--border-color); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+    .stat-block { text-align: center; padding: 32px 24px; position: relative; }
+    .stat-block + .stat-block::before { content: ''; position: absolute; left: 0; top: 20%; height: 60%; width: 1px; background: var(--border-color); }
+    .stat-block-number { font-size: 48px; font-weight: 800; color: var(--color-primary); line-height: 1; margin-bottom: 8px; letter-spacing: -0.03em; }
+    .stat-block-label { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+    .books-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .categories-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+    .category-card { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 28px 16px; background: var(--bg-card-solid); border: 1.5px solid var(--border-color); border-radius: 16px; text-decoration: none; transition: all 0.25s ease; text-align: center; }
+    .category-card:hover { border-color: var(--color-primary); box-shadow: var(--shadow-md); transform: translateY(-3px); background: linear-gradient(160deg, rgba(109,76,65,0.03), rgba(212,163,115,0.06)); }
+    .cat-emoji { font-size: 36px; line-height: 1; }
+    .cat-name { font-size: 13px; font-weight: 600; color: var(--text-dark); }
+    .hiw-section { background: var(--bg-card-solid); }
+    .hiw-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; position: relative; }
+    .hiw-grid::before { content: ''; position: absolute; top: 40px; left: 15%; right: 15%; height: 2px; background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%); z-index: 0; }
+    .hiw-step { text-align: center; padding: 32px 24px; position: relative; z-index: 1; }
+    .hiw-icon-wrap { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark)); display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px; box-shadow: var(--shadow-md); position: relative; border: 4px solid var(--bg-card-solid); }
+    .hiw-step-num { position: absolute; top: -6px; right: -6px; width: 24px; height: 24px; background: var(--color-accent); color: white; font-size: 11px; font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .hiw-step h3 { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 8px; }
+    .hiw-step p { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .testimonial-card { background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: 16px; padding: 28px; box-shadow: var(--shadow-sm); transition: all 0.25s ease; }
+    .testimonial-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .testimonial-stars { color: #F59E0B; font-size: 14px; margin-bottom: 12px; letter-spacing: 2px; }
+    .testimonial-text { font-size: 14px; color: var(--text-body); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .testimonial-avatar { width: 42px; height: 42px; border-radius: 50%; background: linear-gradient(135deg, var(--color-primary), var(--color-accent)); display: flex; align-items: center; justify-content: center; font-size: 18px; color: white; font-weight: 700; flex-shrink: 0; }
+    .testimonial-name { font-weight: 600; font-size: 14px; color: var(--text-dark); }
+    .testimonial-role { font-size: 12px; color: var(--text-muted); }
+    .marquee-container { overflow: hidden; white-space: nowrap; width: 100%; background: var(--bg-base); padding: 32px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+    .marquee-track { display: inline-flex; gap: 16px; animation: scrollTrain 30s linear infinite; }
+    .marquee-track img { height: 130px; width: auto; border-radius: 8px; box-shadow: var(--shadow-sm); object-fit: cover; flex-shrink: 0; }
+    @keyframes scrollTrain { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
+    /* Search Results */
+    #searchResultsContainer { padding: 24px 32px; max-width: 900px; margin: 0 auto; display: none; }
+    .search-result-item { display: flex; align-items: flex-start; padding: 16px; background: white; border: 1px solid var(--border-color); border-radius: 12px; box-shadow: var(--shadow-sm); margin-bottom: 12px; transition: all 0.2s ease; }
+    .search-result-item:hover { box-shadow: var(--shadow-md); }
+
+    /* Profile Popup */
+    #profilePopup { display: none; position: absolute; top: 100%; right: 0; margin-top: 12px; width: 260px; background: var(--bg-card-solid); border: 1px solid var(--border-color); border-radius: 16px; box-shadow: var(--shadow-lg); padding: 24px; z-index: var(--z-dropdown); text-align: center; animation: slideDown 0.2s ease; }
+    .profile-popup-avatar { width: 72px; height: 72px; border-radius: 50%; border: 3px solid rgba(109,76,65,0.1); margin-bottom: 12px; object-fit: cover; }
+    .profile-popup-name { font-size: 16px; font-weight: 700; color: var(--text-dark); margin-bottom: 4px; }
+    .profile-popup-role { font-size: 12px; font-weight: 500; color: var(--color-primary); background: rgba(109,76,65,0.1); padding: 4px 10px; border-radius: 99px; display: inline-block; margin-bottom: 20px; }
+    .profile-popup-btn { width: 100%; padding: 10px; border: 1.5px solid var(--border-color); border-radius: 10px; background: var(--bg-base); font-size: 13px; font-weight: 600; color: var(--text-dark); cursor: pointer; transition: all 0.2s; }
+    .profile-popup-btn:hover { background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.3); color: var(--color-danger); }
+
+    @media (max-width: 1200px) { .books-grid { grid-template-columns: repeat(3, 1fr); } .categories-grid { grid-template-columns: repeat(4, 1fr); } .hero-visual { width: 38%; } }
+    @media (max-width: 992px) { .hero { min-height: auto; padding: 80px 0 60px; } .hero-visual { display: none; } .hero-content { max-width: 100%; } .hiw-grid { grid-template-columns: repeat(2, 1fr); } .hiw-grid::before { display: none; } .stats-grid { grid-template-columns: repeat(2, 1fr); } .testimonials-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) { .books-grid { grid-template-columns: repeat(2, 1fr); } .categories-grid { grid-template-columns: repeat(3, 1fr); } .testimonials-grid { grid-template-columns: 1fr; } .hiw-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 576px) { .books-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } .categories-grid { grid-template-columns: repeat(2, 1fr); } .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
 <body>
 
-  <div class="header">
-    <img src="obl.jpg" alt="Logo" class="logo">
-    <div class="pageloft-title">PageLoft</div>
-    <div class="search-login">
-      <div class="search-bar">
-        <input type="search" id="userBookSearch" placeholder="Search books by title, author, genre..."
-          onkeyup="filterBooks()">
-      </div>
-      <!-- User Profile (initially hidden) -->
-      <div class="user-profile" id="userProfile" style="display: block; margin-left: 15px;">
-        <img src="https://i.pinimg.com/originals/49/03/ba/4903ba8e07be6c957ee03ef420bf5d23.jpg"
-          onclick="toggleProfilePopup()" style="width: 40px; height: 40px; border-radius: 50%; cursor: pointer;">
-      </div>
-      <!-- Popup for Profile -->
-      <div id="profilePopup" class="modal" style="display: none;">
-        <div class="modal-content" style="width: 250px;">
-          <span class="close" onclick="toggleProfilePopup()">&times;</span>
-          <img src="https://i.pinimg.com/originals/49/03/ba/4903ba8e07be6c957ee03ef420bf5d23.jpg"
-            style="width: 80px; height: 80px; border-radius: 50%;">
-          <h3 id="userNameDisplay">User</h3>
-          <button onclick="signOut()">Sign Out</button>
+  <!-- ── NAVBAR ── -->
+  <nav class="pgl-navbar" id="mainNavbar">
+    <div class="pgl-navbar-inner">
+      <a href="user.html" class="pgl-navbar-brand">
+        <img src="obl.jpg" alt="PageLoft Logo" class="pgl-navbar-logo">
+        <span class="pgl-navbar-name">PageLoft</span>
+      </a>
+
+      <nav class="pgl-navbar-nav">
+        <div class="pgl-dropdown-wrapper">
+          <a href="#" class="pgl-nav-link" id="genresToggleBtn" onclick="openGenresModal(); return false;">
+            📚 Genres <span style="font-size:10px; margin-left:2px;">▾</span>
+          </a>
+        </div>
+        <a href="membership.html" class="pgl-nav-link">💎 Membership</a>
+        <a href="#" class="pgl-nav-link" onclick="opencontact(); return false;">📬 Contact</a>
+      </nav>
+
+      <div class="pgl-navbar-actions">
+        <div class="pgl-search-wrap">
+          <span class="search-icon">🔍</span>
+          <input type="search" id="userBookSearch" class="pgl-search-input" placeholder="Search books…" onkeyup="filterBooks()">
+        </div>
+        
+        <!-- User Profile Dropdown -->
+        <div style="position:relative; margin-left:12px;">
+          <button class="pgl-avatar pgl-avatar-md" style="padding:0; border:2px solid var(--border-color); background:none; cursor:pointer;" onclick="toggleProfilePopup(event)" aria-label="User profile">
+            <img src="https://i.pinimg.com/originals/49/03/ba/4903ba8e07be6c957ee03ef420bf5d23.jpg" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" alt="Avatar">
+          </button>
+          
+          <div id="profilePopup">
+            <img src="https://i.pinimg.com/originals/49/03/ba/4903ba8e07be6c957ee03ef420bf5d23.jpg" class="profile-popup-avatar" alt="Avatar">
+            <div class="profile-popup-name" id="userNameDisplay">User</div>
+            <div class="profile-popup-role">Member</div>
+            <button class="profile-popup-btn" onclick="signOut()">Sign Out</button>
+          </div>
         </div>
       </div>
+
+      <button class="pgl-hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </div>
-  <div class="navbar">
-    <a href="#" onclick="openGenresModal()">Genres &#9662;</a>
-    <a href="#" onclick="opencontact()">Contact</a>
-    <a href="membership.html">Membership Plan</a>
-  </div>
 
-  <div id="searchResultsContainer"
-    style="display: none; padding: 20px; max-width: 900px; margin: 0 auto; z-index: 5; position: relative;">
-    <h2 style="color: lightcoral;">Search Results:</h2>
-    <div id="searchResultsList" style="display: flex; flex-direction: column; gap: 15px;"></div>
-  </div>
+    <!-- Mobile Nav -->
+    <div class="pgl-mobile-nav" id="mobileNav">
+      <a href="#" class="pgl-nav-link" onclick="openGenresModal(); return false;">📚 Genres</a>
+      <a href="membership.html" class="pgl-nav-link">💎 Membership</a>
+      <a href="#" class="pgl-nav-link" onclick="opencontact(); return false;">📬 Contact</a>
+      <a href="#" class="pgl-nav-link" style="color:var(--color-danger);" onclick="signOut(); return false;">Sign Out</a>
+    </div>
+  </nav>
 
+  <!-- Genres Dropdown -->
   <div class="genres-dropdown" id="genresDropdown">
-    <span class="close" onclick="closeGenresModal()">&times;</span>
-    <a href="fiction.html">Fiction</a>
-    <a href="fantasy.html">Fantasy</a>
-    <a href="romance.html">Romance</a>
-    <a href="education.html">Education</a>
-    <a href="others.html">Others</a>
+    <button class="close" onclick="closeGenresModal()">×</button>
+    <a href="fiction.html">📖 Fiction</a>
+    <a href="fantasy.html">🧙 Fantasy</a>
+    <a href="romance.html">💕 Romance</a>
+    <a href="education.html">🎓 Education</a>
+    <a href="others.html">📦 Others</a>
   </div>
 
-
-  <div class="about">
-    <p>Welcome to our Online Book Lending Platform, where we bring the joy of reading right to your fingertips.
-      Our mission is to connect book lovers with a vast collection of literature, ranging from timeless classics to the
-      latest bestsellers.</p>
-    <p>Our platform offers a seamless experience for borrowing and returning books with just a few clicks.
-      Whether you are a student, a professional, or an avid reader, we cater to your literary needs with our extensive
-      library of e-books and physical copies.</p>
-    <p>At the heart of our service is a user-friendly interface that allows you to search, browse, and select books
-      effortlessly.
-      We also provide personalized recommendations based on your reading habits and preferences.</p>
-    <p>Security and privacy of our users are paramount. We employ state-of-the-art technology to safeguard your personal
-      data and ensure a safe browsing experience.</p>
-    <p>Our customer support team is always ready to assist you with any queries or issues you may face while using our
-      platform. We believe in prompt and effective service to enhance your overall experience.</p>
-    <p>Thank you for choosing us as your reading companion. Together, let's embark on countless literary adventures and
-      make reading an enjoyable journey for everyone.</p>
+  <!-- ── SEARCH RESULTS ── -->
+  <div id="searchResultsContainer">
+    <h2 style="font-size:22px; font-weight:700; color:var(--text-dark); margin-bottom:16px;">🔍 Search Results</h2>
+    <div id="searchResultsList" style="display:flex; flex-direction:column; gap:12px;"></div>
   </div>
 
-  <div class="marquee-container">
-    <div class="marquee-track">
-      <img
-        src="https://th.bing.com/th/id/R.893dcaeeebcf735b267d509bf8ba8844?rik=itfk4pJct1D2fA&riu=http%3a%2f%2fthelibrarytolove.com%2fwp-content%2fuploads%2f2022%2f07%2fHarry-Potter-cover-spines-vertical-1.png&ehk=yAily2tOvInZnUGHPH0yFG8AvaPe4itprss6dSpAfTQ%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book 1">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 2">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 3">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 4">
+  <!-- ── MAIN CONTENT ── -->
+  <div class="about" id="homeContent">
 
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-pattern"></div>
+      <div class="container" style="position:relative; z-index:2; padding-top:40px; padding-bottom:40px;">
+        <div class="hero-content">
+          <div class="hero-tag">✨ Welcome Back!</div>
+          <h1 class="hero-title">
+            Your Next Great Read<br>
+            <span>Awaits You.</span>
+          </h1>
+          <p class="hero-sub">
+            Pick up where you left off, explore new genres, and discover hand-picked recommendations just for you.
+          </p>
+          <div class="hero-actions">
+            <a href="#featured-books" class="btn btn-white btn-lg">📚 Discover New Books</a>
+          </div>
+          <div class="hero-trust">
+            <div class="hero-trust-item"><span>📦</span><span>Free Delivery</span></div>
+            <div class="hero-trust-item"><span>🔒</span><span>Secure Payments</span></div>
+            <div class="hero-trust-item"><span>♻️</span><span>Easy Returns</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-books-stack">
+          <div class="hero-book-card c1">
+            <img src="https://covers.openlibrary.org/b/id/8091016-M.jpg" alt="" class="mini-book-cover">
+            <div class="mini-book-title">The Great Gatsby</div>
+            <div class="mini-book-author">F. Scott Fitzgerald</div>
+            <div class="mini-book-price">Lend from ₹49</div>
+          </div>
+          <div class="hero-book-card c2">
+            <img src="https://covers.openlibrary.org/b/id/7890312-M.jpg" alt="" class="mini-book-cover">
+            <div class="mini-book-title">1984</div>
+            <div class="mini-book-author">George Orwell</div>
+            <div class="mini-book-price">Buy ₹199</div>
+          </div>
+          <div class="hero-book-card c3">
+            <img src="https://covers.openlibrary.org/b/id/8739161-M.jpg" alt="" class="mini-book-cover">
+            <div class="mini-book-title">Dune</div>
+            <div class="mini-book-author">Frank Herbert</div>
+            <div class="mini-book-price">Lend from ₹79</div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <img
-        src="https://th.bing.com/th/id/R.893dcaeeebcf735b267d509bf8ba8844?rik=itfk4pJct1D2fA&riu=http%3a%2f%2fthelibrarytolove.com%2fwp-content%2fuploads%2f2022%2f07%2fHarry-Potter-cover-spines-vertical-1.png&ehk=yAily2tOvInZnUGHPH0yFG8AvaPe4itprss6dSpAfTQ%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book 1">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 2">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 4">
+    <!-- Categories -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Explore</div>
+          <h2 class="section-title">Browse by Genre</h2>
+        </div>
+        <div class="categories-grid">
+          <a href="fiction.html" class="category-card">
+            <div class="cat-emoji">📖</div>
+            <div class="cat-name">Fiction</div>
+          </a>
+          <a href="fantasy.html" class="category-card">
+            <div class="cat-emoji">🧙</div>
+            <div class="cat-name">Fantasy</div>
+          </a>
+          <a href="romance.html" class="category-card">
+            <div class="cat-emoji">💕</div>
+            <div class="cat-name">Romance</div>
+          </a>
+          <a href="education.html" class="category-card">
+            <div class="cat-emoji">🎓</div>
+            <div class="cat-name">Education</div>
+          </a>
+          <a href="others.html" class="category-card">
+            <div class="cat-emoji">📦</div>
+            <div class="cat-name">Others</div>
+          </a>
+          <a href="membership.html" class="category-card">
+            <div class="cat-emoji">💎</div>
+            <div class="cat-name">Membership</div>
+          </a>
+        </div>
+      </div>
+    </section>
 
-      <img
-        src="https://th.bing.com/th/id/R.893dcaeeebcf735b267d509bf8ba8844?rik=itfk4pJct1D2fA&riu=http%3a%2f%2fthelibrarytolove.com%2fwp-content%2fuploads%2f2022%2f07%2fHarry-Potter-cover-spines-vertical-1.png&ehk=yAily2tOvInZnUGHPH0yFG8AvaPe4itprss6dSpAfTQ%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book 1">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 2">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 3">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 4">
+    <!-- Featured Books -->
+    <section class="section" id="featured-books" style="background:var(--bg-card-solid);">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Featured</div>
+          <h2 class="section-title">New Arrivals</h2>
+        </div>
+        <div class="books-grid" id="featuredBooksGrid">
+          <div class="book-card"><div class="skeleton" style="height:240px; border-radius:8px 8px 0 0; margin-bottom:12px;"></div><div style="padding:12px;"><div class="skeleton" style="height:14px; margin-bottom:8px; border-radius:6px;"></div><div class="skeleton" style="height:12px; width:60%; border-radius:6px;"></div></div></div>
+          <div class="book-card"><div class="skeleton" style="height:240px; border-radius:8px 8px 0 0; margin-bottom:12px;"></div><div style="padding:12px;"><div class="skeleton" style="height:14px; margin-bottom:8px; border-radius:6px;"></div><div class="skeleton" style="height:12px; width:60%; border-radius:6px;"></div></div></div>
+          <div class="book-card"><div class="skeleton" style="height:240px; border-radius:8px 8px 0 0; margin-bottom:12px;"></div><div style="padding:12px;"><div class="skeleton" style="height:14px; margin-bottom:8px; border-radius:6px;"></div><div class="skeleton" style="height:12px; width:60%; border-radius:6px;"></div></div></div>
+          <div class="book-card"><div class="skeleton" style="height:240px; border-radius:8px 8px 0 0; margin-bottom:12px;"></div><div style="padding:12px;"><div class="skeleton" style="height:14px; margin-bottom:8px; border-radius:6px;"></div><div class="skeleton" style="height:12px; width:60%; border-radius:6px;"></div></div></div>
+        </div>
+      </div>
+    </section>
 
-      <img
-        src="https://th.bing.com/th/id/R.893dcaeeebcf735b267d509bf8ba8844?rik=itfk4pJct1D2fA&riu=http%3a%2f%2fthelibrarytolove.com%2fwp-content%2fuploads%2f2022%2f07%2fHarry-Potter-cover-spines-vertical-1.png&ehk=yAily2tOvInZnUGHPH0yFG8AvaPe4itprss6dSpAfTQ%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book 1">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 2">
-      <img
-        src="https://tse2.mm.bing.net/th/id/OIP.XEeGEzT54B9iRKMkl1DHMAHaE8?w=1780&h=1187&rs=1&pid=ImgDetMain&o=7&rm=3"
-        alt="Book 3">
-      <img
-        src="https://tse2.mm.bing.net/th/id/OIP.XEeGEzT54B9iRKMkl1DHMAHaE8?w=1780&h=1187&rs=1&pid=ImgDetMain&o=7&rm=3"
-        alt="Book 4">
-
-      <img
-        src="https://th.bing.com/th/id/R.893dcaeeebcf735b267d509bf8ba8844?rik=itfk4pJct1D2fA&riu=http%3a%2f%2fthelibrarytolove.com%2fwp-content%2fuploads%2f2022%2f07%2fHarry-Potter-cover-spines-vertical-1.png&ehk=yAily2tOvInZnUGHPH0yFG8AvaPe4itprss6dSpAfTQ%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book 1">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 2">
-      <img
-        src="https://th.bing.com/th/id/R.893dcaeeebcf735b267d509bf8ba8844?rik=itfk4pJct1D2fA&riu=http%3a%2f%2fthelibrarytolove.com%2fwp-content%2fuploads%2f2022%2f07%2fHarry-Potter-cover-spines-vertical-1.png&ehk=yAily2tOvInZnUGHPH0yFG8AvaPe4itprss6dSpAfTQ%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book 1">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 2">
+    <!-- Book Marquee -->
+    <div class="marquee-container">
+      <div class="marquee-track">
+        <img src="https://covers.openlibrary.org/b/id/8091016-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/7890312-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/8739161-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/9255566-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/10991577-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/8739161-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/8091016-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/7890312-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/9255566-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/10991577-M.jpg" alt="Book cover">
+      </div>
     </div>
-  </div>
-  </div>
-  </div>
 
-  </div>
+  </div><!-- end homeContent -->
 
-
-  <div class="footer">
-    © 2025 All rights reserved.
-  </div>
-  <div id="loginModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2>Login</h2>
-      <form onsubmit="return handleLogin(event)">
-        <label for="username">Username:</label>
-        <input type="text" id="username" required><br><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" required><br><br>
-
-        <p>If you don't have an account, <a href="signup.html"
-            style="text-decoration: underline; color: rgb(0, 119, 255); cursor: pointer;">Sign up!</a></p>
-
-
-        <button type="submit">Login</button>
-      </form>
+  <!-- ── FOOTER ── -->
+  <footer class="pgl-footer">
+    <div class="container">
+      <div class="pgl-footer-bottom">
+        <p>© 2025 PageLoft. All rights reserved. Made with ❤️ for book lovers.</p>
+        <p>📧 pageloft@gmail.com</p>
+      </div>
     </div>
-  </div>
-  <div id="adminModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeAdminModal()">&times;</span>
-      <h2>Admin Login</h2>
-      <form onsubmit="return handleAdminLogin(event)">
-        <label for="adminUsername">Username:</label>
-        <input type="text" id="adminUsername" required><br><br>
+  </footer>
 
-        <label for="adminPassword">Password:</label>
-        <input type="password" id="adminPassword" required><br><br>
-        <p>If you don't have an account, <a href="adminsignup.html"
-            style="text-decoration: underline; color: rgb(0, 119, 255); cursor: pointer;">Create!</a></p>
-        <button type="submit">Login</button>
-      </form>
-    </div>
-  </div>
-
+  <!-- Contact Modal -->
   <div id="contact" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closecontact()">&times;</span>
-      <h3>Contact</h3><br><br>
-      <h2><a href="#" style="text-decoration:none;color:lightcoral;">pageloft@gmail.com</a></h2>
+    <div class="modal-content" style="text-align:center;">
+      <button class="close" onclick="closecontact()">×</button>
+      <div style="font-size:40px; margin-bottom:16px;">📬</div>
+      <h2>Get in Touch</h2>
+      <p style="color:var(--text-muted); margin:16px 0;">We'd love to hear from you.</p>
+      <a href="mailto:pageloft@gmail.com" style="font-size:16px; font-weight:600; color:var(--color-primary);">pageloft@gmail.com</a>
     </div>
   </div>
 
-  <!-- Custom Alerts JS -->
-  <script src="assets/custom_alert.js"></script>
-</body>
+  <div id="pgl-toast-container"></div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", async function () {
-    try {
-      const response = await fetch("http://localhost:8000/api/user/", {
-        credentials: "include"
-      });
-      if (!response.ok) {
+  <script src="assets/custom_alert.js"></script>
+  <script>
+    // Authentication Check & Profile Data
+    document.addEventListener("DOMContentLoaded", async function () {
+      try {
+        const response = await fetch("http://localhost:8000/api/user/", { credentials: "include" });
+        if (!response.ok) { window.location.href = "index.html"; return; }
+        const userData = await response.json();
+        const userNameDisplay = document.getElementById("userNameDisplay");
+        if (userNameDisplay) userNameDisplay.textContent = userData.name;
+      } catch (e) {
         window.location.href = "index.html";
-        return;
       }
-      const userData = await response.json();
-      // Update username in profile popup if element exists
-      const userNameDisplay = document.getElementById("userNameDisplay");
-      if (userNameDisplay) {
-        userNameDisplay.textContent = userData.name;
-      }
-    } catch (e) {
+    });
+
+    // Sign Out
+    async function signOut() {
+      try {
+        await fetch("http://localhost:8000/api/logout/", { method: "POST", credentials: "include" });
+      } catch (e) { console.error("Error logging out", e); }
+      await showCustomAlert("Signed out successfully.");
       window.location.href = "index.html";
     }
-  });
 
-  function opencontact() {
-    document.getElementById("contact").style.display = "block";
-  }
-  function closecontact() {
-    document.getElementById("contact").style.display = "none";
-  }
-  function openModal() {
-    document.getElementById('loginModal').style.display = 'block';
-  }
+    // Scroll Effect
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('mainNavbar');
+      if (window.scrollY > 10) navbar.classList.add('scrolled');
+      else navbar.classList.remove('scrolled');
+    });
 
-  function closeModal() {
-    document.getElementById('loginModal').style.display = 'none';
-  }
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+    });
 
-  function handleLogin(event) {
-    event.preventDefault();
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    if (username === "admin" && password === "admin123") {
-      alert("Login successful!");
-      closeModal();
-      showUserProfile(username);
-    } else {
-      alert("Invalid username or password.");
+    // Modals & Popups
+    function toggleProfilePopup(event) {
+      if(event) event.stopPropagation();
+      const popup = document.getElementById("profilePopup");
+      popup.style.display = popup.style.display === "block" ? "none" : "block";
     }
-  }
+    function opencontact() { document.getElementById('contact').style.display = 'flex'; }
+    function closecontact() { document.getElementById('contact').style.display = 'none'; }
+    function openGenresModal() { document.getElementById('genresDropdown').style.display = 'block'; }
+    function closeGenresModal() { document.getElementById('genresDropdown').style.display = 'none'; }
 
-  function handleAdminLogin(event) {
-    event.preventDefault();
-    const adminUsername = document.getElementById('adminUsername').value.trim();
-    const adminPassword = document.getElementById('adminPassword').value.trim();
-
-    if (adminUsername === "admin" && adminPassword === "admin123") {
-      alert("Admin login successful!");
-      closeAdminModal();
-      showUserProfile("Admin");
-    } else {
-      alert("Invalid admin credentials.");
-    }
-  }
-  function toggleProfilePopup() {
-    const popup = document.getElementById("profilePopup");
-    popup.style.display = popup.style.display === "block" ? "none" : "block";
-  }
-
-  async function signOut() {
-    try {
-      await fetch("http://localhost:8000/api/logout/", {
-        method: "POST",
-        credentials: "include"
-      });
-    } catch (e) {
-      console.error("Error logging out", e);
-    }
-    await showCustomAlert("Signed out successfully.");
-    window.location.href = "index.html";
-  }
-
-
-  function openGenresModal() {
-    document.getElementById('genresDropdown').style.display = 'block';
-  }
-  function closeGenresModal() {
-    document.getElementById('genresDropdown').style.display = 'none';
-  }
-
-
-  function openAdminModal() {
-    document.getElementById('adminModal').style.display = 'block';
-  }
-
-  function closeAdminModal() {
-    document.getElementById('adminModal').style.display = 'none';
-  }
-
-  function handleAdminLogin(event) {
-    event.preventDefault();
-    const adminUsername = document.getElementById('adminUsername').value.trim();
-    const adminPassword = document.getElementById('adminPassword').value.trim();
-
-    if (adminUsername === "admin" && adminPassword === "admin123") {
-      alert("Admin login successful!");
-      closeAdminModal();
-    } else {
-      alert("Invalid admin credentials.");
-    }
-  }
-
-  window.onclick = function (event) {
-    const loginModal = document.getElementById('loginModal');
-    const genresModal = document.getElementById('genresDropdown');
-    const adminmodal = document.getElementById('adminModal');
-    const contact = document.getElementById('contact');
-    if (event.target === loginModal) {
-      closeModal();
-    }
-    if (event.target.closest('.genres-dropdown')) {
-      closeGenresModal();
-    }
-    if (event.target === adminmodal) {
-      closeAdminModal();
-    }
-    if (event.target === contact) {
-      closecontact();
-    }
-  }
-
-  let allBooksData = [];
-
-  document.addEventListener("DOMContentLoaded", async function () {
-    try {
-      const res = await fetch('http://localhost:8000/api/books/');
-      if (res.ok) {
-        allBooksData = await res.json();
+    window.onclick = function(event) {
+      if (!event.target.closest('#profilePopup') && !event.target.closest('.pgl-avatar')) {
+        document.getElementById("profilePopup").style.display = 'none';
       }
-    } catch (err) {
-      console.error("Error fetching books for search", err);
+      if (!event.target.closest('.genres-dropdown') && !event.target.closest('#genresToggleBtn')) {
+        closeGenresModal();
+      }
+      if (event.target === document.getElementById('contact')) {
+        closecontact();
+      }
+    };
+
+    // Books Logic
+    let allBooksData = [];
+    document.addEventListener("DOMContentLoaded", async function() {
+      try {
+        const res = await fetch('http://localhost:8000/api/books/');
+        if (res.ok) {
+          allBooksData = await res.json();
+          renderFeaturedBooks(allBooksData.slice(0, 8));
+        }
+      } catch(err) { console.error("Error fetching books", err); renderFeaturedBooks([]); }
+    });
+
+    function renderFeaturedBooks(books) {
+      const grid = document.getElementById('featuredBooksGrid');
+      if (!books.length) { grid.innerHTML = ''; return; }
+      grid.innerHTML = books.map(book => `
+        <div class="book-card" onclick="window.location.href='page.html?id=${book.id}'" style="cursor:pointer;">
+          <div class="book-card-image-wrap">
+            <img src="${book.image || 'https://via.placeholder.com/200x300?text=Book'}" alt="${book.title}" loading="lazy">
+            <div class="book-card-overlay">
+              <button class="btn btn-white btn-sm" onclick="event.stopPropagation(); window.location.href='page.html?id=${book.id}'">View Details</button>
+            </div>
+          </div>
+          <div class="book-card-body">
+            <div class="book-card-genre">${book.genre || 'General'}</div>
+            <h3 class="book-card-title">${book.title}</h3>
+            <p class="book-card-author">by ${book.author}</p>
+            <div class="book-card-pricing">
+              <span class="book-price-buy">₹${book.price}</span>
+              ${book.lending_price ? `<span class="book-price-lend">Lend ₹${book.lending_price}</span>` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
     }
-  });
 
-  function filterBooks() {
-    const input = document.getElementById('userBookSearch').value.toLowerCase();
-    const resultsContainer = document.getElementById('searchResultsContainer');
-    const resultsList = document.getElementById('searchResultsList');
+    function filterBooks() {
+      const input = document.getElementById('userBookSearch').value.toLowerCase();
+      const resultsContainer = document.getElementById('searchResultsContainer');
+      const resultsList = document.getElementById('searchResultsList');
+      const homeContent = document.getElementById('homeContent');
 
-    const aboutSection = document.querySelector('.about');
-    const marqueeContainer = document.querySelector('.marquee-container');
+      if (input.trim() === '') {
+        resultsContainer.style.display = 'none';
+        if (homeContent) homeContent.style.display = 'block';
+        return;
+      }
+      if (homeContent) homeContent.style.display = 'none';
+      resultsContainer.style.display = 'block';
 
-    if (input.trim() === '') {
-      resultsContainer.style.display = 'none';
-      if (aboutSection) aboutSection.style.display = 'block';
-      if (marqueeContainer) marqueeContainer.style.display = 'block';
-      return;
-    }
+      const filtered = allBooksData.filter(book =>
+        (book.title && book.title.toLowerCase().includes(input)) ||
+        (book.author && book.author.toLowerCase().includes(input)) ||
+        (book.genre && book.genre.toLowerCase().includes(input))
+      );
 
-    if (aboutSection) aboutSection.style.display = 'none';
-    if (marqueeContainer) marqueeContainer.style.display = 'none';
-    resultsContainer.style.display = 'block';
-
-    const filtered = allBooksData.filter(book =>
-      (book.title && book.title.toLowerCase().includes(input)) ||
-      (book.author && book.author.toLowerCase().includes(input)) ||
-      (book.genre && book.genre.toLowerCase().includes(input))
-    );
-
-    if (filtered.length === 0) {
-      resultsList.innerHTML = '<p>No books found matching your search.</p>';
-    } else {
-      resultsList.innerHTML = filtered.map(book => `
-            <div style="display: flex; align-items: flex-start; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-              <img src="${book.image}" alt="${book.title}" style="width: 100px; height: 140px; object-fit: cover; margin-right: 15px; border-radius: 4px;">
-              <div>
-                <h3 style="margin: 0 0 5px; color: #333;">${book.title}</h3>
-                <p style="margin: 0 0 5px; color: #777;">by ${book.author} | Genre: ${book.genre}</p>
-                <p style="margin: 0 0 10px; color: #555; font-size: 14px;">Total Value: ₹${book.price}</p>
-                <button onclick="window.location.href='page.html?id=${book.id}'" style="padding: 8px 16px; background-color: lightcoral; color: white; border: none; border-radius: 4px; cursor: pointer;">View Details</button>
+      if (filtered.length === 0) {
+        resultsList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><h3>No books found</h3><p>Try a different search term.</p></div>';
+      } else {
+        resultsList.innerHTML = filtered.map(book => `
+          <div class="search-result-item">
+            <img src="${book.image || ''}" alt="${book.title}" style="width:80px; height:110px; object-fit:cover; border-radius:8px; margin-right:16px; flex-shrink:0;">
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--color-accent); margin-bottom:4px;">${book.genre}</div>
+              <h3 style="font-size:16px; font-weight:700; color:var(--text-dark); margin-bottom:4px;">${book.title}</h3>
+              <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">by ${book.author}</p>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <span style="font-weight:700; color:var(--color-primary);">₹${book.price}</span>
+                ${book.lending_price ? `<span style="font-size:12px; color:var(--text-muted);">Lend ₹${book.lending_price}</span>` : ''}
               </div>
             </div>
-          `).join('');
+            <button class="btn btn-primary btn-sm" onclick="window.location.href='page.html?id=${book.id}'" style="flex-shrink:0; margin-left:16px;">View</button>
+          </div>
+        `).join('');
+      }
     }
-  }
-</script>
-
-
-
+  </script>
+</body>
 </html>

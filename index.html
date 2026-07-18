@@ -1,815 +1,1318 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Online Book Lending</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PageLoft – Read More. Spend Less.</title>
+  <meta name="description" content="PageLoft is your premium online book lending and buying platform. Browse thousands of titles, lend for a week, or own them forever.">
   <link rel="icon" type="image/jpeg" href="obl.jpg?v=2">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/custom_alert.css">
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: white;
+    /* ── HERO ── */
+    .hero {
+      min-height: 92vh;
+      background: linear-gradient(150deg, #3D1F15 0%, #6D4C41 50%, #8D6E63 100%);
       position: relative;
-    }
-
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 30px;
-      background-color: lightcoral;
-    }
-
-    .logo {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-    }
-
-    .pageloft-title {
-      flex: 1;
-      position: fixed;
-      text-align: center;
-      font-size: 50px;
-      font-weight: bold;
-      color: white;
-      position: relative;
-      right: 290px;
-    }
-
-    .search-login {
       display: flex;
       align-items: center;
+      overflow: hidden;
     }
-
-    .search-bar input[type="search"] {
-      padding: 12px 20px;
-      width: 250px;
-      border-radius: 30px;
-      border: 1px solid #ccc;
-      font-size: 16px;
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 80% 40%, rgba(212,163,115,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 50% at 10% 80%, rgba(0,0,0,0.3) 0%, transparent 60%);
     }
-
-    .login a {
-      margin-left: 15px;
-      text-decoration: none;
-      color: white;
-      font-weight: bold;
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
-
-    .login i {
-      margin-right: 5px;
-    }
-
-    .navbar {
-      display: flex;
-      justify-content: center;
-      background: transparent;
-      padding: 10px 0;
-    }
-
-    .navbar a {
-      margin: 0 20px;
-      text-decoration: none;
-      color: black;
-      font-weight: bold;
+    .hero-content {
       position: relative;
+      z-index: 2;
+      max-width: 620px;
     }
-
-    .buttons-container {
-      display: flex;
-      justify-content: center;
-      position: relative;
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
     }
-
-    .buttons {
-      display: flex;
-      margin-top: -50px;
-      gap: 50px;
-      padding: 80px;
-      border-radius: 20px;
-    }
-
-    .buttons button {
-      padding: 20px 40px;
-      font-size: 16px;
-      cursor: pointer;
-      background-color: lightcoral;
-      border-radius: 10px;
+    .hero-title {
+      font-size: clamp(40px, 6vw, 68px);
+      font-weight: 800;
       color: white;
-      border: none;
-      outline: 2px solid white;
-      outline-offset: -8px;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
     }
-
-    .about {
-      font-size: 16px;
-      padding: 20px;
+    .hero-title span {
+      background: linear-gradient(135deg, #F0CFA5, #D4A373);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      font-size: 18px;
+      color: rgba(255,255,255,0.72);
       line-height: 1.6;
-      font-family: Arial, sans-serif;
-      max-width: 100%;
-      margin-left: 0;
-      margin-right: 0;
-      color: rgb(0, 0, 0);
+      margin-bottom: 40px;
+      max-width: 480px;
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .hero-trust {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+      flex-wrap: wrap;
+    }
+    .hero-trust-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.7);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .hero-trust-item span:first-child {
+      font-size: 20px;
+    }
+    /* Hero floating book cards */
+    .hero-visual {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 45%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+    }
+    .hero-books-stack {
+      position: relative;
+      width: 340px;
+      height: 420px;
+    }
+    .hero-book-card {
+      position: absolute;
+      background: var(--glass-bg);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 16px 48px rgba(0,0,0,0.25);
+    }
+    .hero-book-card.c1 {
+      bottom: 0; left: 0;
+      width: 200px;
+      transform: rotate(-6deg);
+      animation: float 5s ease-in-out infinite;
+    }
+    .hero-book-card.c2 {
+      top: 20px; right: 0;
+      width: 210px;
+      transform: rotate(4deg);
+      animation: float 4s ease-in-out infinite 0.5s;
+    }
+    .hero-book-card.c3 {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      width: 190px;
+      animation: float 6s ease-in-out infinite 1s;
+    }
+    @keyframes float {
+      0%, 100% { transform-origin: center; margin-top: 0; }
+      50%       { margin-top: -10px; }
+    }
+    .hero-book-card.c1 { animation: float1 5s ease-in-out infinite; }
+    .hero-book-card.c2 { animation: float2 4s ease-in-out infinite; }
+    .hero-book-card.c3 { animation: float3 6s ease-in-out infinite; }
+    @keyframes float1 {
+      0%, 100% { transform: rotate(-6deg) translateY(0); }
+      50%       { transform: rotate(-6deg) translateY(-10px); }
+    }
+    @keyframes float2 {
+      0%, 100% { transform: rotate(4deg) translateY(0); }
+      50%       { transform: rotate(4deg) translateY(-8px); }
+    }
+    @keyframes float3 {
+      0%, 100% { transform: translate(-50%, -50%) rotate(-1deg) translateY(0); }
+      50%       { transform: translate(-50%, -50%) rotate(-1deg) translateY(-12px); }
+    }
+    .mini-book-cover {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+    .mini-book-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 2px;
+    }
+    .mini-book-author {
+      font-size: 10px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 6px;
+    }
+    .mini-book-price {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--color-accent);
+    }
+
+    /* ── STATS SECTION ── */
+    .stats-section {
+      background: var(--bg-card-solid);
+      padding: 64px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+    .stat-block {
+      text-align: center;
+      padding: 32px 24px;
+      position: relative;
+    }
+    .stat-block + .stat-block::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 20%;
+      height: 60%;
+      width: 1px;
+      background: var(--border-color);
+    }
+    .stat-block-number {
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--color-primary);
+      line-height: 1;
+      margin-bottom: 8px;
+      letter-spacing: -0.03em;
+    }
+    .stat-block-label {
+      font-size: 14px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* ── FEATURED BOOKS ── */
+    .books-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    /* ── CATEGORIES ── */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+    }
+    .category-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 28px 16px;
+      background: var(--bg-card-solid);
+      border: 1.5px solid var(--border-color);
+      border-radius: 16px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+    .category-card:hover {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-3px);
+      background: linear-gradient(160deg, rgba(109,76,65,0.03), rgba(212,163,115,0.06));
+    }
+    .cat-emoji {
+      font-size: 36px;
+      line-height: 1;
+    }
+    .cat-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark);
+    }
+    .cat-count {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ── HOW IT WORKS ── */
+    .hiw-section {
+      background: var(--bg-card-solid);
+    }
+    .hiw-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      position: relative;
+    }
+    .hiw-grid::before {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 15%;
+      right: 15%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
+      z-index: 0;
+    }
+    .hiw-step {
+      text-align: center;
+      padding: 32px 24px;
       position: relative;
       z-index: 1;
     }
-
-    .footer {
-      background-color: lightcoral;
-      text-align: center;
-      padding: 10px;
-      font-size: 14px;
-      margin-top: 150px;
+    .hiw-icon-wrap {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 20px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      border: 4px solid var(--bg-card-solid);
+    }
+    .hiw-step-num {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 24px;
+      height: 24px;
+      background: var(--color-accent);
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .hiw-step h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+    .hiw-step p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
     }
 
+    /* ── TESTIMONIALS ── */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .testimonial-card {
+      background: var(--bg-card-solid);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.25s ease;
+    }
+    .testimonial-card:hover {
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
+    }
+    .testimonial-stars {
+      color: #F59E0B;
+      font-size: 14px;
+      margin-bottom: 12px;
+      letter-spacing: 2px;
+    }
+    .testimonial-text {
+      font-size: 14px;
+      color: var(--text-body);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-style: italic;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .testimonial-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: white;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .testimonial-name {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--text-dark);
+    }
+    .testimonial-role {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ── SEARCH RESULTS ── */
+    #searchResultsContainer {
+      padding: 24px 32px;
+      max-width: 900px;
+      margin: 0 auto;
+      display: none;
+    }
+    .search-result-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 16px;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+    }
+    .search-result-item:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    /* ── MODALS ── */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: var(--z-modal);
+      inset: 0;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal.open, .modal[style*="block"] {
+      display: flex !important;
+    }
+    .modal-content {
+      background: var(--bg-card-solid);
+      border-radius: 20px;
+      box-shadow: var(--shadow-xl);
+      width: 100%;
+      max-width: 420px;
+      padding: 40px;
+      position: relative;
+      animation: slideUp 0.3s ease;
+    }
+    .modal-content h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .modal-content input {
+      width: 100%;
+      padding: 11px 16px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: var(--font-family);
+      color: var(--text-dark);
+      background: var(--bg-base);
+      margin-bottom: 14px;
+      transition: all 0.2s;
+      box-sizing: border-box;
+    }
+    .modal-content input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(109,76,65,0.1);
+    }
+    .modal-content label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+    .modal-content button[type="submit"] {
+      width: 100%;
+      padding: 13px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: var(--font-family);
+      transition: all 0.2s;
+      margin-top: 4px;
+    }
+    .modal-content button[type="submit"]:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+    .modal-content .close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: rgba(109,76,65,0.08);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: none;
+      font-weight: 400;
+      transition: all 0.2s;
+      line-height: 1;
+    }
+    .modal-content .close:hover {
+      background: rgba(239,68,68,0.1);
+      color: var(--color-danger);
+    }
+    .modal-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .modal-link {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .modal-link a {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+    .modal-forgot {
+      font-size: 12px;
+      color: var(--color-accent);
+      text-decoration: underline;
+      cursor: pointer;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    /* GENRES DROPDOWN */
+    .genres-dropdown {
+      display: none;
+      position: fixed;
+      z-index: var(--z-dropdown);
+      top: 68px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg-card-solid);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      padding: 16px;
+      min-width: 220px;
+      animation: slideDown 0.2s ease;
+    }
+    .genres-dropdown a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-body);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.15s;
+    }
+    .genres-dropdown a:hover {
+      background: rgba(109,76,65,0.07);
+      color: var(--color-primary);
+    }
+    .genres-dropdown .close {
+      display: block;
+      text-align: right;
+      font-size: 18px;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-bottom: 8px;
+      padding: 0 4px;
+      background: none;
+      border: none;
+    }
+
+    /* MARQUEE */
     .marquee-container {
       overflow: hidden;
       white-space: nowrap;
       width: 100%;
-      margin-top: 30px;
+      background: var(--bg-base);
+      padding: 32px 0;
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
     }
-
     .marquee-track {
       display: inline-flex;
+      gap: 16px;
       animation: scrollTrain 30s linear infinite;
     }
-
     .marquee-track img {
-      height: 150px;
+      height: 130px;
+      width: auto;
+      border-radius: 8px;
+      box-shadow: var(--shadow-sm);
+      object-fit: cover;
       flex-shrink: 0;
     }
-
     @keyframes scrollTrain {
-      0% {
-        transform: translateX(0);
-      }
-
-      100% {
-        transform: translateX(-50%);
-      }
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
     }
 
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 10;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.6);
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1200px) {
+      .books-grid { grid-template-columns: repeat(3, 1fr); }
+      .categories-grid { grid-template-columns: repeat(4, 1fr); }
+      .hero-visual { width: 38%; }
     }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 40px;
-      border: 1px solid #888;
-      width: 300px;
-      border-radius: 10px;
-      text-align: center;
-      position: relative;
+    @media (max-width: 992px) {
+      .hero { min-height: auto; padding: 80px 0 60px; }
+      .hero-visual { display: none; }
+      .hero-content { max-width: 100%; }
+      .hiw-grid { grid-template-columns: repeat(2, 1fr); }
+      .hiw-grid::before { display: none; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
     }
-
-    .modal-content input {
-      width: 90%;
-      padding: 10px;
-      margin-top: 5px;
-      margin-bottom: 15px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .modal-content button {
-      padding: 10px 20px;
-      background-color: lightcoral;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    .close {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 24px;
-      font-weight: bold;
-      color: #aaa;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: black;
-    }
-
-    .genres-dropdown {
-      display: none;
-      position: absolute;
-      top: 140px;
-      left: 40%;
-      transform: translateX(-50%);
-      background-color: white;
-      border: 1px solid lightcoral;
-      border-radius: 5px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      z-index: 100;
-    }
-
-    .genres-dropdown a {
-      display: block;
-      padding: 8px 25px;
-      color: grey;
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .genres-dropdown a:hover {
-      background-color: lightcoral;
-      color: white;
-      border-radius: 5px;
-    }
-
-
     @media (max-width: 768px) {
-      .header {
-        flex-direction: column;
-        align-items: center;
-        padding: 15px;
-      }
-
-      .logo {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 10px;
-      }
-
-      .pageloft-title {
-        font-size: 32px;
-        right: 0;
-        position: relative;
-        text-align: center;
-        margin-bottom: 10px;
-      }
-
-      .search-login {
-        flex-direction: column;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .search-bar input[type="search"] {
-        width: 90%;
-        max-width: 300px;
-        font-size: 14px;
-      }
-
-      .navbar {
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 10px;
-      }
-
-      .navbar a {
-        font-size: 14px;
-        margin: 5px 10px;
-      }
-
-      .genres-dropdown {
-        top: auto;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 90%;
-        padding: 10px;
-      }
-
-      .genres-dropdown a {
-        padding: 8px 10px;
-        font-size: 14px;
-      }
-
-      .buttons {
-        flex-direction: column;
-        gap: 20px;
-        padding: 20px;
-        margin-top: 0;
-      }
-
-      .buttons button {
-        width: 100%;
-        font-size: 14px;
-        padding: 15px;
-      }
-
-      .about {
-        padding: 15px;
-        font-size: 14px;
-        text-align: justify;
-      }
-
-      .marquee-track img {
-        height: 100px;
-      }
-
-      .modal-content {
-        width: 90%;
-        padding: 20px;
-      }
-
-      .footer {
-        font-size: 12px;
-        padding: 8px;
-      }
+      .books-grid { grid-template-columns: repeat(2, 1fr); }
+      .categories-grid { grid-template-columns: repeat(3, 1fr); }
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .hiw-grid { grid-template-columns: 1fr; }
+      .pgl-footer-grid { grid-template-columns: 1fr; }
     }
-
-    @media (max-width: 480px) {
-      .pageloft-title {
-        font-size: 26px;
-      }
-
-      .navbar a {
-        font-size: 12px;
-      }
-
-      .buttons button {
-        font-size: 12px;
-      }
+    @media (max-width: 576px) {
+      .books-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .categories-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-title { font-size: 36px; }
     }
   </style>
-
-
-
-  <!-- Custom Alerts & Responsive CSS -->
-  <link rel="stylesheet" href="assets/custom_alert.css">
-  <link rel="stylesheet" href="assets/responsive.css">
 </head>
-
 <body>
 
-  <div class="header">
-    <img src="obl.jpg" alt="Logo" class="logo">
-    <div class="pageloft-title">PageLoft</div>
-    <div class="search-login">
-      <div class="search-bar">
-        <input type="search" id="userBookSearch" placeholder="Search books by title, author, genre..."
-          onkeyup="filterBooks()">
+  <!-- ── NAVBAR ── -->
+  <nav class="pgl-navbar" id="mainNavbar" role="navigation" aria-label="Main navigation">
+    <div class="pgl-navbar-inner">
+      <a href="index.html" class="pgl-navbar-brand" aria-label="PageLoft Home">
+        <img src="obl.jpg" alt="PageLoft Logo" class="pgl-navbar-logo">
+        <span class="pgl-navbar-name">PageLoft</span>
+      </a>
+
+      <nav class="pgl-navbar-nav" aria-label="Site navigation">
+        <div class="pgl-dropdown-wrapper">
+          <a href="#" class="pgl-nav-link" id="genresToggleBtn" onclick="openGenresModal(); return false;" aria-expanded="false" aria-haspopup="true">
+            📚 Genres <span style="font-size:10px; margin-left:2px;">▾</span>
+          </a>
+        </div>
+        <a href="membership.html" class="pgl-nav-link">💎 Membership</a>
+        <a href="#" class="pgl-nav-link" onclick="opencontact(); return false;">📬 Contact</a>
+      </nav>
+
+      <div class="pgl-navbar-actions">
+        <div class="pgl-search-wrap" style="position:relative;">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input type="search" id="userBookSearch" class="pgl-search-input" placeholder="Search books…" onkeyup="filterBooks()" aria-label="Search books">
+        </div>
+        <div id="authLinks">
+          <a href="#" onclick="openModal(); return false;" class="btn btn-outline btn-sm" id="loginBtn" aria-label="Login">👤 Login</a>
+          <a href="#" onclick="openAdminModal(); return false;" class="btn btn-ghost btn-sm" id="adminBtn" aria-label="Admin Login">Admin</a>
+        </div>
       </div>
-      <div class="login" id="authLinks">
-        <a href="#" onclick="openModal()"><i>👤</i>Login</a>
-        <a href="#" onclick="openAdminModal()">Admin</a>
+
+      <button class="pgl-hamburger" id="hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div class="pgl-mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+      <a href="#" class="pgl-nav-link" onclick="openGenresModal(); return false;">📚 Genres</a>
+      <a href="membership.html" class="pgl-nav-link">💎 Membership</a>
+      <a href="#" class="pgl-nav-link" onclick="opencontact(); return false;">📬 Contact</a>
+      <div style="border-top:1px solid var(--border-color); padding-top:12px; display:flex; gap:8px;">
+        <a href="#" onclick="openModal(); return false;" class="btn btn-primary btn-sm" style="flex:1; justify-content:center;">Login</a>
+        <a href="#" onclick="openAdminModal(); return false;" class="btn btn-ghost btn-sm" style="flex:1; justify-content:center;">Admin</a>
       </div>
-
     </div>
+  </nav>
+
+  <!-- Genres Dropdown -->
+  <div class="genres-dropdown" id="genresDropdown" role="dialog" aria-label="Select a genre">
+    <button class="close" onclick="closeGenresModal()" aria-label="Close genres">×</button>
+    <a href="fiction.html">📖 Fiction</a>
+    <a href="fantasy.html">🧙 Fantasy</a>
+    <a href="romance.html">💕 Romance</a>
+    <a href="education.html">🎓 Education</a>
+    <a href="others.html">📦 Others</a>
   </div>
 
-  <div class="navbar">
-    <a href="#" onclick="openGenresModal()">Genres &#9662;</a>
-    <a href="#" onclick="opencontact()">Contacts</a>
-    <a href="membership.html">Membership Plan</a>
-  </div>
-
-  <div id="searchResultsContainer"
-    style="display: none; padding: 20px; max-width: 900px; margin: 0 auto; z-index: 5; position: relative;">
-    <h2 style="color: lightcoral;">Search Results:</h2>
-    <div id="searchResultsList" style="display: flex; flex-direction: column; gap: 15px;"></div>
-  </div>
-
-  <div class="genres-dropdown" id="genresDropdown">
-    <span class="close" onclick="closeGenresModal()">&times;</span>
-    <a href="fiction.html">Fiction</a>
-    <a href="fantasy.html">Fantasy</a>
-    <a href="romance.html">Romance</a>
-    <a href="education.html">Education</a>
-    <a href="others.html">Others</a>
-  </div>
-
-
-  <div class="about">
-    <p>Welcome to our Online Book Lending Platform, where we bring the joy of reading right to your fingertips.
-      Our mission is to connect book lovers with a vast collection of literature, ranging from timeless classics to the
-      latest bestsellers.</p>
-    <p>Our platform offers a seamless experience for borrowing and returning books with just a few clicks.
-      Whether you are a student, a professional, or an avid reader, we cater to your literary needs with our extensive
-      library of e-books and physical copies.</p>
-    <p>At the heart of our service is a user-friendly interface that allows you to search, browse, and select books
-      effortlessly.
-      We also provide personalized recommendations based on your reading habits and preferences.</p>
-    <p>Security and privacy of our users are paramount. We employ state-of-the-art technology to safeguard your personal
-      data and ensure a safe browsing experience.</p>
-    <p>Our customer support team is always ready to assist you with any queries or issues you may face while using our
-      platform. We believe in prompt and effective service to enhance your overall experience.</p>
-    <p>Thank you for choosing us as your reading companion. Together, let's embark on countless literary adventures and
-      make reading an enjoyable journey for everyone.</p>
-  </div>
-  <div class="marquee-container">
-    <div class="marquee-track">
-      <img
-        src="https://th.bing.com/th/id/R.893dcaeeebcf735b267d509bf8ba8844?rik=itfk4pJct1D2fA&riu=http%3a%2f%2fthelibrarytolove.com%2fwp-content%2fuploads%2f2022%2f07%2fHarry-Potter-cover-spines-vertical-1.png&ehk=yAily2tOvInZnUGHPH0yFG8AvaPe4itprss6dSpAfTQ%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book 1">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 2">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 3">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 4">
-
-
-      <img
-        src="https://th.bing.com/th/id/R.893dcaeeebcf735b267d509bf8ba8844?rik=itfk4pJct1D2fA&riu=http%3a%2f%2fthelibrarytolove.com%2fwp-content%2fuploads%2f2022%2f07%2fHarry-Potter-cover-spines-vertical-1.png&ehk=yAily2tOvInZnUGHPH0yFG8AvaPe4itprss6dSpAfTQ%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book 1">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 2">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 4">
-
-      <img
-        src="https://th.bing.com/th/id/R.893dcaeeebcf735b267d509bf8ba8844?rik=itfk4pJct1D2fA&riu=http%3a%2f%2fthelibrarytolove.com%2fwp-content%2fuploads%2f2022%2f07%2fHarry-Potter-cover-spines-vertical-1.png&ehk=yAily2tOvInZnUGHPH0yFG8AvaPe4itprss6dSpAfTQ%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book 1">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 2">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 3">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 4">
-
-      <img
-        src="https://th.bing.com/th/id/R.893dcaeeebcf735b267d509bf8ba8844?rik=itfk4pJct1D2fA&riu=http%3a%2f%2fthelibrarytolove.com%2fwp-content%2fuploads%2f2022%2f07%2fHarry-Potter-cover-spines-vertical-1.png&ehk=yAily2tOvInZnUGHPH0yFG8AvaPe4itprss6dSpAfTQ%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book 1">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 2">
-      <img
-        src="https://tse2.mm.bing.net/th/id/OIP.XEeGEzT54B9iRKMkl1DHMAHaE8?w=1780&h=1187&rs=1&pid=ImgDetMain&o=7&rm=3"
-        alt="Book 3">
-      <img
-        src="https://tse2.mm.bing.net/th/id/OIP.XEeGEzT54B9iRKMkl1DHMAHaE8?w=1780&h=1187&rs=1&pid=ImgDetMain&o=7&rm=3"
-        alt="Book 4">
-
-      <img
-        src="https://th.bing.com/th/id/R.893dcaeeebcf735b267d509bf8ba8844?rik=itfk4pJct1D2fA&riu=http%3a%2f%2fthelibrarytolove.com%2fwp-content%2fuploads%2f2022%2f07%2fHarry-Potter-cover-spines-vertical-1.png&ehk=yAily2tOvInZnUGHPH0yFG8AvaPe4itprss6dSpAfTQ%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book 1">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 2">
-      <img
-        src="https://th.bing.com/th/id/R.893dcaeeebcf735b267d509bf8ba8844?rik=itfk4pJct1D2fA&riu=http%3a%2f%2fthelibrarytolove.com%2fwp-content%2fuploads%2f2022%2f07%2fHarry-Potter-cover-spines-vertical-1.png&ehk=yAily2tOvInZnUGHPH0yFG8AvaPe4itprss6dSpAfTQ%3d&risl=&pid=ImgRaw&r=0"
-        alt="Book 1">
-      <img
-        src="https://d1rig8ldkblbsy.cloudfront.net/app/uploads/2021/07/27065126/booker-prize-crop-1627365141-1080x1080.jpg?auto=format%2Ccompress&fit=max&fm=webp&monochrome=29000000&q=75&w=1400"
-        alt="Book 2">
+  <!-- ── HERO ── -->
+  <section class="hero" aria-label="Hero section">
+    <div class="hero-pattern" aria-hidden="true"></div>
+    <div class="container" style="position:relative; z-index:2; padding-top:40px; padding-bottom:40px;">
+      <div class="hero-content">
+        <div class="hero-tag" aria-label="Platform tagline">✨ India's Premier Book Lending Platform</div>
+        <h1 class="hero-title">
+          Read More.<br>
+          <span>Spend Less.</span>
+        </h1>
+        <p class="hero-sub">
+          Buy or borrow from thousands of titles — fiction, fantasy, romance, and more. Delivered to your door, returned with ease.
+        </p>
+        <div class="hero-actions">
+          <a href="#featured-books" class="btn btn-white btn-lg" aria-label="Browse available books">📚 Browse Books</a>
+          <a href="membership.html" class="btn btn-lg" style="background:rgba(255,255,255,0.12); border:1.5px solid rgba(255,255,255,0.3); color:white;">💎 Start Lending</a>
+        </div>
+        <div class="hero-trust">
+          <div class="hero-trust-item"><span>📦</span><span>Free Delivery</span></div>
+          <div class="hero-trust-item"><span>🔒</span><span>Secure Payments</span></div>
+          <div class="hero-trust-item"><span>♻️</span><span>Easy Returns</span></div>
+          <div class="hero-trust-item"><span>⭐</span><span>4.8 Rating</span></div>
+        </div>
+      </div>
     </div>
-  </div>
-  </div>
+    <div class="hero-visual" aria-hidden="true">
+      <div class="hero-books-stack">
+        <div class="hero-book-card c1">
+          <img src="https://covers.openlibrary.org/b/id/8091016-M.jpg" alt="" class="mini-book-cover">
+          <div class="mini-book-title">The Great Gatsby</div>
+          <div class="mini-book-author">F. Scott Fitzgerald</div>
+          <div class="mini-book-price">Lend from ₹49</div>
+        </div>
+        <div class="hero-book-card c2">
+          <img src="https://covers.openlibrary.org/b/id/7890312-M.jpg" alt="" class="mini-book-cover">
+          <div class="mini-book-title">1984</div>
+          <div class="mini-book-author">George Orwell</div>
+          <div class="mini-book-price">Buy ₹199</div>
+        </div>
+        <div class="hero-book-card c3">
+          <img src="https://covers.openlibrary.org/b/id/8739161-M.jpg" alt="" class="mini-book-cover">
+          <div class="mini-book-title">Dune</div>
+          <div class="mini-book-author">Frank Herbert</div>
+          <div class="mini-book-price">Lend from ₹79</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── STATS ── -->
+  <section class="stats-section" aria-label="Platform statistics">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-block">
+          <div class="stat-block-number" id="stat1" data-target="2500">0</div>
+          <div class="stat-block-label">Books Available</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-block-number" id="stat2" data-target="15000">0</div>
+          <div class="stat-block-label">Active Readers</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-block-number" id="stat3" data-target="8400">0</div>
+          <div class="stat-block-label">Books Lent</div>
+        </div>
+        <div class="stat-block">
+          <div class="stat-block-number" id="stat4" data-target="9800">0</div>
+          <div class="stat-block-label">Happy Deliveries</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SEARCH RESULTS ── -->
+  <div id="searchResultsContainer">
+    <h2 style="font-size:22px; font-weight:700; color:var(--text-dark); margin-bottom:16px;">🔍 Search Results</h2>
+    <div id="searchResultsList" style="display:flex; flex-direction:column; gap:12px;"></div>
   </div>
 
-  </div>
+  <!-- ── ABOUT / HOME CONTENT ── -->
+  <div class="about" id="homeContent">
 
+    <!-- Categories -->
+    <section class="section" aria-label="Browse by genre">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Explore</div>
+          <h2 class="section-title">Browse by Genre</h2>
+          <p class="section-subtitle" style="margin:0 auto;">Find books across every genre — from gripping fiction to academic excellence.</p>
+        </div>
+        <div class="categories-grid">
+          <a href="fiction.html" class="category-card" aria-label="Browse Fiction books">
+            <div class="cat-emoji">📖</div>
+            <div class="cat-name">Fiction</div>
+          </a>
+          <a href="fantasy.html" class="category-card" aria-label="Browse Fantasy books">
+            <div class="cat-emoji">🧙</div>
+            <div class="cat-name">Fantasy</div>
+          </a>
+          <a href="romance.html" class="category-card" aria-label="Browse Romance books">
+            <div class="cat-emoji">💕</div>
+            <div class="cat-name">Romance</div>
+          </a>
+          <a href="education.html" class="category-card" aria-label="Browse Education books">
+            <div class="cat-emoji">🎓</div>
+            <div class="cat-name">Education</div>
+          </a>
+          <a href="others.html" class="category-card" aria-label="Browse other books">
+            <div class="cat-emoji">📦</div>
+            <div class="cat-name">Others</div>
+          </a>
+          <a href="membership.html" class="category-card" aria-label="View membership plans">
+            <div class="cat-emoji">💎</div>
+            <div class="cat-name">Membership</div>
+          </a>
+        </div>
+      </div>
+    </section>
 
-  <div class="footer">
-    © 2025 All rights reserved.
-  </div>
-  <div id="loginModal" class="modal">
+    <!-- Featured Books (Loaded from API) -->
+    <section class="section" id="featured-books" style="background:var(--bg-card-solid);" aria-label="Featured books">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Featured</div>
+          <h2 class="section-title">Books You'll Love</h2>
+          <p class="section-subtitle" style="margin:0 auto;">Curated picks across all genres, ready to buy or borrow.</p>
+        </div>
+        <div class="books-grid" id="featuredBooksGrid">
+          <!-- Skeleton loaders -->
+          <div class="book-card"><div class="skeleton" style="height:240px; border-radius:8px 8px 0 0; margin-bottom:12px;"></div><div style="padding:12px;"><div class="skeleton" style="height:14px; margin-bottom:8px; border-radius:6px;"></div><div class="skeleton" style="height:12px; width:60%; border-radius:6px;"></div></div></div>
+          <div class="book-card"><div class="skeleton" style="height:240px; border-radius:8px 8px 0 0; margin-bottom:12px;"></div><div style="padding:12px;"><div class="skeleton" style="height:14px; margin-bottom:8px; border-radius:6px;"></div><div class="skeleton" style="height:12px; width:60%; border-radius:6px;"></div></div></div>
+          <div class="book-card"><div class="skeleton" style="height:240px; border-radius:8px 8px 0 0; margin-bottom:12px;"></div><div style="padding:12px;"><div class="skeleton" style="height:14px; margin-bottom:8px; border-radius:6px;"></div><div class="skeleton" style="height:12px; width:60%; border-radius:6px;"></div></div></div>
+          <div class="book-card"><div class="skeleton" style="height:240px; border-radius:8px 8px 0 0; margin-bottom:12px;"></div><div style="padding:12px;"><div class="skeleton" style="height:14px; margin-bottom:8px; border-radius:6px;"></div><div class="skeleton" style="height:12px; width:60%; border-radius:6px;"></div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section hiw-section" aria-label="How PageLoft works">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Process</div>
+          <h2 class="section-title">How It Works</h2>
+          <p class="section-subtitle" style="margin:0 auto;">Get your next great read in four simple steps.</p>
+        </div>
+        <div class="hiw-grid">
+          <div class="hiw-step">
+            <div class="hiw-icon-wrap">📚<span class="hiw-step-num">1</span></div>
+            <h3>Browse</h3>
+            <p>Explore thousands of books by genre, author, or title using our smart search.</p>
+          </div>
+          <div class="hiw-step">
+            <div class="hiw-icon-wrap">✅<span class="hiw-step-num">2</span></div>
+            <h3>Choose</h3>
+            <p>Pick buy or lend. Choose your lending duration from 1 to 4 weeks.</p>
+          </div>
+          <div class="hiw-step">
+            <div class="hiw-icon-wrap">💳<span class="hiw-step-num">3</span></div>
+            <h3>Pay</h3>
+            <p>Pay securely via UPI. Your deposit is fully refunded on safe return.</p>
+          </div>
+          <div class="hiw-step">
+            <div class="hiw-icon-wrap">📦<span class="hiw-step-num">4</span></div>
+            <h3>Receive</h3>
+            <p>Get your book delivered to your doorstep. Track your order in real time.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section" aria-label="Customer testimonials">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-tag">Testimonials</div>
+          <h2 class="section-title">What Readers Say</h2>
+          <p class="section-subtitle" style="margin:0 auto;">Real experiences from our growing community of book lovers.</p>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"PageLoft transformed my reading habit. I can explore new genres without committing to a full purchase. The delivery is super fast!"</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">A</div>
+              <div><div class="testimonial-name">Aditi Sharma</div><div class="testimonial-role">Book Enthusiast, Delhi</div></div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-text">"The lending model is genius! I read 3x more books now at a fraction of the cost. The deposit system is very fair and trustworthy."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">R</div>
+              <div><div class="testimonial-name">Rahul Menon</div><div class="testimonial-role">Student, Bangalore</div></div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-stars">★★★★⭐</div>
+            <p class="testimonial-text">"Excellent selection of academic and professional books. My go-to platform for all reading needs. Customer support is incredibly responsive."</p>
+            <div class="testimonial-author">
+              <div class="testimonial-avatar">P</div>
+              <div><div class="testimonial-name">Priya Nair</div><div class="testimonial-role">Professional, Mumbai</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Book Marquee -->
+    <div class="marquee-container" aria-hidden="true">
+      <div class="marquee-track">
+        <img src="https://covers.openlibrary.org/b/id/8091016-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/7890312-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/8739161-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/9255566-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/10991577-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/8739161-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/8091016-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/7890312-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/9255566-M.jpg" alt="Book cover">
+        <img src="https://covers.openlibrary.org/b/id/10991577-M.jpg" alt="Book cover">
+      </div>
+    </div>
+
+  </div><!-- end .about -->
+
+  <!-- ── FOOTER ── -->
+  <footer class="pgl-footer" aria-label="Site footer">
+    <div class="container">
+      <div class="pgl-footer-grid">
+        <div class="pgl-footer-brand">
+          <h2>📚 PageLoft</h2>
+          <p>India's premier online book lending and buying platform. Read more, spend less — with thousands of titles delivered to your door.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Follow us on Instagram">📷</a>
+            <a href="#" class="social-link" aria-label="Follow us on Twitter">🐦</a>
+            <a href="#" class="social-link" aria-label="Follow us on Facebook">📘</a>
+          </div>
+        </div>
+        <div class="pgl-footer-col">
+          <h3>Browse</h3>
+          <ul>
+            <li><a href="fiction.html">Fiction</a></li>
+            <li><a href="fantasy.html">Fantasy</a></li>
+            <li><a href="romance.html">Romance</a></li>
+            <li><a href="education.html">Education</a></li>
+            <li><a href="others.html">Others</a></li>
+          </ul>
+        </div>
+        <div class="pgl-footer-col">
+          <h3>Account</h3>
+          <ul>
+            <li><a href="#" onclick="openModal()">Login</a></li>
+            <li><a href="signup.html">Sign Up</a></li>
+            <li><a href="membership.html">Membership</a></li>
+            <li><a href="#" onclick="openAdminModal()">Admin Portal</a></li>
+          </ul>
+        </div>
+        <div class="pgl-footer-col">
+          <h3>Support</h3>
+          <ul>
+            <li><a href="#" onclick="opencontact()">Contact Us</a></li>
+            <li><a href="#">Terms & Conditions</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Refund Policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="pgl-footer-bottom">
+        <p>© 2025 PageLoft. All rights reserved. Made with ❤️ for book lovers.</p>
+        <p>📧 pageloft@gmail.com</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── MODALS ── -->
+  <!-- Login Modal -->
+  <div id="loginModal" class="modal" role="dialog" aria-modal="true" aria-label="Login dialog">
     <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2>Login</h2>
-      <form onsubmit="return handleLogin(event)">
-        <label for="username">Username:</label>
-        <input type="text" id="username" required><br><br>
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" required><br><br>
-
-        <p>If you don't have an account, <a href="signup.html"
-            style="text-decoration: underline; color: rgb(0, 119, 255); cursor: pointer;">Sign up!</a></p>
-        <p><a href="#" onclick="openForgotPasswordModal()"
-            style="color: lightcoral; font-size: 14px; text-decoration: underline; margin-top: -5px; display: inline-block;">Forgot
-            Password?</a></p>
-
-
-        <button type="submit">Login</button>
+      <button class="close" onclick="closeModal()" aria-label="Close">×</button>
+      <h2>Welcome Back 👋</h2>
+      <p class="modal-sub">Sign in to your PageLoft account</p>
+      <form onsubmit="return handleLogin(event)" novalidate>
+        <label for="username">Email Address</label>
+        <input type="text" id="username" placeholder="your@email.com" required autocomplete="email">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" required autocomplete="current-password">
+        <p class="modal-link"><a href="#" onclick="openForgotPasswordModal()" class="modal-forgot">Forgot Password?</a></p>
+        <button type="submit" id="loginSubmitBtn">Sign In</button>
+        <p class="modal-link" style="margin-top:16px; text-align:center;">
+          No account? <a href="signup.html">Create one →</a>
+        </p>
       </form>
     </div>
   </div>
-  <div id="adminModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeAdminModal()">&times;</span>
-      <h2>Admin Login</h2>
-      <form onsubmit="return handleAdminLogin(event)">
-        <label for="adminUsername">Username:</label>
-        <input type="text" id="adminUsername" required><br><br>
 
-        <label for="adminPassword">Password:</label>
-        <input type="password" id="adminPassword" required><br><br>
-        <p>If you don't have an account, <a href="adminsignup.html"
-            style="text-decoration: underline; color: rgb(0, 119, 255); cursor: pointer;">Create!</a></p>
-        <button type="submit">Login</button>
+  <!-- Admin Login Modal -->
+  <div id="adminModal" class="modal" role="dialog" aria-modal="true" aria-label="Admin login dialog">
+    <div class="modal-content">
+      <button class="close" onclick="closeAdminModal()" aria-label="Close">×</button>
+      <h2>Admin Portal 🔐</h2>
+      <p class="modal-sub">Sign in with your administrator credentials</p>
+      <form onsubmit="return handleAdminLogin(event)" novalidate>
+        <label for="adminUsername">Admin Email</label>
+        <input type="text" id="adminUsername" placeholder="admin@pageloft.com" required autocomplete="email">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" placeholder="Admin password" required autocomplete="current-password">
+        <button type="submit">Admin Sign In</button>
+        <p class="modal-link" style="margin-top:16px; text-align:center;">
+          New admin? <a href="adminsignup.html">Create account →</a>
+        </p>
       </form>
     </div>
   </div>
 
-  <div id="contact" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closecontact()">&times;</span>
-      <h3>Contact</h3><br><br>
-      <h2><a href="#" style="text-decoration:none;color:lightcoral;">pageloft@gmail.com</a></h2>
+  <!-- Contact Modal -->
+  <div id="contact" class="modal" role="dialog" aria-modal="true" aria-label="Contact information">
+    <div class="modal-content" style="text-align:center;">
+      <button class="close" onclick="closecontact()" aria-label="Close">×</button>
+      <div style="font-size:40px; margin-bottom:16px;">📬</div>
+      <h2>Get in Touch</h2>
+      <p style="color:var(--text-muted); margin:16px 0;">We'd love to hear from you.</p>
+      <a href="mailto:pageloft@gmail.com" style="font-size:16px; font-weight:600; color:var(--color-primary);">pageloft@gmail.com</a>
     </div>
   </div>
 
   <!-- Forgot Password Modal -->
-  <div id="forgotPasswordModal" class="modal">
+  <div id="forgotPasswordModal" class="modal" role="dialog" aria-modal="true" aria-label="Forgot password dialog">
     <div class="modal-content">
-      <span class="close" onclick="closeForgotPasswordModal()">&times;</span>
+      <button class="close" onclick="closeForgotPasswordModal()" aria-label="Close">×</button>
+      <div style="font-size:36px; margin-bottom:12px;">🔑</div>
       <h2>Forgot Password</h2>
-      <p style="font-size: 14px; color: #555; margin-bottom: 15px;">Enter your email to receive a 6-digit OTP.</p>
+      <p class="modal-sub">Enter your email to receive a 6-digit OTP.</p>
       <form onsubmit="return handleForgotPassword(event)">
-        <input type="email" id="forgotEmail" placeholder="Enter your registered email" required><br>
+        <label for="forgotEmail">Registered Email</label>
+        <input type="email" id="forgotEmail" placeholder="your@email.com" required>
         <button type="submit">Send OTP</button>
       </form>
     </div>
   </div>
 
   <!-- Reset Password Modal -->
-  <div id="resetPasswordModal" class="modal">
+  <div id="resetPasswordModal" class="modal" role="dialog" aria-modal="true" aria-label="Reset password dialog">
     <div class="modal-content">
-      <span class="close" onclick="closeResetPasswordModal()">&times;</span>
+      <button class="close" onclick="closeResetPasswordModal()" aria-label="Close">×</button>
+      <div style="font-size:36px; margin-bottom:12px;">🔐</div>
       <h2>Reset Password</h2>
+      <p class="modal-sub">Enter the OTP sent to your email and choose a new password.</p>
       <form onsubmit="return handleResetPassword(event)">
-        <input type="email" id="resetEmail" placeholder="Email" required readonly
-          style="background-color: #f0f0f0; margin-bottom: 5px;"><br>
-        <input type="text" id="resetOtp" placeholder="6-digit OTP" required maxlength="6"
-          style="margin-bottom: 5px;"><br>
-        <input type="password" id="newPassword" placeholder="New Password" required style="margin-bottom: 5px;"><br>
-        <input type="password" id="confirmNewPassword" placeholder="Confirm New Password" required
-          style="margin-bottom: 15px;"><br>
+        <label>Email</label>
+        <input type="email" id="resetEmail" readonly style="background:#f0ebe8; color:var(--text-muted);">
+        <label>6-digit OTP</label>
+        <input type="text" id="resetOtp" placeholder="123456" required maxlength="6">
+        <label>New Password</label>
+        <input type="password" id="newPassword" placeholder="New password" required>
+        <label>Confirm Password</label>
+        <input type="password" id="confirmNewPassword" placeholder="Confirm new password" required>
         <button type="submit">Reset Password</button>
       </form>
     </div>
   </div>
 
-  <!-- Custom Alerts JS -->
+  <!-- Toast Container -->
+  <div id="pgl-toast-container" aria-live="polite"></div>
+
   <script src="assets/custom_alert.js"></script>
-</body>
+  <script>
+    // ── Navbar Scroll Effect ──
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('mainNavbar');
+      if (window.scrollY > 10) navbar.classList.add('scrolled');
+      else navbar.classList.remove('scrolled');
+    });
 
-<script>
+    // ── Hamburger ──
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileNav.classList.toggle('open');
+      hamburger.setAttribute('aria-expanded', mobileNav.classList.contains('open'));
+    });
 
-  function opencontact() {
-    document.getElementById("contact").style.display = "block";
-  }
-  function closecontact() {
-    document.getElementById("contact").style.display = "none";
-  }
-  function openModal() {
-    document.getElementById('loginModal').style.display = 'block';
-  }
-
-  function closeModal() {
-    document.getElementById('loginModal').style.display = 'none';
-  }
-
-  function openForgotPasswordModal() {
-    closeModal();
-    document.getElementById('forgotPasswordModal').style.display = 'block';
-  }
-
-  function closeForgotPasswordModal() {
-    document.getElementById('forgotPasswordModal').style.display = 'none';
-  }
-
-  function openResetPasswordModal(email) {
-    closeForgotPasswordModal();
-    document.getElementById('resetPasswordModal').style.display = 'block';
-    document.getElementById('resetEmail').value = email;
-  }
-
-  function closeResetPasswordModal() {
-    document.getElementById('resetPasswordModal').style.display = 'none';
-  }
-
-  async function handleLogin(event) {
-    event.preventDefault();
-    const email = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-
-    try {
-      const response = await fetch("http://localhost:8000/api/login/", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
-      if (response.ok) {
-        const data = await response.json();
-        await showCustomAlert("Login successful!");
-        closeModal();
-        if (data.role === 'admin') {
-          window.location.href = "adminuser.html";
-        } else {
-          window.location.href = "user.html";
+    // ── Counter Animation ──
+    function animateCounter(el) {
+      const target = parseInt(el.dataset.target);
+      const duration = 2000;
+      const step = target / (duration / 16);
+      let current = 0;
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
         }
-      } else {
-        const data = await response.json();
-        alert(data.error || "Invalid username or password.");
-      }
-    } catch (err) {
-      alert("Error logging in.");
+        el.textContent = Math.floor(current).toLocaleString() + '+';
+      }, 16);
     }
-  }
 
-  function openGenresModal() {
-    document.getElementById('genresDropdown').style.display = 'block';
-  }
-  function closeGenresModal() {
-    document.getElementById('genresDropdown').style.display = 'none';
-  }
-
-  function openAdminModal() {
-    document.getElementById('adminModal').style.display = 'block';
-  }
-
-  function closeAdminModal() {
-    document.getElementById('adminModal').style.display = 'none';
-  }
-
-  async function handleAdminLogin(event) {
-    event.preventDefault();
-    const email = document.getElementById('adminUsername').value.trim();
-    const password = document.getElementById('adminPassword').value.trim();
-
-    try {
-      const response = await fetch("http://localhost:8000/api/login/", {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
-      });
-      if (response.ok) {
-        const data = await response.json();
-        if (data.role === 'admin') {
-          await showCustomAlert("Admin login successful!");
-          closeAdminModal();
-          window.location.href = "adminuser.html";
-        } else {
-          alert("Access denied. Admin role required.");
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateCounter(entry.target);
+          observer.unobserve(entry.target);
         }
-      } else {
-        const data = await response.json();
-        alert(data.error || "Invalid admin credentials.");
-      }
-    } catch (err) {
-      alert("Error logging in.");
-    }
-  }
-
-  async function handleForgotPassword(event) {
-    event.preventDefault();
-    const email = document.getElementById('forgotEmail').value.trim();
-    if (!email) return alert("Enter email.");
-
-    try {
-      const response = await fetch("http://localhost:8000/api/forgot-password/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email })
       });
-      if (response.ok) {
-        alert("OTP sent to your email!");
-        openResetPasswordModal(email);
-      } else {
-        const data = await response.json();
-        alert(data.error || "Error sending OTP.");
-      }
-    } catch (err) {
-      alert("Network error processing OTP dispatch.");
-    }
-  }
+    }, { threshold: 0.5 });
 
-  async function handleResetPassword(event) {
-    event.preventDefault();
-    const email = document.getElementById('resetEmail').value;
-    const otp = document.getElementById('resetOtp').value.trim();
-    const newPassword = document.getElementById('newPassword').value;
-    const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+    document.querySelectorAll('[data-target]').forEach(el => observer.observe(el));
 
-    if (newPassword !== confirmNewPassword) {
-      return alert("Passwords do not match!");
-    }
+    // ── Modal Logic ──
+    function opencontact()    { document.getElementById('contact').style.display = 'flex'; }
+    function closecontact()   { document.getElementById('contact').style.display = 'none'; }
+    function openModal()      { document.getElementById('loginModal').style.display = 'flex'; }
+    function closeModal()     { document.getElementById('loginModal').style.display = 'none'; }
+    function openAdminModal() { document.getElementById('adminModal').style.display = 'flex'; }
+    function closeAdminModal(){ document.getElementById('adminModal').style.display = 'none'; }
+    function openGenresModal(){ document.getElementById('genresDropdown').style.display = 'block'; }
+    function closeGenresModal(){ document.getElementById('genresDropdown').style.display = 'none'; }
 
-    try {
-      const response = await fetch("http://localhost:8000/api/reset-password/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp, new_password: newPassword })
-      });
-      if (response.ok) {
-        alert("Password reset successfully! You can now log into your account.");
-        closeResetPasswordModal();
-        openModal();
-      } else {
-        const data = await response.json();
-        alert(data.error || "Error resetting password.");
-      }
-    } catch (err) {
-      alert("Network error.");
-    }
-  }
-
-  window.onclick = function (event) {
-    const loginModal = document.getElementById('loginModal');
-    const genresModal = document.getElementById('genresDropdown');
-    const adminmodal = document.getElementById('adminModal');
-    const contact = document.getElementById('contact');
-    const forgotModal = document.getElementById('forgotPasswordModal');
-    const resetModal = document.getElementById('resetPasswordModal');
-
-    if (event.target === loginModal) {
+    function openForgotPasswordModal() {
       closeModal();
+      document.getElementById('forgotPasswordModal').style.display = 'flex';
     }
-    if (event.target.closest('.genres-dropdown')) {
-      closeGenresModal();
+    function closeForgotPasswordModal() {
+      document.getElementById('forgotPasswordModal').style.display = 'none';
     }
-    if (event.target === adminmodal) {
-      closeAdminModal();
-    }
-    if (event.target === contact) {
-      closecontact();
-    }
-    if (event.target === forgotModal) {
+    function openResetPasswordModal(email) {
       closeForgotPasswordModal();
+      document.getElementById('resetPasswordModal').style.display = 'flex';
+      document.getElementById('resetEmail').value = email;
     }
-    if (event.target === resetModal) {
-      closeResetPasswordModal();
+    function closeResetPasswordModal() {
+      document.getElementById('resetPasswordModal').style.display = 'none';
     }
-  }
 
-  let allBooksData = [];
-
-  document.addEventListener("DOMContentLoaded", async function () {
-    try {
-      const res = await fetch('http://localhost:8000/api/books/');
-      if (res.ok) {
-        allBooksData = await res.json();
+    window.onclick = function(event) {
+      const modals = ['loginModal','adminModal','contact','forgotPasswordModal','resetPasswordModal'];
+      modals.forEach(id => {
+        const el = document.getElementById(id);
+        if (event.target === el) el.style.display = 'none';
+      });
+      if (!event.target.closest('.genres-dropdown') && !event.target.closest('#genresToggleBtn')) {
+        closeGenresModal();
       }
-    } catch (err) {
-      console.error("Error fetching books for search", err);
+    };
+
+    // ── Login Handler ──
+    async function handleLogin(event) {
+      event.preventDefault();
+      const btn = document.getElementById('loginSubmitBtn');
+      btn.textContent = 'Signing in…';
+      btn.disabled = true;
+      const email = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+      try {
+        const response = await fetch("http://localhost:8000/api/login/", {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        if (response.ok) {
+          const data = await response.json();
+          await showCustomAlert("Login successful!");
+          closeModal();
+          window.location.href = data.role === 'admin' ? "adminuser.html" : "user.html";
+        } else {
+          const data = await response.json();
+          alert(data.error || "Invalid username or password.");
+        }
+      } catch (err) { alert("Error logging in."); }
+      finally { btn.textContent = 'Sign In'; btn.disabled = false; }
     }
-  });
 
-  function filterBooks() {
-    const input = document.getElementById('userBookSearch').value.toLowerCase();
-    const resultsContainer = document.getElementById('searchResultsContainer');
-    const resultsList = document.getElementById('searchResultsList');
-
-    const aboutSection = document.querySelector('.about');
-    const marqueeContainer = document.querySelector('.marquee-container');
-
-    if (input.trim() === '') {
-      resultsContainer.style.display = 'none';
-      if (aboutSection) aboutSection.style.display = 'block';
-      if (marqueeContainer) marqueeContainer.style.display = 'block';
-      return;
+    // ── Admin Login Handler ──
+    async function handleAdminLogin(event) {
+      event.preventDefault();
+      const email = document.getElementById('adminUsername').value.trim();
+      const password = document.getElementById('adminPassword').value.trim();
+      try {
+        const response = await fetch("http://localhost:8000/api/login/", {
+          method: "POST", credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+        if (response.ok) {
+          const data = await response.json();
+          if (data.role === 'admin') {
+            await showCustomAlert("Admin login successful!");
+            closeAdminModal();
+            window.location.href = "adminuser.html";
+          } else { alert("Access denied. Admin role required."); }
+        } else {
+          const data = await response.json();
+          alert(data.error || "Invalid admin credentials.");
+        }
+      } catch (err) { alert("Error logging in."); }
     }
 
-    if (aboutSection) aboutSection.style.display = 'none';
-    if (marqueeContainer) marqueeContainer.style.display = 'none';
-    resultsContainer.style.display = 'block';
+    // ── Forgot/Reset Password Handlers ──
+    async function handleForgotPassword(event) {
+      event.preventDefault();
+      const email = document.getElementById('forgotEmail').value.trim();
+      if (!email) return alert("Enter email.");
+      try {
+        const response = await fetch("http://localhost:8000/api/forgot-password/", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
+        if (response.ok) { alert("OTP sent to your email!"); openResetPasswordModal(email); }
+        else { const data = await response.json(); alert(data.error || "Error sending OTP."); }
+      } catch (err) { alert("Network error processing OTP dispatch."); }
+    }
 
-    const filtered = allBooksData.filter(book =>
-      (book.title && book.title.toLowerCase().includes(input)) ||
-      (book.author && book.author.toLowerCase().includes(input)) ||
-      (book.genre && book.genre.toLowerCase().includes(input))
-    );
+    async function handleResetPassword(event) {
+      event.preventDefault();
+      const email = document.getElementById('resetEmail').value;
+      const otp = document.getElementById('resetOtp').value.trim();
+      const newPassword = document.getElementById('newPassword').value;
+      const confirmNewPassword = document.getElementById('confirmNewPassword').value;
+      if (newPassword !== confirmNewPassword) return alert("Passwords do not match!");
+      try {
+        const response = await fetch("http://localhost:8000/api/reset-password/", {
+          method: "POST", headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, otp, new_password: newPassword })
+        });
+        if (response.ok) { alert("Password reset successfully!"); closeResetPasswordModal(); openModal(); }
+        else { const data = await response.json(); alert(data.error || "Error resetting password."); }
+      } catch (err) { alert("Network error."); }
+    }
 
-    if (filtered.length === 0) {
-      resultsList.innerHTML = '<p>No books found matching your search.</p>';
-    } else {
-      resultsList.innerHTML = filtered.map(book => `
-            <div style="display: flex; align-items: flex-start; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
-              <img src="${book.image}" alt="${book.title}" style="width: 100px; height: 140px; object-fit: cover; margin-right: 15px; border-radius: 4px;">
-              <div>
-                <h3 style="margin: 0 0 5px; color: #333;">${book.title}</h3>
-                <p style="margin: 0 0 5px; color: #777;">by ${book.author} | Genre: ${book.genre}</p>
-                <p style="margin: 0 0 10px; color: #555; font-size: 14px;">Total Value: ₹${book.price}</p>
-                <button onclick="window.location.href='page.html?id=${book.id}'" style="padding: 8px 16px; background-color: lightcoral; color: white; border: none; border-radius: 4px; cursor: pointer;">View Details</button>
+    // ── Book Search ──
+    let allBooksData = [];
+
+    document.addEventListener("DOMContentLoaded", async function() {
+      try {
+        const res = await fetch('http://localhost:8000/api/books/');
+        if (res.ok) {
+          allBooksData = await res.json();
+          renderFeaturedBooks(allBooksData.slice(0, 8));
+        }
+      } catch(err) { console.error("Error fetching books", err); renderFeaturedBooks([]); }
+    });
+
+    function renderFeaturedBooks(books) {
+      const grid = document.getElementById('featuredBooksGrid');
+      if (!books.length) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-state-icon">📚</div><h3>No books yet</h3><p>Books will appear here once added by the admin.</p></div>';
+        return;
+      }
+      grid.innerHTML = books.map(book => `
+        <div class="book-card" onclick="window.location.href='page.html?id=${book.id}'" style="cursor:pointer;" aria-label="View ${book.title}">
+          <div class="book-card-image-wrap">
+            <img src="${book.image || 'https://via.placeholder.com/200x300?text=Book'}" alt="${book.title}" loading="lazy">
+            <div class="book-card-overlay">
+              <button class="btn btn-white btn-sm" onclick="event.stopPropagation(); window.location.href='page.html?id=${book.id}'">View Details</button>
+            </div>
+          </div>
+          <div class="book-card-body">
+            <div class="book-card-genre">${book.genre || 'General'}</div>
+            <h3 class="book-card-title">${book.title}</h3>
+            <p class="book-card-author">by ${book.author}</p>
+            <div class="book-card-pricing">
+              <span class="book-price-buy">₹${book.price}</span>
+              ${book.lending_price ? `<span class="book-price-lend">Lend ₹${book.lending_price}</span>` : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterBooks() {
+      const input = document.getElementById('userBookSearch').value.toLowerCase();
+      const resultsContainer = document.getElementById('searchResultsContainer');
+      const resultsList = document.getElementById('searchResultsList');
+      const homeContent = document.querySelector('.about');
+
+      if (input.trim() === '') {
+        resultsContainer.style.display = 'none';
+        if (homeContent) homeContent.style.display = 'block';
+        return;
+      }
+      if (homeContent) homeContent.style.display = 'none';
+      resultsContainer.style.display = 'block';
+
+      const filtered = allBooksData.filter(book =>
+        (book.title && book.title.toLowerCase().includes(input)) ||
+        (book.author && book.author.toLowerCase().includes(input)) ||
+        (book.genre && book.genre.toLowerCase().includes(input))
+      );
+
+      if (filtered.length === 0) {
+        resultsList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><h3>No books found</h3><p>Try a different search term.</p></div>';
+      } else {
+        resultsList.innerHTML = filtered.map(book => `
+          <div class="search-result-item">
+            <img src="${book.image || ''}" alt="${book.title}" style="width:80px; height:110px; object-fit:cover; border-radius:8px; margin-right:16px; flex-shrink:0;">
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:11px; font-weight:700; text-transform:uppercase; color:var(--color-accent); margin-bottom:4px;">${book.genre}</div>
+              <h3 style="font-size:16px; font-weight:700; color:var(--text-dark); margin-bottom:4px;">${book.title}</h3>
+              <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">by ${book.author}</p>
+              <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+                <span style="font-weight:700; color:var(--color-primary);">₹${book.price}</span>
+                ${book.lending_price ? `<span style="font-size:12px; color:var(--text-muted);">Lend ₹${book.lending_price}</span>` : ''}
               </div>
             </div>
-          `).join('');
+            <button class="btn btn-primary btn-sm" onclick="window.location.href='page.html?id=${book.id}'" style="flex-shrink:0; margin-left:16px;">View</button>
+          </div>
+        `).join('');
+      }
     }
-  }
-</script>
-
+  </script>
+</body>
 </html>

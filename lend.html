@@ -1,138 +1,570 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lend Book</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lend Book – PageLoft</title>
   <link rel="icon" type="image/jpeg" href="obl.jpg?v=2">
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/custom_alert.css">
   <style>
-    body { font-family: Arial, sans-serif; background-color: #fff8f5; margin: 0; padding: 0; }
-    .header { position: relative; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 10px 30px; background-color: lightcoral; }
-    .logo { width: 80px; height: 80px; border-radius: 50%; }
-    .pageloft-title { flex: 1; text-align: center; font-size: 50px; font-weight: bold; color: white; position: relative; right: 522px; }
-    .lend-container { max-width: 900px; margin: 30px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
-    .lend-container h2 { color: lightcoral; text-align: center; font-size: 28px; margin-bottom: 10px; }
-    .lend-container label { font-size: 18px; color: #444; display: block; margin-bottom: 10px; margin-top: 15px; }
-    .lend-container input, .lend-container select, textarea { width: 100%; padding: 10px; font-size: 16px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 20px; box-sizing: border-box; }
-    textarea { resize: vertical; margin-bottom: 15px; }
-    .book-section { display: flex; gap: 20px; margin-bottom: 30px; }
-    .book-details { padding-top: 10px; }
-    .book-details h2 { text-align: left; color: #333; margin-bottom: 10px; padding: 0; }
-    .book-details p { font-size: 18px; color: #555; text-align: left; margin: 5px 0; }
-    .carousel-container { position: relative; width: 250px; height: 380px; overflow: hidden; border-radius: 8px; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .carousel-track { display: flex; transition: transform 0.4s ease-in-out; height: 100%; }
+    .lend-layout {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 32px;
+      padding: 40px 0 80px;
+      align-items: start;
+    }
+    .order-summary-sticky { position: sticky; top: 24px; }
+
+    .book-hero-card {
+      background: var(--bg-card-solid);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+    }
+    .book-hero-body {
+      display: flex;
+      gap: 28px;
+      padding: 28px;
+    }
+    .carousel-container {
+      position: relative;
+      width: 220px;
+      min-width: 220px;
+      height: 320px;
+      overflow: hidden;
+      border-radius: 12px;
+      background: var(--bg-base);
+      box-shadow: var(--shadow-md);
+      flex-shrink: 0;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.4s ease-in-out;
+      height: 100%;
+    }
     .carousel-track img {
-      width: 250px;
+      width: 220px;
       height: 100%;
       object-fit: contain;
       flex-shrink: 0;
-      background-color: #f9f9f9;
+      background: var(--bg-base);
     }
-    .carousel-btn { position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(240,128,128,0.8); color: white; border: none; width: 35px; height: 35px; cursor: pointer; font-size: 16px; border-radius: 50%; z-index: 10; display: flex; align-items: center; justify-content: center; }
-    .carousel-btn:hover { background-color: rgba(220,100,100,1); }
-    .prev-btn { left: 5px; } .next-btn { right: 5px; }
-    .lend-container button[type="submit"], .lend-container button[type="button"] { width: 100%; padding: 12px; font-size: 16px; background-color: lightcoral; color: white; border: none; border-radius: 6px; cursor: pointer; }
-    .lend-container button:hover { background-color: #e6645c; }
-    .footer { position: fixed; bottom: 0; left: 0; width: 100%; background-color: lightcoral; text-align: center; padding: 10px; font-size: 14px; }
-  </style>
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(109,76,65,0.85);
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      font-size: 14px;
+      border-radius: 50%;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .carousel-btn:hover { background: var(--color-primary); }
+    .prev-btn { left: 8px; }
+    .next-btn { right: 8px; }
 
-  <!-- Custom Alerts & Responsive CSS -->
-  <link rel="stylesheet" href="assets/custom_alert.css">
-  <link rel="stylesheet" href="assets/responsive.css">
+    .book-info { flex: 1; min-width: 0; }
+    .book-info h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+    .book-info-author {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    /* Lending Pricing Card */
+    .lending-price-card {
+      background: linear-gradient(135deg, rgba(109,76,65,0.06), rgba(212,163,115,0.08));
+      border: 1px solid rgba(212,163,115,0.3);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .lending-price-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 14px;
+      color: var(--text-body);
+      margin-bottom: 8px;
+      align-items: center;
+    }
+    .lending-price-row .label { color: var(--text-muted); }
+    .lending-price-row .value { font-weight: 600; }
+    .lending-price-row.total {
+      border-top: 1px solid rgba(212,163,115,0.4);
+      padding-top: 10px;
+      margin-top: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+    .refund-note {
+      font-size: 11px;
+      color: var(--color-success);
+      background: var(--color-success-bg);
+      border-radius: 6px;
+      padding: 6px 10px;
+      margin-top: 10px;
+    }
+
+    .book-description-text {
+      font-size: 13px;
+      color: var(--text-body);
+      line-height: 1.7;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Form */
+    .lend-form-card {
+      background: var(--bg-card-solid);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+    }
+    .form-section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .form-divider {
+      border: none;
+      border-top: 1px solid var(--border-color);
+      margin: 24px 0;
+    }
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: var(--font-family);
+      color: var(--text-dark);
+      background: var(--bg-base);
+      transition: all 0.2s;
+      box-sizing: border-box;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(109,76,65,0.1);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* Terms Card */
+    .terms-card {
+      background: var(--color-warning-bg);
+      border: 1px solid rgba(255,152,0,0.3);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+    }
+    .terms-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #E65100;
+      margin-bottom: 10px;
+    }
+    .terms-card ul {
+      list-style: none;
+      margin: 0;
+    }
+    .terms-card ul li {
+      font-size: 12px;
+      color: #6D4000;
+      padding: 4px 0;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .terms-card ul li::before { content: '⚠️'; font-size: 11px; flex-shrink: 0; margin-top: 1px; }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-body);
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    .checkbox-label input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--color-primary);
+      cursor: pointer;
+    }
+
+    .submit-button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font-family);
+      margin-top: 8px;
+      transition: all 0.2s;
+      box-shadow: var(--shadow-md);
+    }
+    .submit-button:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Summary Card */
+    .summary-card {
+      background: var(--bg-card-solid);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .summary-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-body);
+      margin-bottom: 10px;
+    }
+    .summary-row.total {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-primary);
+      padding-top: 12px;
+      border-top: 2px solid var(--border-color);
+      margin-top: 8px;
+    }
+    .deposit-note {
+      background: rgba(76,175,80,0.08);
+      border: 1px solid rgba(76,175,80,0.25);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 12px;
+      color: #1B5E20;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+
+    /* UPI Section */
+    #upi-section { display: none; }
+    .upi-card {
+      background: var(--bg-card-solid);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 32px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+    .qr-wrap {
+      display: inline-block;
+      background: white;
+      border: 2px solid var(--border-color);
+      border-radius: 16px;
+      padding: 16px;
+      margin: 20px 0;
+    }
+
+    /* Page Header */
+    .page-header {
+      background: linear-gradient(135deg, #3D1F15 0%, #6D4C41 100%);
+      padding: 24px 0;
+    }
+    .page-header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .page-header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .page-header-logo {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.3);
+      object-fit: cover;
+    }
+    .page-header-name { font-size: 20px; font-weight: 700; color: white; }
+
+    @media (max-width: 992px) {
+      .lend-layout { grid-template-columns: 1fr; }
+      .order-summary-sticky { position: static; }
+    }
+    @media (max-width: 768px) {
+      .book-hero-body { flex-direction: column; }
+      .carousel-container { width: 100%; min-width: auto; height: 280px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <div class="header">
-    <img src="obl.jpg" alt="Logo" class="logo">
-    <div class="pageloft-title">PageLoft</div>
-  </div>
 
-  <div class="lend-container">
-    <div class="book-section">
-      <div class="carousel-container">
-        <div class="carousel-track" id="carousel-track">
-        </div>
-        <button class="carousel-btn prev-btn" onclick="moveCarousel(-1)">&#10094;</button>
-        <button class="carousel-btn next-btn" onclick="moveCarousel(1)">&#10095;</button>
-      </div>
-      <div class="book-details">
-        <h2 id="book-title"></h2>
-        <p id="book-author"></p>
-        <div id="price-breakdown" style="background-color: #ffe6e6; padding: 15px; border-radius: 8px; margin: 15px 0;">
-          <p id="book-lending-fee" style="margin: 5px 0; color: #555;">Lending Fee: </p>
-          <p id="book-deposit" style="margin: 5px 0; color: #555;">Deposit Amount: </p>
-          <hr style="border: 0; border-top: 1px solid lightcoral;">
-          <h3 id="book-total-price" style="margin: 5px 0; color: #d9534f;">Total Payable: </h3>
-        </div>
-        <div class="book-description" id="book-description"></div>
+  <!-- Header -->
+  <div class="page-header">
+    <div class="container">
+      <div class="page-header-inner">
+        <a href="index.html" class="page-header-brand">
+          <img src="obl.jpg" alt="PageLoft" class="page-header-logo">
+          <span class="page-header-name">PageLoft</span>
+        </a>
+        <a href="javascript:history.back()" class="btn btn-sm" style="background:rgba(255,255,255,0.12); color:white; border:1px solid rgba(255,255,255,0.25);">← Back</a>
       </div>
     </div>
-
-    <form id="lend-form">
-      <div id="address-section">
-        <h3 style="color: lightcoral; text-align: left; margin-bottom: 5px;">Shipping & Lend Details</h3>
-        <label for="weeks">Lend Duration (in weeks)</label>
-        <select id="weeks" required>
-          <option value="">Select weeks</option>
-          <option value="1">1 Week</option>
-          <option value="2">2 Weeks</option>
-          <option value="3">3 Weeks</option>
-          <option value="4">4 Weeks</option>
-        </select>
-
-        <label for="username">Your Name</label>
-        <input type="text" id="username" placeholder="Enter your name" required />
-
-        <label for="mobileno">Mobile No</label>
-        <input type="tel" id="mobileno" placeholder="Enter your number" required />
-
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="Enter your Email" required />
-
-        <label for="address">Address</label>
-        <textarea id="address" placeholder="Enter your address for dispatch" rows="4" required></textarea>
-
-        <div style="background-color: #fff3f3; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid lightcoral;">
-          <h4 style="margin-top: 0; color: lightcoral; font-size: 16px;">Lending Terms & Conditions</h4>
-          <ul style="font-size: 14px; color: #555; padding-left: 20px; margin-bottom: 10px;">
-            <li>Lending fee is non-refundable.</li>
-            <li>Deposit will be refunded after safe return of the book.</li>
-            <li>Customer must pay return courier charges.</li>
-            <li>Damaged or unreturned books will be treated as purchase.</li>
-          </ul>
-          <label style="display: flex; align-items: center; font-size: 14px; margin: 0; cursor: pointer; flex-direction: row;">
-            <input type="checkbox" id="terms-checkbox" required style="width: auto; margin-right: 10px; margin-bottom: 0;">
-            I agree to the lending terms and conditions
-          </label>
-        </div>
-
-        <button type="submit">Proceed to Pay</button>
-      </div>
-
-      <div id="upi-section" style="display: none;">
-        <h3 style="color: lightcoral; text-align: center;">Verify UPI Payment</h3>
-        <div style="margin-top: 10px; color: #777; font-size: 15px; margin-bottom: 20px; text-align: center;">
-          If the UPI app didn't open automatically, please scan the QR Code below to pay securely to 
-          <b>hariharangpay00@okaxis</b>. After completing the payment, enter the 12-digit UPI Transaction ID.
-        </div>
-
-        <div style="text-align: center;">
-          <img id="dynamic-qr" src="" alt="Scan this QR to Pay" style="width: 220px; height: 220px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); margin-bottom: 15px;">
-        </div>
-        
-        <label for="transaction_id" style="font-weight: bold; display: block; text-align: left;">UPI Transaction ID</label>
-        <input type="text" id="transaction_id" name="transaction_id" placeholder="e.g. 301234567890" style="width: 100%; padding: 10px; margin-top: 5px; border-radius: 6px; border: 1px solid #ccc; margin-bottom: 15px;">
-
-        <label for="payment_screenshot" style="font-weight: bold; display: block;">Upload Payment Screenshot</label>
-        <input type="file" id="payment_screenshot" name="payment_screenshot" accept="image/*" style="width: 100%; margin-top: 5px; margin-bottom: 20px;">
-
-        <button type="button" id="verify-btn">I have completed payment</button>
-      </div>
-    </form>
   </div>
 
-  <div class="footer">
-    © 2025 All rights reserved.
+  <!-- Breadcrumb -->
+  <div class="container" style="padding-top:24px;">
+    <div class="breadcrumb">
+      <a href="index.html">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <span id="breadcrumb-title">Book</span>
+      <span class="breadcrumb-sep">›</span>
+      <span>Lend</span>
+    </div>
   </div>
+
+  <div class="container">
+    <div class="lend-layout">
+
+      <!-- Left -->
+      <div>
+        <!-- Book Card -->
+        <div class="book-hero-card">
+          <div class="book-hero-body">
+            <div class="carousel-container">
+              <div class="carousel-track" id="carousel-track"></div>
+              <button class="carousel-btn prev-btn" onclick="moveCarousel(-1)" aria-label="Previous">&#10094;</button>
+              <button class="carousel-btn next-btn" onclick="moveCarousel(1)" aria-label="Next">&#10095;</button>
+            </div>
+            <div class="book-info">
+              <h1 id="book-title">Loading…</h1>
+              <p class="book-info-author" id="book-author"></p>
+
+              <!-- Lending Price Breakdown -->
+              <div class="lending-price-card" id="price-breakdown">
+                <div class="lending-price-row">
+                  <span class="label">📄 Lending Fee</span>
+                  <span class="value" id="book-lending-fee">—</span>
+                </div>
+                <div class="lending-price-row">
+                  <span class="label">🔒 Security Deposit</span>
+                  <span class="value" id="book-deposit">—</span>
+                </div>
+                <div class="lending-price-row total">
+                  <span>Total Payable</span>
+                  <span id="book-total-price">—</span>
+                </div>
+                <div class="refund-note">✅ Deposit is 100% refundable upon safe return</div>
+              </div>
+
+              <div class="book-description" id="book-description" class="book-description-text"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lend Form -->
+        <div id="address-section" class="lend-form-card">
+          <form id="lend-form">
+            <p class="form-section-title">📅 Lending Details</p>
+
+            <div class="form-group">
+              <label for="weeks">Lending Duration *</label>
+              <select id="weeks" required>
+                <option value="">Select duration</option>
+                <option value="1">1 Week</option>
+                <option value="2">2 Weeks</option>
+                <option value="3">3 Weeks</option>
+                <option value="4">4 Weeks</option>
+              </select>
+            </div>
+
+            <hr class="form-divider">
+            <p class="form-section-title">🙋 Your Details</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="username">Full Name *</label>
+                <input type="text" id="username" placeholder="Your full name" required>
+              </div>
+              <div class="form-group">
+                <label for="mobileno">Mobile Number *</label>
+                <input type="tel" id="mobileno" placeholder="10-digit mobile" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" placeholder="your@email.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="address">Shipping Address *</label>
+              <textarea id="address" placeholder="House no., Street, Area, City, Pincode" rows="3" required></textarea>
+            </div>
+
+            <hr class="form-divider">
+
+            <!-- Terms -->
+            <div class="terms-card">
+              <h4>⚠️ Lending Terms & Conditions</h4>
+              <ul>
+                <li>Lending fee is non-refundable.</li>
+                <li>Deposit will be refunded after safe return of the book.</li>
+                <li>Customer must pay return courier charges.</li>
+                <li>Damaged or unreturned books will be treated as purchase.</li>
+              </ul>
+            </div>
+
+            <label class="checkbox-label">
+              <input type="checkbox" id="terms-checkbox" required>
+              I agree to the lending terms and conditions
+            </label>
+
+            <button type="submit" style="margin-top:20px;" class="submit-button">Proceed to Pay →</button>
+          </form>
+        </div>
+
+        <!-- UPI Section -->
+        <div id="upi-section">
+          <div class="upi-card">
+            <div style="font-size:40px; margin-bottom:12px;">💳</div>
+            <h2 style="font-size:22px; font-weight:700; color:var(--text-dark); margin-bottom:8px;">Complete Your Payment</h2>
+            <p style="font-size:14px; color:var(--text-muted); max-width:400px; margin:0 auto 8px;">
+              Scan the QR code or use UPI ID <strong>hariharangpay00@okaxis</strong>. Then enter your transaction ID below.
+            </p>
+
+            <div class="qr-wrap">
+              <img id="dynamic-qr" src="" alt="Scan to Pay" style="width:200px; height:200px; display:block; border-radius:8px;">
+            </div>
+
+            <div style="text-align:left; max-width:480px; margin:0 auto;">
+              <div class="form-group">
+                <label for="transaction_id" style="font-size:12px; font-weight:600; color:var(--text-dark); display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.04em;">UPI Transaction ID *</label>
+                <input type="text" id="transaction_id" name="transaction_id" placeholder="e.g. 301234567890" style="width:100%; padding:12px 14px; border:1.5px solid var(--border-color); border-radius:10px; font-family:var(--font-family); font-size:14px; box-sizing:border-box; background:var(--bg-base);">
+              </div>
+              <div class="form-group">
+                <label for="payment_screenshot" style="font-size:12px; font-weight:600; color:var(--text-dark); display:block; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.04em;">Payment Screenshot *</label>
+                <input type="file" id="payment_screenshot" name="payment_screenshot" accept="image/*" style="width:100%; padding:10px; border:1.5px solid var(--border-color); border-radius:10px; font-family:var(--font-family); box-sizing:border-box; background:var(--bg-base);">
+              </div>
+              <button type="button" class="submit-button" id="verify-btn" style="margin-top:16px;">✓ I Have Completed the Payment</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Order Summary -->
+      <div class="order-summary-sticky">
+        <div class="summary-card">
+          <div class="summary-title">📋 Lending Summary</div>
+          <div class="summary-row">
+            <span>Book</span>
+            <span id="summary-title" style="font-weight:600; max-width:160px; text-align:right; font-size:13px;">—</span>
+          </div>
+          <div class="summary-row">
+            <span>Type</span>
+            <span><span class="badge badge-accent">Lending</span></span>
+          </div>
+          <div class="summary-row">
+            <span>Lending Fee</span>
+            <span id="summary-lending" style="font-weight:600;">—</span>
+          </div>
+          <div class="summary-row">
+            <span>Security Deposit</span>
+            <span id="summary-deposit" style="font-weight:600;">—</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span id="summary-total">—</span>
+          </div>
+
+          <div class="deposit-note">
+            💚 Your security deposit of <strong id="summary-deposit-note">—</strong> will be fully refunded after the safe return of this book.
+          </div>
+        </div>
+
+        <!-- How Lending Works -->
+        <div class="summary-card" style="margin-top:16px;">
+          <div class="summary-title" style="font-size:14px;">How Lending Works</div>
+          <div class="order-timeline">
+            <div class="timeline-step active">
+              <div class="timeline-step-title">📋 Place Order</div>
+              <div class="timeline-step-date">Fill details & pay</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-step-title">✅ Payment Verified</div>
+              <div class="timeline-step-date">Admin approves within 24h</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-step-title">📦 Book Dispatched</div>
+              <div class="timeline-step-date">Delivered in 3–5 days</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-step-title">♻️ Return & Refund</div>
+              <div class="timeline-step-date">Deposit returned after return</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="assets/custom_alert.js"></script>
   <script>
     let currentBookId = null;
 
@@ -155,26 +587,38 @@
           if (response.ok) {
             const book = await response.json();
             document.title = `Lend - ${book.title}`;
-            
+            document.getElementById('breadcrumb-title').textContent = book.title;
+            document.getElementById('summary-title').textContent = book.title;
+
             const track = document.getElementById("carousel-track");
             const images = [book.image, book.image1, book.image2, book.image3, book.image4, book.image5].filter(img => img);
             totalSlides = images.length;
-            if(totalSlides === 0) {
-                track.innerHTML = `<img src="default.jpg" alt="No Image">`;
+            if (totalSlides === 0) {
+              track.innerHTML = `<img src="https://via.placeholder.com/220x320?text=No+Image" alt="No Image">`;
             } else {
-                track.innerHTML = images.map(img => `<img src="${img.startsWith('http') ? img : 'http://localhost:8000' + img}" alt="${book.title} View">`).join('');
+              track.innerHTML = images.map(img => `<img src="${img.startsWith('http') ? img : 'http://localhost:8000' + img}" alt="${book.title}">`).join('');
             }
 
             document.getElementById("book-title").textContent = book.title;
             document.getElementById("book-author").textContent = "by " + (book.author || "Unknown");
             document.getElementById("book-description").innerHTML = `<p>${book.description}</p>`;
+
+            const lendingFee   = book.lending_price && book.lending_price > 0 ? parseFloat(book.lending_price) : parseFloat(book.price);
+            const depositAmount = parseFloat(book.price);
+            bookPriceMap = lendingFee + depositAmount;
+
+            document.getElementById("book-lending-fee").textContent  = `₹${lendingFee.toFixed(2)}`;
+            document.getElementById("book-deposit").textContent      = `₹${depositAmount.toFixed(2)}`;
+            document.getElementById("book-total-price").textContent  = `₹${bookPriceMap.toFixed(2)}`;
+            document.getElementById("summary-lending").textContent   = `₹${lendingFee.toFixed(2)}`;
+            document.getElementById("summary-deposit").textContent   = `₹${depositAmount.toFixed(2)}`;
+            document.getElementById("summary-total").textContent     = `₹${bookPriceMap.toFixed(2)}`;
+            document.getElementById("summary-deposit-note").textContent = `₹${depositAmount.toFixed(2)}`;
           } else {
             await showCustomAlert("Book not found");
             window.location.href = "index.html";
           }
-        } catch (error) {
-          console.error("Error fetching book:", error);
-        }
+        } catch(error) { console.error("Error fetching book:", error); }
       } else {
         await showCustomAlert("No book selected! Please go back and choose a book.");
         window.location.href = "index.html";
@@ -183,122 +627,83 @@
 
     let currentSlide = 0;
     let totalSlides = 0;
-
     function moveCarousel(direction) {
       if (totalSlides <= 1) return;
       currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-      const track = document.getElementById('carousel-track');
-      track.style.transform = `translateX(-${currentSlide * 250}px)`;
+      document.getElementById('carousel-track').style.transform = `translateX(-${currentSlide * 220}px)`;
     }
-  
-    // Extract the lending price dynamically
-    const originalFetchBook = window.fetch;
-    window.fetch = async function() {
-      const res = await originalFetchBook.apply(this, arguments);
-      if(arguments[0].includes("/api/books/") && res.ok){
-          const clone = res.clone();
-          clone.json().then(data => {
-            const lendingFee = data.lending_price && data.lending_price > 0 ? parseFloat(data.lending_price) : parseFloat(data.price);
-            const depositAmount = parseFloat(data.price);
-            bookPriceMap = lendingFee + depositAmount;
-            
-            document.getElementById("book-lending-fee").textContent = `Lending Fee: ₹${lendingFee.toFixed(2)}`;
-            document.getElementById("book-deposit").textContent = `Deposit Amount (Refundable): ₹${depositAmount.toFixed(2)}`;
-            document.getElementById("book-total-price").textContent = `Total Payable: ₹${bookPriceMap.toFixed(2)}`;
-          });
-      }
-      return res;
-    };
 
-    const form = document.getElementById("lend-form");
     let createdOrderId = null;
     let bookPriceMap = 0;
 
-    form.addEventListener("submit", async function (e) {
+    const form = document.getElementById("lend-form");
+    form.addEventListener("submit", async function(e) {
       e.preventDefault();
       if (!currentBookId) return;
-  
+
       const orderData = {
         book: currentBookId,
         user_name: document.getElementById("username").value,
         address: document.getElementById("address").value,
-        pincode: "N/A",  
+        pincode: "N/A",
         city: "N/A",
         state: "N/A",
         order_type: "lend",
         duration: document.getElementById("weeks").value
       };
-      
+
       try {
         const orderRes = await fetch('http://localhost:8000/api/orders/', {
-          method: 'POST',
-          credentials: "include",
+          method: 'POST', credentials: "include",
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(orderData)
         });
-        
         if (!orderRes.ok) throw new Error("Failed to create order");
         const order = await orderRes.json();
         createdOrderId = order.id;
 
-        // Trigger UPI Target Link
-        const upiId = "hariharangpay00@okaxis"; 
+        const upiId  = "hariharangpay00@okaxis";
         const upiUri = `upi://pay?pa=${upiId}&pn=PageLoft&am=${bookPriceMap}&cu=INR`;
-        
-        // Render Dynamic Live QR Code explicitly for Desktop Users!
         document.getElementById("dynamic-qr").src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(upiUri)}&margin=15`;
-        
         window.location.href = upiUri;
 
-        // Switch Forms
         document.getElementById("address-section").style.display = "none";
         document.getElementById("upi-section").style.display = "block";
-      } catch (err) {
+      } catch(err) {
         console.error("Storage error:", err);
-        alert("Could not trigger payment link safely: " + err.message);
+        alert("Could not trigger payment link: " + err.message);
       }
     });
 
     document.getElementById("verify-btn").addEventListener("click", async function() {
       const transactionId = document.getElementById("transaction_id").value.trim();
-      if (!transactionId) {
-        alert("Please enter your UPI transaction ID before proceeding!");
-        return;
-      }
+      if (!transactionId) { alert("Please enter your UPI transaction ID!"); return; }
       if (!createdOrderId) return;
 
       try {
         const fd = new FormData();
         fd.append("transaction_id", transactionId);
         fd.append("payment_status", "pending");
-        
+
         const screenshotFile = document.getElementById("payment_screenshot").files[0];
-        if(screenshotFile) {
-            fd.append("payment_screenshot", screenshotFile);
+        if (screenshotFile) {
+          fd.append("payment_screenshot", screenshotFile);
         } else {
-            alert("Please upload your payment screenshot to verify the order.");
-            return;
+          alert("Please upload your payment screenshot to verify the order.");
+          return;
         }
 
         const updateRes = await fetch(`http://localhost:8000/api/orders/${createdOrderId}/`, {
-          method: 'PATCH',
-          credentials: "include",
-          body: fd
+          method: 'PATCH', credentials: "include", body: fd
         });
 
         if (updateRes.ok) {
           window.location.href = `success.html?order_id=${createdOrderId}`;
         } else {
-          alert("Server rejected the transaction ID payload verification block.");
+          alert("Server rejected the transaction verification.");
         }
-      } catch (err) {
-        alert("Failed to securely attach the transaction.");
-      }
+      } catch(err) { alert("Failed to attach transaction details."); }
     });
   </script>
-  
-
-  <!-- Custom Alerts JS -->
-  <script src="assets/custom_alert.js"></script>
 </body>
 </html>

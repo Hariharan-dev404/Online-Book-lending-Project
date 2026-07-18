@@ -1,121 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Signup - Pageloft</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Sign Up – PageLoft</title>
+  <meta name="description" content="Create an admin account to manage the PageLoft platform.">
+  <link rel="icon" type="image/jpeg" href="obl.jpg?v=2">
+  <link rel="stylesheet" href="assets/css/design-system.css">
+  <link rel="stylesheet" href="assets/css/components.css">
+  <link rel="stylesheet" href="assets/custom_alert.css">
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      height: 100vh;
+    body { margin: 0; overflow-x: hidden; }
+    .auth-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
     }
-
-    .image-side {
-      width:42%;
-      background-image: url('signupim.jpg');
-      background-size: cover;
-      background-position: center;
-    }
-
-    .form-side {
-      flex: 1;
+    .auth-visual {
+      background: linear-gradient(150deg, #1a0f0b 0%, #3D1F15 40%, #6D4C41 100%);
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 40px;
-      background-color: #fff8f5;
+      padding: 64px 48px;
+      position: relative;
+      overflow: hidden;
     }
-
-    .signup-form {
-      width: 100%;
-      max-width: 400px;
-      background-color: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    .auth-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
     }
-
-    .signup-form h1 {  
-      color: lightcoral;
-      margin-bottom: 40px;
+    .auth-visual-content {
+      position: relative;
+      z-index: 1;
       text-align: center;
-      font-size: 36px;
+      color: white;
     }
+    .auth-visual-logo {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid rgba(255,255,255,0.25);
+      margin-bottom: 24px;
+    }
+    .auth-visual-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(239,68,68,0.2);
+      border: 1px solid rgba(239,68,68,0.4);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #FCA5A5;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .auth-visual-title {
+      font-size: 34px;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+    .auth-visual-title span {
+      background: linear-gradient(135deg, #F0CFA5, #D4A373);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .auth-visual-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.6;
+      margin-bottom: 40px;
+      max-width: 280px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .auth-perms {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+    .auth-perm {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      padding: 12px 16px;
+    }
+    .auth-perm-icon { font-size: 20px; }
+    .auth-perm-text { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 500; }
 
-    .signup-form label {
+    .auth-form-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 48px;
+      background: var(--bg-base);
+      overflow-y: auto;
+    }
+    .auth-form-box { width: 100%; max-width: 440px; }
+    .auth-form-box h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+    .auth-form-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+    .auth-form-group { margin-bottom: 20px; }
+    .auth-form-group label {
       display: block;
-      margin-top: 15px;
-      margin-bottom: 5px;
-      font-weight: bold;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 8px;
     }
-
-    .signup-form input {
+    .auth-input-wrap { position: relative; }
+    .auth-input {
       width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: var(--font-family);
+      color: var(--text-dark);
+      background: white;
+      transition: all 0.2s;
+      box-sizing: border-box;
+      box-shadow: var(--shadow-neu-inset);
     }
-
-    .signup-form button {
+    .auth-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(109,76,65,0.1);
+    }
+    .auth-input.has-icon { padding-right: 44px; }
+    .eye-toggle {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 18px;
+      color: var(--text-muted);
+      line-height: 1;
+      padding: 0;
+    }
+    .auth-btn {
       width: 100%;
-      padding: 12px;
-      background-color: lightcoral;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
       color: white;
       border: none;
-      border-radius: 6px;
-      font-size: 16px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
+      font-family: var(--font-family);
+      margin-top: 8px;
+      transition: all 0.2s;
+      box-shadow: var(--shadow-md);
     }
-
-    .signup-form button:hover {
-      background-color: #e57373;
+    .auth-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
     }
+    .auth-link-row {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 24px;
+    }
+    .auth-link-row a { color: var(--color-primary); font-weight: 600; text-decoration: underline; }
+    .auth-back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      margin-bottom: 28px;
+      transition: color 0.15s;
+    }
+    .auth-back-link:hover { color: var(--color-primary); }
 
     @media (max-width: 768px) {
-      body {
-        flex-direction: column;
-      }
-
-      .image-side {
-        height: 200px;
-        
-      }
-
-     
+      .auth-layout { grid-template-columns: 1fr; }
+      .auth-visual { min-height: 200px; padding: 40px 24px; }
+      .auth-visual-title { font-size: 24px; }
+      .auth-perms { display: none; }
+      .auth-form-panel { padding: 40px 24px; }
     }
   </style>
-
-  <!-- Custom Alerts & Responsive CSS -->
-  <link rel="stylesheet" href="assets/custom_alert.css">
-  <link rel="stylesheet" href="assets/responsive.css">
 </head>
 <body>
 
-  <div class="image-side"></div>
+  <div class="auth-layout">
+    <div class="auth-visual" aria-hidden="true">
+      <div class="auth-visual-content">
+        <img src="obl.jpg" alt="PageLoft Logo" class="auth-visual-logo">
+        <div class="auth-visual-badge">🔐 Admin Access Only</div>
+        <h2 class="auth-visual-title">Admin Portal<br><span>PageLoft</span></h2>
+        <p class="auth-visual-sub">Create your administrator account to manage books, orders, users, and platform settings.</p>
+        <div class="auth-perms">
+          <div class="auth-perm">
+            <span class="auth-perm-icon">📚</span>
+            <span class="auth-perm-text">Manage book inventory & uploads</span>
+          </div>
+          <div class="auth-perm">
+            <span class="auth-perm-icon">📋</span>
+            <span class="auth-perm-text">View and manage all orders</span>
+          </div>
+          <div class="auth-perm">
+            <span class="auth-perm-icon">💳</span>
+            <span class="auth-perm-text">Verify payments & issue refunds</span>
+          </div>
+          <div class="auth-perm">
+            <span class="auth-perm-icon">👥</span>
+            <span class="auth-perm-text">Manage user accounts</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div class="form-side">
-    <form action="index.html" class="signup-form">
-    <h1 style="font-size: 70px; color: lightcoral;">Welcome to Pageloft</h1>
-      <label for="adminName">Name</label>
-      <input type="text" id="adminName" name="adminName" required>
+    <main class="auth-form-panel">
+      <div class="auth-form-box">
+        <a href="index.html" class="auth-back-link">← Back to home</a>
+        <h1>Create Admin Account</h1>
+        <p class="auth-form-sub">Register your admin credentials to access the management portal.</p>
 
-      <label for="adminEmail">Email</label>
-      <input type="email" id="adminEmail" name="adminEmail" required>
+        <form action="index.html" id="adminSignupForm">
+          <div class="auth-form-group">
+            <label for="adminName">Full Name</label>
+            <input type="text" id="adminName" name="adminName" class="auth-input" placeholder="Admin Name" required autocomplete="name">
+          </div>
 
-      <label for="adminPassword">Password</label>
-      <input type="password" id="adminPassword" name="adminPassword" required>
+          <div class="auth-form-group">
+            <label for="adminEmail">Admin Email</label>
+            <input type="email" id="adminEmail" name="adminEmail" class="auth-input" placeholder="admin@pageloft.com" required autocomplete="email">
+          </div>
 
-      <label for="confirmPassword">Confirm Password</label>
-      <input type="password" id="confirmPassword" name="confirmPassword" required>
-      <p>if you already have an account <a href="index.html" style="color:rgb(5, 121, 253)">Admin</a></p>
-      <button type="submit">Create account</button>
-    </form>
+          <div class="auth-form-group">
+            <label for="adminPassword">Password</label>
+            <div class="auth-input-wrap">
+              <input type="password" id="adminPassword" name="adminPassword" class="auth-input has-icon" placeholder="Min. 8 characters" required autocomplete="new-password">
+              <button type="button" class="eye-toggle" onclick="togglePw('adminPassword', this)" aria-label="Toggle password visibility">👁</button>
+            </div>
+          </div>
+
+          <div class="auth-form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <div class="auth-input-wrap">
+              <input type="password" id="confirmPassword" name="confirmPassword" class="auth-input has-icon" placeholder="Repeat password" required autocomplete="new-password">
+              <button type="button" class="eye-toggle" onclick="togglePw('confirmPassword', this)" aria-label="Toggle password visibility">👁</button>
+            </div>
+          </div>
+
+          <button type="submit" class="auth-btn">Create Admin Account →</button>
+        </form>
+
+        <p class="auth-link-row">Already have an admin account? <a href="index.html">Sign in here</a></p>
+      </div>
+    </main>
   </div>
 
-
-  <!-- Custom Alerts JS -->
   <script src="assets/custom_alert.js"></script>
+  <script>
+    function togglePw(id, btn) {
+      const input = document.getElementById(id);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        input.type = 'password';
+        btn.textContent = '👁';
+      }
+    }
+  </script>
 </body>
 </html>
